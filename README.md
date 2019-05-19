@@ -8,5 +8,4 @@ This distribution may include materials developed by third parties.
 For license and attribution notices for these materials,
 please refer to the LICENSE and THIRD-PARTY-NOTICES.txt files.
 
-For additional downloads and the source of OrderMaker, visit 
-http://ordermaker.org/downloads/
+For further information  on OrderMaker or additional documentation, visit http://ordermaker.org/
