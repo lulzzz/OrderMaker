@@ -1,0 +1,254 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model PartEditModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Part editor"];
+    ViewData["SecondTitle"] = Localizer["Editing section parameters"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-part.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li><a href="/config/form/parts?idForm=@Model.MtdForm.Id">@Localizer["Parts editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+
+    <li mtd-data-href="/config/form/fields?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
+        <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
+    </li>
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete part"]</span>
+    </li>
+}
+
+<div class="mdc-elevation--z2 mtd-config-form-part">
+    @if (Model.MtdForm.MtdFormHeader != null)
+    {
+        var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
+        var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
+        <img src="@imgSrc" style="max-width: 260px;  max-height:72px" />
+    }
+    <div style="text-align: right">
+        <span style="font-size: medium; text-transform:uppercase; font-weight: bold;">@Model.MtdForm.Name</span>
+    </div>
+    <hr />
+
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
+        <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+        <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
+        <div id="config-form-name" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 8px">
+            <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPart.Name" name="partName" required />
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                @Localizer["Required field"]
+            </div>
+        </div>
+        <div id="config-form-description" class="mdc-text-field mdc-text-field--textarea" style="width: 100%; margin-top: 8px;">
+            <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdFormPart.Description" name="partNote" required></textarea>
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                @Localizer["Required field"]
+            </div>
+        </div>
+        <div style="padding: 8px; margin-top: 4px; border: 1px solid lightgray; border-radius: 4px">
+            <span style="font-size: medium; color: gray">@Localizer["Image for section"]</span>
+            <div style="display: flex; margin-top: 8px;">
+                @if (Model.MtdFormPart.MtdFormPartHeader != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.MtdFormPart.MtdFormPartHeader.Image);
+                    var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdFormPart.MtdFormPartHeader.ImageType, base64);
+
+                    <div style="max-width: 48px; overflow:hidden">
+                        <img src="@imgSrc" height="48" />
+                    </div>
+                }
+
+                @{
+                    string shadow1 = "mdc-elevation--z2";
+                    if (Model.MtdFormPart.MtdFormPartHeader == null) { shadow1 = ""; }
+                }
+
+                <div mtd-file-upload="header" class="mtd-file-upload @shadow1">
+                    <div class="mtd-file-select">
+                        <div class="mtd-file-select-button" id="header-file-upload-title">@Localizer["Select file"]</div>
+                        <div class="mtd-file-select-title" id="header-file-upload-result" mtd-file-upload-text="@Localizer["File not selected..."]">
+                            @Localizer["File not selected..."]
+                        </div>
+                        <input type="file" id="header-file-upload-input" name="header-file-upload-input">
+                    </div>
+                    <div class="mtd-file-select-cancel">
+                        <button id="header-file-upload-cancel" class="mdc-icon-button material-icons" type="button">close</button>
+                    </div>
+                </div>
+            </div>
+            @if (Model.MtdFormPart.MtdFormPartHeader != null)
+            {
+                <div class="mdc-form-field">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="header-delete"
+                               name="header-delete" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                    </div>
+                    <label for="header-delete">@Localizer["Delete image"]</label>
+                </div>
+            }
+        </div>
+
+        <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+            <i class="mdc-select__dropdown-icon"></i>
+            <select class="mdc-select__native-control" asp-for="@Model.MtdFormPart.MtdSysStyle" asp-items="ViewBag.Styles" name="partStyle"></select>
+            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Part style"]</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+
+        <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 16px;">
+            <input type="text" id="tf" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPart.Sequence" name="partSeq" required />
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="tf" class="mdc-floating-label">@Localizer["Sorting index"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                @Localizer["Required field"]
+            </div>
+        </div>
+
+        <span>@Localizer["Visibility"]</span>
+        <div style="display: flex">
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox" asp-for="@Model.MtdFormPart.Title"
+                           class="mdc-checkbox__native-control"
+                           id="checkbox-1" name="partTitle" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="checkbox-1">@Localizer["Title"]</label>
+            </div>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox" asp-for="@Model.MtdFormPart.Child"
+                           class="mdc-checkbox__native-control"
+                           id="checkbox-2" name="partChild" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="checkbox-2">@Localizer["On child forms"]</label>
+            </div>
+        </div>
+        <div style="text-align: right; margin-top: 16px;">
+            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." class="mdc-button mdc-button--raised" type="button">@Localizer["Save"]</button>
+        </div>
+    </form>
+</div>
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/part/delete'>
+    <input id="config-delete-id" name="partId" type="hidden" value="@Model.MtdFormPart.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/parts?idForm=@Model.MtdForm.Id" type="hidden" />
+</form>
+
+<div id="dialog-part-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-part-title">
+                @Localizer["Delete part"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The partition and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-part-edit.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/filechoose/js/mtd-file-choose.js" asp-append-version="true"></script>
+}

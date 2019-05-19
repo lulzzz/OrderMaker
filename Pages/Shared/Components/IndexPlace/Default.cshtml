@@ -1,0 +1,76 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.PlaceModelView;
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="mdc-card mdc-elevation--z2 mtd-index-card">
+    <div id="indexProgress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" style="display:none">
+        <div class="mdc-linear-progress__buffering-dots"></div>
+        <div class="mdc-linear-progress__buffer"></div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+    </div>
+    <div id="indexModal" class="mtd-index-modal" style="display: none;"></div>
+
+    @await Component.InvokeAsync("IndexHeader", new { idForm = Model.IdForm })
+    @await Component.InvokeAsync("IndexFilterDisplay", new { idForm = Model.IdForm })
+    @await Component.InvokeAsync("IndexFilterSelector", new { idForm = Model.IdForm })
+    @await Component.InvokeAsync("IndexFilterColumns", new { idForm = Model.IdForm })
+    @await Component.InvokeAsync("IndexRows", new { idForm = Model.IdForm })
+
+</div>
+
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
+    <input id="store-delete-id" name="store-delete-id" type="hidden" value="Not Selected" />
+    <input id="deleteClicker" mtd-data-clicker type="hidden" />
+</form>
+
+<div id="dialog-store-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-dialog-title">
+                @Localizer["Delete document"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The document will be permanently deleted"].
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+

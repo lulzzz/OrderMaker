@@ -1,0 +1,126 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.SelectorModelView
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div id="indexFormSelector" style="display: none; position:absolute; z-index: 1; min-width: 300px; width: 90%">
+    <form id="indexFormFilter" method="post" action="/api/index/filter/add" enctype="multipart/form-data" autocomplete='off'>
+        <input asp-for="@Model.IdForm" name="indexInputForm" value="@Model.IdForm" hidden />
+        <div style="padding: 8px;">
+            <div class="mdc-elevation--z16" style="z-index: 1; background-color: white">
+                <div style="text-transform:uppercase; background-color: navy; color: white; margin-bottom:16px;" class="mdc-elevation--z2">
+                    <div style="padding: 16px;">
+                        @Localizer["Adding filter"]
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column;padding: 12px 4px 4px 4px; background-color: white;">
+                    <div id="indexSelectField" class="mdc-select mdc-select--outlined">
+                        <input id="indexInputField" type="hidden" name="indexInputField">
+                        <i class="mdc-select__dropdown-icon"></i>
+                        <div class="mdc-select__selected-text"></div>
+                        <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+                            <ul class="mdc-list">
+                                @foreach (var item in Model.MtdFormPartFields)
+                                {
+                                    <li id="@item.Id-lifilter" class="mdc-list-item mdc-list-item" data-type="@item.MtdSysType" data-value="@item.Id">@item.Name</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <label class="mdc-floating-label">@Localizer["Form field"]</label>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    @foreach (var store in Model.StoreList)
+                    {
+                        <div mtd-data-list="@store.FieldAim.Id" id="@store.FieldAim.Id-indexlist" style="margin-top: 12px; width:100%; display:none">
+                            <div class="mdc-select mdc-select--outlined" style="width: 100%">
+                                <input id="@store.FieldAim.Id-inputlist" type="hidden" name="@store.FieldAim.Id-inputlist">
+
+                                <i class="mdc-select__dropdown-icon"></i>
+                                <div id="@store.FieldAim.Id-inputtext" class="mdc-select__selected-text"></div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+                                    <ul class="mdc-list">
+                                        @foreach (var field in store.Store)
+                                        {
+                                            <li class="mdc-list-item mdc-list-item" data-value="@field.IdStore">@field.Result</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <label id="@store.FieldAim.Id-inputlabel" class="mdc-floating-label">@store.FieldOut.Name</label>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                    <div id="indexSelectBlock" style="display: flex; margin-top: 12px;">
+                        <div id="indexSelectTerm" class="mdc-select mdc-select--outlined" style="max-width: 150px">
+                            <input id="indexInputTerm" type="hidden" name="indexInputTerm">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <div class="mdc-select__selected-text mdc-menu-surface--anchor"></div>
+                            <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+                                <ul class="mdc-list">
+
+                                    @foreach (var term in Model.MtdSysTerms)
+                                    {
+                                        <li class="mdc-list-item" data-value="@term.Id" role="option">@term.Name (@term.Sign)</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Action"]</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+                        <div id="indexSelectFilter" class="mdc-text-field mdc-text-field--outlined " style="flex-grow:1; margin-left: 4px;">
+                            <input id="indexInputFilter" name="indexInputFilter" type="text" class="mdc-text-field__input">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="indexInputFilter" class="mdc-floating-label">@Localizer["Filter value"]</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="text-align:right;padding-top:8px;">
+                        <button id="indexButtonCancel" class="mdc-button" type="button">@Localizer["Cancel"]</button>
+                        <button id="indexButtonApply" type="button" class="mdc-button" mtdfilter="@Model.IdForm">@Localizer["Apply"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,74 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.DetailsModel
+@namespace Mtd.OrderMaker.Web.Components.Store
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Form view"];
+    ViewData["SecondTitle"] = Model.MtdForm.Name;
+}
+
+@section Head{
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
+}
+
+@section Breadcrumb {
+    <li><a href="/">@Localizer["Desktop"]</a></li>
+    <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action  {
+    <li mtd-data-href="/workplace/store/edit?id=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">edit</span>
+        <span class="mdc-list-item__text">@Localizer["Edit"]</span>
+    </li>
+    <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
+        <span class="mdc-list-item__text">@Localizer["Print"]</span>
+    </li>
+
+    @if (Model.MtdForm.InverseParentNavigation.Any())
+    {
+        <li role="separator" class="mdc-list-divider"></li>
+    }
+
+
+    @foreach (var child in Model.MtdForm.InverseParentNavigation)
+    {
+        <li mtd-data-href="/workplace/store/create?idForm=@child.Id&idStoreParent=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__text">@Localizer["Create"]: @child.Name </span>
+        </li>
+    }
+
+}
+
+<div class="mtd-main-center">
+    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
+</div>
+
+
+
+
+

@@ -1,0 +1,111 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.RowsModelView
+@inject Web.Services.UserHandler userHandler;
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    int colSpan = Model.MtdFormPartFields.Count + 2;
+    var user = await userHandler._userManager.GetUserAsync(User);
+    bool isEdit = await userHandler.IsRight(user, Services.RightsType.Edit, Model.IdForm);
+    bool isDelete = await userHandler.IsRight(user, Services.RightsType.Delete, Model.IdForm);
+}
+
+<div class="mtd-index-rows">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                        <input name="formId" asp-for="@Model.IdForm" type="hidden" />
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+                            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">filter_list</i>
+                            <input mtd-data-input type="text" id="indexSearchNumber" name="searchNumber" class="mdc-text-field__input " autocomplete="off" asp-for="@Model.SearchNumber" />
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="indexSearchNumber" class="mdc-floating-label @{if (@Model.SearchNumber.Length > 0) { <text>mdc-floating-label--float-above</text>} }">@Localizer["ID Number"]</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </form>
+                </th>
+                @foreach (var item in Model.MtdFormPartFields)
+                {
+                    <th>
+                        @item.Name
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var store in Model.MtdStores)
+            {
+                <tr mtd-data-row="@store.Id" mtd-data-class="mtd-index-rows-selected">
+                    <td>
+                        <div style="display: flex">
+                            <div class="mdc-form-field">
+                                <div class="mdc-checkbox" data-mdc-ripple-is-unbounded>
+                                    <input type="checkbox" class="mdc-checkbox__native-control" id="@store.Id-checkbox" />
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark"
+                                             viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path"
+                                                  fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="align-self: center">
+                                @store.Sequence.ToString("D9")
+                            </div>
+                        </div>
+                    </td>
+                    @foreach (var field in Model.MtdFormPartFields)
+                    {
+                        <td>
+                            @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
+                        </td>
+                    }
+                </tr>
+                <tr mtd-data-action="@store.Id" class="mtd-index-rows-actions" style="display: none">
+                    <td colspan=@colSpan class=" mdc-elevation--z1">
+                        <a asp-page="./Details" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>visibility</a>
+                        @if (isEdit)
+                        {
+                            <a asp-page="./Edit" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>edit</a>
+                        }
+                        <a href="#" onclick="CallPrint('@store.Id')" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>print</a>
+                        @if (isDelete)
+                        {
+                            <a mtd-data-row-delete="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@await Component.InvokeAsync("IndexFooter", new { idForm = Model.IdForm, pageCount = Model.PageCount })

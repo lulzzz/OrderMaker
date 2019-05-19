@@ -1,0 +1,212 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model RightsModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["User rights"];
+    ViewData["SecondTitle"] = Localizer["Editing access level"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/users/css/mtd-users-rights.css" />
+}
+
+
+@section Action {
+    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('user-all').click()">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">done_all</span>
+        <span class="mdc-list-item__text">@Localizer["Select all"]</span>
+    </li>
+    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('user-clear').click()">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">select_all</span>
+        <span class="mdc-list-item__text">@Localizer["Unselect all"]</span>
+    </li>
+}
+
+@section Breadcrumb {
+    <li><a href="/Identity/Users">@Localizer["Users"]</a></li>
+    <li>@ViewData["Title"]</li>
+}
+
+<form mtd-data-form method="post" enctype="multipart/form-data" action="/api/users/admin/claims/all">
+    <input name="user-id" type="hidden" value="@Model.UserId" />
+    <input id="user-all" mtd-data-clicker type="hidden" />
+</form>
+
+<form mtd-data-form method="post" enctype="multipart/form-data" action="/api/users/admin/claims/clear">
+    <input name="user-id" type="hidden" value="@Model.UserId" />
+    <input id="user-clear" mtd-data-clicker type="hidden" />
+</form>
+
+
+<form mtd-data-form method="post" action="/api/users/admin/claims" enctype="multipart/form-data">
+    <input type="hidden" name="user-id" value="@Model.UserId" />
+    <div class="mdc-elevation--z1 mtd-users-rights-place">
+        <div class="mtd-users-rights-bar">
+            <div class="mtd-users-rights-control">
+                <div class="mtd-ui-material-submit">
+                    <a mtd-data-clicker class="mdc-fab mdc-fab--extended" aria-label="Save">
+                        <span class="material-icons mdc-fab__icon">save</span>
+                        <span class="mdc-fab__label">@Localizer["Save"]</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mtd-users-rights-title">
+            <div class="mtd-users-rights-logo">
+                <i class="material-icons" style="font-size: 48px; color: white">person</i>
+            </div>
+            <div class="mtd-users-rights-name" style="align-self: center">
+                <div style="font-size: large;">
+                    @Model.UserName
+                </div>
+                <div style="font-size: x-large; font-weight: bold; line-height: 0.8em">
+                    @Model.UserTitle
+                </div>
+            </div>
+        </div>
+        <div class="mtd-users-rights-wrapper">
+            <table>
+                <thead>
+
+                    <tr>
+                        <th rowspan="2">
+                            @Localizer["Form name"]
+                        </th>
+                        <th colspan="4">@Localizer["Rights"]</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Localizer["View"]
+                        </th>
+                        <th>
+                            @Localizer["Create"]
+                        </th>
+                        <th>
+                            @Localizer["Edit"]
+                        </th>
+                        <th>
+                            @Localizer["Delete"]
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var form in Model.MtdForms)
+                    {
+                        <tr>
+                            <td>@form.Name</td>
+                            <td>
+                                @{
+                                    bool checkView = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view").Any();
+                                }
+
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-view" name="@form.Id-view" @if (checkView) { <text> checked</text>} />
+
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    bool checkCreate = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-create").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-create" name="@form.Id-create" @if (checkCreate) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    bool checkEdit = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-edit").Any();
+                                }
+
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-edit" name="@form.Id-edit" @if (checkEdit) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    bool checkDelete = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-delete").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-delete" name="@form.Id-delete" @if (checkDelete) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</form>
