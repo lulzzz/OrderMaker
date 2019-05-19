@@ -8,8 +8,5 @@ This distribution may include materials developed by third parties.
 For license and attribution notices for these materials,
 please refer to the LICENSE and THIRD-PARTY-NOTICES.txt files.
 
-For further information on MySQL or additional documentation, visit
-http://ordermaker.org
-
 For additional downloads and the source of OrderMaker, visit 
 http://ordermaker.org/downloads/
