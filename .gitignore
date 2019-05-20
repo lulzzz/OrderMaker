@@ -9,6 +9,9 @@
 appsettings.json
 appsettings.*.json
 
+project.lock.json
+project.assets.json
+
 /node_modules
 /build
 /obj
