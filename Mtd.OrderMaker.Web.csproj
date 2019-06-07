@@ -44,6 +44,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <None Include="wwwroot\lib\google\iconfont\MaterialIcons-Regular.svg" />
     <None Include="wwwroot\lib\google\iconfont\MaterialIcons-Regular.woff2" />
     <None Include="wwwroot\lib\google\iconfont\README.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
     <None Include="wwwroot\lib\mtd-ordermaker\store\less\mtd-store-edit.less" />
   </ItemGroup>
 

@@ -9,8 +9,7 @@
 appsettings.json
 appsettings.*.json
 
-project.lock.json
-project.assets.json
+package-lock.json
 
 /node_modules
 /build

@@ -55,7 +55,7 @@
         <div class="mtd-store-style-attribute">
             <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
             <hr />
-            <span class="mtd-store-style-date">Дата @DateTime.Now.ToShortDateString()</span>
+            <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
         </div>
     </div>
 

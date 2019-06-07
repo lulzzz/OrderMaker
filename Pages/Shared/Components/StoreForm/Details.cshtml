@@ -40,7 +40,7 @@
         <div class="mtd-store-style-attribute">
             <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
             <hr />
-            <span class="mtd-store-style-date">Дата @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
         </div>
     </div>
 
@@ -60,8 +60,7 @@
             @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Parent })
         }
     }
-
-
+    
 
     @foreach (var part in Model.Owner.Parts)
     {

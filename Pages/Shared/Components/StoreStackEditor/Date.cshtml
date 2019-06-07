@@ -17,14 +17,24 @@
 *@
 
 @model Data.MtdStoreStack
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
+@{
+    var local = Localizer["MM/dd/yyyy"];
+    string dateValue = "";
+    if (Model.MtdStoreStackDate.Register != null)
+    {
+        dateValue = Model.MtdStoreStackDate.Register.ToString($"{local.Value}");
+    }
+}
 
 @switch (ViewBag.TypeStyle)
 {
     case "Columns":
         <div class="mtd-store-edit-col-root">
             <div class="mtd-ui-material-form">
-                <input type="date" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" />
+                <input class="mtd-data-datepicker" type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
                 <label for="date" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
                 <i class="mtd-ui-text-bottom"></i>
             </div>
@@ -32,7 +42,7 @@
         break;
     default:
         <div class="mtd-ui-material-form">
-            <input type="date" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" />
+            <input type="text" class="mtd-data-datepicker" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
             <label for="date" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
             <i class="mtd-ui-text-bottom"></i>
         </div>

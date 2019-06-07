@@ -17,7 +17,8 @@
 *@
 
 @model Models.Store.DataContainer
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <div class="mtd-store-style-print mdc-elevation--z2">
 
@@ -38,7 +39,7 @@
         <div class="mtd-store-style-attribute">
             <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
             <hr />
-            <span class="mtd-store-style-date">Дата @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
         </div>
     </div>
 
