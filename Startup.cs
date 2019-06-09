@@ -101,6 +101,7 @@ namespace Mtd.OrderMaker.Web
                     });
 
             services.AddScoped<UserHandler>();
+            services.AddTransient<ConfigHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));

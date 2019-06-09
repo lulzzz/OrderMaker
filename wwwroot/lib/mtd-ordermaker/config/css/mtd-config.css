@@ -15,9 +15,6 @@
   padding: 8px;
   cursor: pointer;
 }
-.mtd-config-param-icon {
-  flex-grow: 1;
-}
 .mtd-config-param-title {
   font-size: large;
   font-weight: bold;

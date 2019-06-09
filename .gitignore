@@ -7,7 +7,8 @@
 *.userosscache
 *.sln.docstates
 appsettings.json
-appsettings.*.json
+appsettings.Development.json
+appsettings.Prodaction.json
 
 package-lock.json
 

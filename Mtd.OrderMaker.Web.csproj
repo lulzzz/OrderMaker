@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.0.3</AssemblyVersion>
-    <FileVersion>1.0.0.3</FileVersion>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -25,6 +25,8 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Areas\Identity\Data\Migrations\20190409084256_CustomUserData.Designer.cs" />
     <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.cs" />
     <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.Designer.cs" />
+    <Compile Remove="Migrations\20190609054945_AddConfigFiles.cs" />
+    <Compile Remove="Migrations\20190609054945_AddConfigFiles.Designer.cs" />
   </ItemGroup>
 
 
@@ -32,7 +34,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="MySql.Data" Version="8.0.16" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
@@ -52,6 +54,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 
 
   <ItemGroup>
+    <Folder Include="wwwroot\lib\google\sass\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\common\js\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\common\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\js\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\filechoose\css\" />

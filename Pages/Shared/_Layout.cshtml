@@ -20,6 +20,7 @@
 @using Mtd.OrderMaker.Web.Areas.Identity.Data
 @inject SignInManager<WebAppUser> SignInManager
 @inject UserManager<WebAppUser> UserManager
+@inject Web.Services.ConfigHandler configHandler;
 
 
 @using Microsoft.AspNetCore.Mvc.Localization
@@ -62,7 +63,12 @@
             <div style="padding-top: 16px; padding-bottom: 16px;">
                 <div style="display:flex; flex-direction: column; align-items: center">
                     <div>
-                        <img src="~/lib/mtd-ordermaker/images/logo-mtd.png" width="235" />
+                        @{ 
+                            string pathImgMenu = "/lib/mtd-ordermaker/images/logo-mtd.png";
+                            var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
+                            if (imgMenu != string.Empty) { pathImgMenu = imgMenu; }
+                        }
+                        <img src="@pathImgMenu" width="235" />
 
                     </div>
                     <div style="display: flex; flex-direction: column; margin-top: 16px; align-items: center">
@@ -111,9 +117,14 @@
                     {
                         <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
                     }
-                    <span style="padding-left: 8px">
-                        <img src="~/lib/mtd-ordermaker/images/logo-mtd-white.png" height="32" />
-                    </span>
+                        <span style="padding-left: 8px">
+                            @{
+                                string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
+                                var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
+                                if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
+                            }
+                            <img src="@pathAppBar" height="32" />
+                        </span>
                 </section>
                 @if (SignInManager.IsSignedIn(User))
                 {

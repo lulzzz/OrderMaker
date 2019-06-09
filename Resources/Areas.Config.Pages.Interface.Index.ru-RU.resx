@@ -117,22 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Configuration and setup" xml:space="preserve">
-    <value>Конфигурация и настройка</value>
-  </data>
   <data name="Configurator" xml:space="preserve">
     <value>Конфигуратор</value>
+  </data>
+  <data name="Delete image" xml:space="preserve">
+    <value>Удалить изображение</value>
   </data>
   <data name="Display elements" xml:space="preserve">
     <value>Отображение элементов</value>
   </data>
-  <data name="Forms" xml:space="preserve">
-    <value>Формы</value>
+  <data name="File not selected..." xml:space="preserve">
+    <value>Файл не выбран...</value>
+  </data>
+  <data name="Image for application bar" xml:space="preserve">
+    <value>Изображение строки меню</value>
+  </data>
+  <data name="Image for main menu" xml:space="preserve">
+    <value>Изображения главного меню</value>
   </data>
   <data name="Interface" xml:space="preserve">
     <value>Интерфейс</value>
   </data>
-  <data name="Templates setting" xml:space="preserve">
-    <value>Настройка шаблонов</value>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Select file" xml:space="preserve">
+    <value>Выбор файла</value>
   </data>
 </root>
