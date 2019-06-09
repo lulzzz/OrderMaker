@@ -39,6 +39,8 @@ namespace Mtd.OrderMaker.Web.Data
         public string MtdGroup { get; set; }
         public int Sequence { get; set; }
         public string Parent { get; set; }
+        public sbyte VisibleNumber { get; set; }
+        public sbyte VisibleDate { get; set; }
 
         public virtual MtdGroupForm MtdGroupNavigation { get; set; }
         public virtual MtdForm ParentNavigation { get; set; }

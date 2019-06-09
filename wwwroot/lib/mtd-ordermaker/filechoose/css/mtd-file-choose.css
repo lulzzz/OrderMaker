@@ -27,9 +27,13 @@
   line-height: 48px;
 }
 .mtd-file-upload .mtd-file-select .mtd-file-select-title {
-  line-height: 48px;
+  line-height: 0.8em;
+  width: 110px;
   display: inline-block;
-  padding: 0 10px;
+  text-wrap: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mtd-file-upload:hover {
   border-color: #34495e;

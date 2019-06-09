@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
+    <AssemblyVersion>1.0.0.6</AssemblyVersion>
+    <FileVersion>1.0.0.6</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>

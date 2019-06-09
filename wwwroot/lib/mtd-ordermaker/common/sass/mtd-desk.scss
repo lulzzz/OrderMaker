@@ -46,10 +46,11 @@
 
 
 .mtd-desk-field {
-    padding: 8px;
-    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;  
+    width: 280px;
     margin: 4px;
-    min-width: 270px;
 }
 
 .mtd-desk-field label {
@@ -62,4 +63,13 @@
     justify-content: center;
     flex-wrap:wrap;   
     align-items:flex-end;
+}
+
+.mtd-desk-field--space {
+    padding-bottom: 48px;
+}
+
+.mtd-desk-field--border{    
+    border-radius: 4px;
+    border: 1px solid lightgray;
 }

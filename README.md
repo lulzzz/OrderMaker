@@ -1,4 +1,4 @@
-OrderMaker is Web Constructor provides the ability to create knowledge base or request management system any solutions based on forms and fields.
+<strong>OrderMaker</strong> is Web Constructor provides the ability to create knowledge base or request management system any solutions based on forms and fields.
 
 Copyright (c) 2019 Oleg Bruev. All rights reserved.
 

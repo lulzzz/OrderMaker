@@ -129,6 +129,9 @@
   <data name="Configurator" xml:space="preserve">
     <value>Конфигуратор</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="Name" xml:space="preserve">
     <value>Наименование</value>
   </data>
+  <data name="Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="The form and all data associated with it will be permanently deleted." xml:space="preserve">
     <value>Форма и все связанные с ней данные будут удалены без возможности восстановления.</value>
+  </data>
+  <data name="Visible" xml:space="preserve">
+    <value>Отображать</value>
   </data>
   <data name="was deleted" xml:space="preserve">
     <value>была удалена</value>

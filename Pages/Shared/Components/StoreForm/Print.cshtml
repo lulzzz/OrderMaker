@@ -37,9 +37,16 @@
             @Model.Owner.Store.MtdFormNavigation.Name
         </div>
         <div class="mtd-store-style-attribute">
-            <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
-            <hr />
-            <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            @if (Model.Owner.Store.MtdFormNavigation.VisibleNumber == 1)
+            {
+                <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
+                <hr />
+            }
+
+            @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
+            {
+                <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            }
         </div>
     </div>
 

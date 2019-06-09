@@ -6,12 +6,12 @@
     font-size: 13px;
     width: 100%;
     border: 2px solid #dce4ec;
-    z-index:1;
+    z-index: 1;
 }
 
 .mtd-file-upload .mtd-file-select {
     display: block;
-    flex-grow:1;    
+    flex-grow: 1;
     color: #34495e;
     cursor: pointer;
     height: 48px;
@@ -22,7 +22,7 @@
     position: relative;
 }
 
-.mtd-file-upload .mtd-file-select .mtd-file-select-button  {
+.mtd-file-upload .mtd-file-select .mtd-file-select-button {
     background: #dce4ec;
     padding: 0 10px;
     display: inline-block;
@@ -30,10 +30,14 @@
     line-height: 48px;
 }
 
-.mtd-file-upload .mtd-file-select .mtd-file-select-title  {
-    line-height: 48px;
+.mtd-file-upload .mtd-file-select .mtd-file-select-title {
+    line-height: 0.8em;
+    width: 110px;
     display: inline-block;
-    padding: 0 10px;
+    text-wrap: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mtd-file-upload:hover {
@@ -103,7 +107,7 @@
     position: relative;
 }
 
-.mtd-file-upload .mtd-file-select.mtd-file-select-disabled:hover .mtd-file-select-button  {
+.mtd-file-upload .mtd-file-select.mtd-file-select-disabled:hover .mtd-file-select-button {
     background: #dce4ec;
     color: #666666;
     padding: 0 10px;
@@ -119,6 +123,6 @@
     padding: 0 10px;
 }
 
-.mtd-file-select-cancel{
+.mtd-file-select-cancel {
     background-color: white;
 }

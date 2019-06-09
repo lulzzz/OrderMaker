@@ -36,7 +36,11 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
         }
 
         [BindProperty]
-        public MtdForm MtdForm { get; set; }        
+        public MtdForm MtdForm { get; set; }
+        [BindProperty]
+        public bool VisibleNumber { get; set; }
+        [BindProperty]
+        public bool VisibleDate { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -44,14 +48,17 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
             {
                 return NotFound();
             }
-            
 
-            MtdForm = await _context.MtdForm.Include(x=>x.ParentNavigation).Include(m => m.MtdFormHeader).Include(m => m.MtdFormDesk).FirstOrDefaultAsync(m => m.Id == id);
+
+            MtdForm = await _context.MtdForm.Include(x => x.ParentNavigation).Include(m => m.MtdFormHeader).Include(m => m.MtdFormDesk).FirstOrDefaultAsync(m => m.Id == id);
             if (MtdForm == null)
             {
                 return NotFound();
             }
-            
+
+
+            VisibleNumber = MtdForm.VisibleNumber == 1 ? true : false;
+            VisibleDate = MtdForm.VisibleDate == 1 ? true : false;
 
             return Page();
         }
@@ -63,16 +70,19 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
                 return Page();
             }
 
-           MtdForm oldForm = await _context.MtdForm.AsNoTracking().Include(x=>x.ParentNavigation).FirstOrDefaultAsync(x=>x.Id==MtdForm.Id);            
+            MtdForm oldForm = await _context.MtdForm.AsNoTracking().Include(x => x.ParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdForm.Id);
             if (oldForm == null)
             {
                 return NotFound();
             }
 
-            MtdForm.Parent = oldForm.Parent;            
+            MtdForm.Parent = oldForm.Parent;
             _context.Attach(MtdForm).State = EntityState.Modified;
 
-            string idCheckBox = "header-delete";            
+            MtdForm.VisibleNumber = VisibleNumber ? (sbyte)1 : (sbyte)0;
+            MtdForm.VisibleDate = VisibleDate ? (sbyte)1 : (sbyte)0;
+
+            string idCheckBox = "header-delete";
             if (Request.Form[idCheckBox].FirstOrDefault() == null || Request.Form[idCheckBox].FirstOrDefault() == "false")
             {
                 string idInput = "header-file-upload-input";
@@ -103,9 +113,9 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
             }
 
 
-            string idCheckDeskBox = "desk-delete";           
+            string idCheckDeskBox = "desk-delete";
 
-            if (Request.Form[idCheckDeskBox].FirstOrDefault() ==  null || Request.Form[idCheckDeskBox].FirstOrDefault() == "false")
+            if (Request.Form[idCheckDeskBox].FirstOrDefault() == null || Request.Form[idCheckDeskBox].FirstOrDefault() == "false")
             {
                 string idInput = "desk-file-upload-input";
                 IFormFile file = Request.Form.Files.FirstOrDefault(x => x.Name == idInput);

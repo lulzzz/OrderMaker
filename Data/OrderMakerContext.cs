@@ -282,6 +282,18 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("name")
                     .HasColumnType("varchar(120)");
 
+                entity.Property(e => e.VisibleNumber)
+                    .IsRequired()
+                    .HasColumnName("visible_number")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'1'");
+
+                entity.Property(e => e.VisibleDate)
+                    .IsRequired()
+                    .HasColumnName("visible_date")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'1'");
+
                 entity.Property(e => e.Sequence)
                     .HasColumnName("sequence")
                     .HasColumnType("int(11)")
