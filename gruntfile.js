@@ -10,7 +10,7 @@ module.exports = function (grunt) {
     grunt.initConfig({       
         sass: {           
             options: {                
-                implementation: sass,
+                implementation: sass,         
                 sourceMap: true,             
                 outputStyle: 'compressed',
                 includePaths: [
@@ -19,12 +19,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: [
-                    {
-                        expand: true, 
-                        cwd: "wwwroot/lib/mtd-ordermaker/common/sass",
-                        src: ["**/*.scss"], 
-                        dest: "wwwroot/lib/mtd-ordermaker/common/css",                        
-                        ext: ".css"
+                    {                      
+                        "wwwroot/lib/mtd-ordermaker/common/css/mtd-desk.css" : "wwwroot/lib/mtd-ordermaker/common/sass/mtd-desk.scss",                        
                     }
                 ]
             }

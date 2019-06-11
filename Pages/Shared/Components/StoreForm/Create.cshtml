@@ -102,24 +102,25 @@
 
     }
 
-    <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
-        <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
-        <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Store.MtdForm" type="hidden" />
-        <input type="hidden" name="idForm" value="@Model.Store.MtdForm" />
-        <div>
-            @foreach (var part in Model.Parts)
-            {
-                @if (part.Title)
+        <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
+            @Html.AntiForgeryToken()
+            <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
+            <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Store.MtdForm" type="hidden" />
+            <input type="hidden" name="idForm" value="@Model.Store.MtdForm" />
+            <div>
+                @foreach (var part in Model.Parts)
                 {
-                    <div class="mtd-store-style-part">
-                        @part.Name
-                    </div>
-                }
+                    @if (part.Title)
+                    {
+                        <div class="mtd-store-style-part">
+                            @part.Name
+                        </div>
+                    }
 
-                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
-            }
-        </div>
-    </form>
+                    @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
+                }
+            </div>
+        </form>
 </div>
 
 

@@ -43,6 +43,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdFormPartField> MtdFormPartField { get; set; }
         public virtual DbSet<MtdFormPartHeader> MtdFormPartHeader { get; set; }
         public virtual DbSet<MtdGroupForm> MtdGroupForm { get; set; }
+        public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
         public virtual DbSet<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual DbSet<MtdStoreStack> MtdStoreStack { get; set; }
@@ -611,6 +612,49 @@ namespace Mtd.OrderMaker.Web.Data
                     .IsRequired()
                     .HasColumnName("parent")
                     .HasColumnType("varchar(36)");
+            });
+
+            modelBuilder.Entity<MtdLogDocument>(entity =>
+            {
+                entity.ToTable("mtd_log_document");
+
+                entity.HasIndex(e => e.TimeCh)
+                    .HasName("ix_date");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdStore)
+                    .HasName("fk_log_document_store_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.TimeCh)
+                    .HasColumnName("timech")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.MtdStore)
+                    .IsRequired()
+                    .HasColumnName("mtd_store")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasColumnName("user_name")
+                    .HasColumnType("varchar(36)");
+
+                entity.HasOne(d => d.MtdStoreNavigation)
+                    .WithMany(p => p.MtdLogDocument)
+                    .HasForeignKey(d => d.MtdStore)
+                    .HasConstraintName("fk_log_document_store");
             });
 
             modelBuilder.Entity<MtdStore>(entity =>

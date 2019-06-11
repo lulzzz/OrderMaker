@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Changes history" xml:space="preserve">
+    <value>История изменений</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
+  <data name="Created by" xml:space="preserve">
+    <value>Создано</value>
+  </data>
   <data name="Desktop" xml:space="preserve">
     <value>Рабочий стол</value>
+  </data>
+  <data name="Document information" xml:space="preserve">
+    <value>Информация о документе</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
@@ -129,10 +138,22 @@
   <data name="Form view" xml:space="preserve">
     <value>Просмотр</value>
   </data>
+  <data name="Last edited by" xml:space="preserve">
+    <value>Последняя редакция</value>
+  </data>
   <data name="List data" xml:space="preserve">
     <value>Список</value>
   </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Владелец</value>
+  </data>
   <data name="Print" xml:space="preserve">
     <value>Печать</value>
+  </data>
+  <data name="Print form view" xml:space="preserve">
+    <value>Печатная форма</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
   </data>
 </root>

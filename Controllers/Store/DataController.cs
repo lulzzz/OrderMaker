@@ -47,6 +47,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
         // POST: api/store/save
         [HttpPost("save")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostSaveAsync()
         {
             string Id = Request.Form["idStore"];
@@ -63,6 +64,15 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             {
                 return Ok(403);
             }
+
+            MtdLogDocument mtdLog = new MtdLogDocument
+            {
+                MtdStore = mtdStore.Id,
+                TimeCh = DateTime.Now,
+                UserId = webAppUser.Id,
+                UserName = webAppUser.Title
+            };
+
 
             OutData outData = await CreateData(Id);
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
@@ -110,6 +120,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     {
                         await _context.MtdStoreStack.AddRangeAsync(stackNewOnly);
                     }
+
+                    _context.MtdLogDocument.Add(mtdLog);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -130,6 +142,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         }
 
         [HttpPost("create")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostCreateAsync()
         {
             string idForm = Request.Form["idForm"];
@@ -149,11 +162,25 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             sequence++;
 
             MtdStore mtdStore = new MtdStore { MtdForm = idForm, Sequence = sequence, Parent = idFormParent.Length > 0 ? idFormParent : null };
+
+
             await _context.MtdStore.AddAsync(mtdStore);
             await _context.SaveChangesAsync();
+
+            MtdLogDocument mtdLog = new MtdLogDocument
+            {
+                MtdStore = mtdStore.Id,
+                TimeCh = mtdStore.Timecr,
+                UserId = webAppUser.Id,
+                UserName = webAppUser.Title
+            };
+
+            await _context.MtdLogDocument.AddAsync(mtdLog);
+
             OutData outParam = await CreateData(mtdStore.Id);
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
             await _context.MtdStoreStack.AddRangeAsync(stackNew);
+
             await _context.SaveChangesAsync();
             _context.Database.CommitTransaction();
 

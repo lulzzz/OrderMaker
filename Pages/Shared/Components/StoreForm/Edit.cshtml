@@ -22,6 +22,7 @@
 @inject IViewLocalizer Localizer
 
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
+    @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
     <div class="mtd-store-style-blank mdc-elevation--z2">
         <div class="mtd-store-edit-bar">
@@ -83,3 +84,4 @@
     </div>
 </form>
 
+ 

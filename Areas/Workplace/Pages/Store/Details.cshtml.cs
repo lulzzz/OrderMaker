@@ -16,11 +16,13 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.Models.LogDocument;
 using Mtd.OrderMaker.Web.Services;
 
 namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
@@ -38,7 +40,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
-
+        public ChangesHistory ChangesHistory { get; set; } 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -62,6 +64,26 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             }
 
             MtdForm = await _context.MtdForm.Include(m => m.InverseParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdStore.MtdForm);
+            MtdLogDocument edited = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderByDescending(x => x.TimeCh).FirstOrDefaultAsync();
+            MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x=>x.TimeCh).FirstOrDefaultAsync();
+
+            ChangesHistory = new ChangesHistory
+            {
+                CreateByTime = MtdStore.Timecr.ToString()
+            };
+
+            if (edited != null) {
+                ChangesHistory.LastEditedUser = edited.UserName;
+                ChangesHistory.LastEditedTime = edited.TimeCh.ToString();
+            }
+
+            if (created != null)
+            {
+                if (MtdStore.Timecr.Date == created.TimeCh.Date)
+                {
+                    ChangesHistory.CreateByUser = created.UserName;
+                }                
+            }
 
             return Page();
         }
