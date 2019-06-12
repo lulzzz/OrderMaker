@@ -25,6 +25,7 @@
 {
     <div style="display: flex; border-bottom: 1px solid gray;">
         <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
             <input mtd-data-result type="hidden" name="idField" />
             <div style="display: flex; background-color:gainsboro;  float: left; width: 100%; padding:  4px; display: flex; align-items:center; overflow:hidden; overflow-x:auto;">
 
@@ -51,6 +52,7 @@
         </form>
         <div style="width: 104px; background-color: white;padding: 2px; align-self: center">
             <form mtd-data-form method="post" action="/api/index/filter/removeall" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="idFilter" value="@Model.IdFilter" />
                 <button mtd-data-clicker type="button" class="mdc-button">@Localizer["Clear"]</button>
             </form>

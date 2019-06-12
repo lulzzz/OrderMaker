@@ -188,6 +188,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         }
 
         [HttpPost("delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostDeleteAsync()
         {
             string idStore = Request.Form["store-delete-id"];
@@ -215,6 +216,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
 
         [HttpPost("number/id")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostGetIDAsync()
         {
             string result = "";

@@ -37,6 +37,7 @@
 }
 
 <form mtd-data-form id="index-excel-form" method="post" enctype="multipart/form-data" action="/api/action/index/excel/export">
+    @Html.AntiForgeryToken()
     <input name="InputFormForExport" value="@ViewBag.idForm" type="hidden" />
 </form>
 

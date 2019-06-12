@@ -33,6 +33,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
     {
 
         [HttpPost("admin/confirm/email")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminConfimEmailAsync()
         {
             string userName = Request.Form["UserName"];
@@ -74,6 +75,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         }
 
         [HttpPost("admin/confirm/password")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminConfirmPasswordAsync()
         {
 
@@ -115,6 +117,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         }
 
         [HttpPost("admin/claims/all")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminClaimsAll()
         {
             var userId = Request.Form["user-id"];
@@ -151,6 +154,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         }
 
         [HttpPost("admin/claims/clear")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminClaimsClear()
         {
             var userId = Request.Form["user-id"];

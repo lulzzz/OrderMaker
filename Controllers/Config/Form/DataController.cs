@@ -43,6 +43,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostDeleteAsync()
         {
             string formId = Request.Form["IdForm"];
@@ -58,6 +59,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("sequence")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostSequenceAsync()
         {
             string strData = Request.Form["formSeqData"];
@@ -84,6 +86,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("field/sequence")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldSequenceAsync()
         {
             string strData = Request.Form["fieldSeqData"];
@@ -112,6 +115,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("field/create")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldCreateAsync()
         {
             string formId = Request.Form["formId"];
@@ -164,6 +168,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("field/edit")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldEditAsync()
         {
             string formId = Request.Form["formId"];
@@ -190,6 +195,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("field/delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldDeleteAsync()
         {
             string fieldId = Request.Form["fieldId"];
@@ -207,6 +213,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("part/sequence")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPartSequenceAsync()
         {
             string strData = Request.Form["fieldSeqData"];
@@ -235,6 +242,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("part/create")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPartCreateAsync()
         {
             string formId = Request.Form["formId"];
@@ -276,6 +284,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("part/edit")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPartEditAsync()
         {
             string formId = Request.Form["formId"];
@@ -348,6 +357,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
         }
 
         [HttpPost("part/delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPartDeleteAsync()
         {
             string partId = Request.Form["partId"];

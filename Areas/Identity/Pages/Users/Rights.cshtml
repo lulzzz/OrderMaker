@@ -49,17 +49,20 @@
 }
 
 <form mtd-data-form method="post" enctype="multipart/form-data" action="/api/users/admin/claims/all">
+    @Html.AntiForgeryToken()
     <input name="user-id" type="hidden" value="@Model.UserId" />
     <input id="user-all" mtd-data-clicker type="hidden" />
 </form>
 
 <form mtd-data-form method="post" enctype="multipart/form-data" action="/api/users/admin/claims/clear">
+    @Html.AntiForgeryToken()
     <input name="user-id" type="hidden" value="@Model.UserId" />
     <input id="user-clear" mtd-data-clicker type="hidden" />
 </form>
 
 
 <form mtd-data-form method="post" action="/api/users/admin/claims" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
     <input type="hidden" name="user-id" value="@Model.UserId" />
     <div class="mdc-elevation--z1 mtd-users-rights-place">
         <div class="mtd-users-rights-bar">

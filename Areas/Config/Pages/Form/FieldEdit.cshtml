@@ -81,6 +81,7 @@
     </table>
     <hr />
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/field/edit">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />
 
@@ -130,6 +131,7 @@
 
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/field/delete'>
+    @Html.AntiForgeryToken()
     <input id="config-delete-id" name="fieldId" type="hidden" value="@Model.MtdFormPartField.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/fields?idForm=@Model.MtdForm.Id" mtd-data-message="@Localizer["Field"] @Model.MtdFormPartField.Name @Localizer["has been removed"]." type="hidden" />
 </form>

@@ -56,6 +56,7 @@
     </div>
 
     <form mtd-data-form method="post" action="/api/config/form/sequence">
+        @Html.AntiForgeryToken()
         <input id="formSeqData" name="formSeqData" type="hidden" />
         <input id="configListSeq" mtd-data-clicker type="hidden" />
     </form>

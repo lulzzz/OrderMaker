@@ -45,6 +45,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("search/text")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostSearchTextAsync()
         {
             var form = Request.Form["indexForm"];
@@ -82,6 +83,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("search/number")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostSerarchIndexAsync()
         {            
 
@@ -139,6 +141,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }        
 
         [HttpPost("pagemove")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostPageMove()
         {
             /* number
@@ -175,6 +178,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("filter/add")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterAddAsync()
         {
 
@@ -223,6 +227,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("filter/remove")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAsync()
         {
             string strID = Request.Form["idField"];
@@ -242,6 +247,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("filter/removeAll")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAllAsync()
         {
             string strID = Request.Form["idFilter"];
@@ -262,6 +268,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("filter/columns/add")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterColumnsAsync()
         {
 

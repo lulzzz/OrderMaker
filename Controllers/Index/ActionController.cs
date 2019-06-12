@@ -52,6 +52,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         }
 
         [HttpPost("excel/export")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostExportAsync()
         {
             var data = Request.Form["InputFormForExport"];

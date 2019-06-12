@@ -44,6 +44,7 @@
 
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
+    @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="Not Selected" />
     <input id="deleteClicker" mtd-data-clicker type="hidden" />
 </form>

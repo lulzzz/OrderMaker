@@ -83,6 +83,7 @@
 
 
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/email">
+    @Html.AntiForgeryToken()
     <input name="UserName" value="@Model.UserName" type="hidden" />
     <input id="users-confirm-email" mtd-data-clicker mtd-data-message="@Localizer["Message sent"]." type="hidden" />
 </form>
@@ -90,6 +91,7 @@
 @if (Model.Input.IsConfirm)
 {
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/password">
+        @Html.AntiForgeryToken()
         <input name="UserName" value="@Model.UserName" type="hidden" />
         <input id="users-confirm-password" mtd-data-clicker mtd-data-message="@Localizer["Message sent"]." type="hidden" />
     </form>
@@ -97,6 +99,7 @@
 
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/delete'>
+    @Html.AntiForgeryToken()
     <input id="user-delete-id" name="user-delete-id" type="hidden" value="@ViewBag.userId" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users" type="hidden" />
 </form>

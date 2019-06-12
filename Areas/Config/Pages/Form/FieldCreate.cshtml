@@ -51,6 +51,7 @@
     </div>
     <hr />
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/field/create">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
         <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />

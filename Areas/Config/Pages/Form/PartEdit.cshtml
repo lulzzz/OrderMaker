@@ -65,6 +65,7 @@
     <hr />
 
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
         <div id="config-form-name" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 8px">
@@ -218,6 +219,7 @@
 </div>
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/part/delete'>
+    @Html.AntiForgeryToken()
     <input id="config-delete-id" name="partId" type="hidden" value="@Model.MtdFormPart.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/parts?idForm=@Model.MtdForm.Id" type="hidden" />
 </form>

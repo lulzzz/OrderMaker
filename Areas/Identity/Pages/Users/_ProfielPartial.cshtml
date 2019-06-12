@@ -29,6 +29,7 @@
 
         <div asp-validation-summary="All" class="mtd-main-danger"></div>
         <form mtd-data-form id="profile-form" method="post" action="/api/users/admin/profile" autocomplete="off">
+            @Html.AntiForgeryToken()
             <input asp-for="UserName" type="hidden" />
 
             <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%; margin-top: 16px;">

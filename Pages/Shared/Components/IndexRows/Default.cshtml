@@ -35,6 +35,7 @@
             <tr>
                 <th>
                     <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                        @Html.AntiForgeryToken()
                         <input name="formId" asp-for="@Model.IdForm" type="hidden" />
                         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
                             <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">filter_list</i>

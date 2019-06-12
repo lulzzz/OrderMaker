@@ -23,6 +23,7 @@
 
 <div id="indexFormSelector" style="display: none; position:absolute; z-index: 1; min-width: 300px; width: 90%">
     <form id="indexFormFilter" method="post" action="/api/index/filter/add" enctype="multipart/form-data" autocomplete='off'>
+        @Html.AntiForgeryToken()
         <input asp-for="@Model.IdForm" name="indexInputForm" value="@Model.IdForm" hidden />
         <div style="padding: 8px;">
             <div class="mdc-elevation--z16" style="z-index: 1; background-color: white">

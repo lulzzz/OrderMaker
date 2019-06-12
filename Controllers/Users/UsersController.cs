@@ -73,6 +73,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
 
         [HttpPost("admin/delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminDeleteAsync() {
             var userId = Request.Form["user-delete-id"];
             var user = await _userManager.FindByIdAsync(userId);
@@ -85,6 +86,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         }
 
         [HttpPost("admin/profile")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminProfileAsync() {
 
             var username = Request.Form["UserName"];
@@ -144,6 +146,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         }
 
         [HttpPost("admin/claims")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminClaimsAsync() {            
 
             var userId = Request.Form["user-id"];
