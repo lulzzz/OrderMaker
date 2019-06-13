@@ -144,7 +144,4 @@
   <data name="List data" xml:space="preserve">
     <value>Список</value>
   </data>
-  <data name="MM/dd/yyyy" xml:space="preserve">
-    <value>dd/MM/yyyy</value>
-  </data>
 </root>
