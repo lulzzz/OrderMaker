@@ -85,11 +85,13 @@
                         <i class="material-icons" aria-hidden="true">info</i>
                         @Localizer["Document information"]
                     </label>
-                </div>             
-                <table>
-                    <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-                    <tr><td>@Localizer["Owner"]</td><td>@Localizer["Unknown"]</td></tr>
-                </table>
+                </div>
+                <div class="mtd-desk-block-body">
+                    <table>
+                        <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
+                        <tr><td>@Localizer["Owner"]</td><td>@Localizer["Unknown"]</td></tr>
+                    </table>
+                </div>
             </div>
 
             <div class="mtd-desk-block-content mtd-desk-block--border">
@@ -99,10 +101,12 @@
                         @Localizer["Changes history"]
                     </label>
                 </div>
-                <table>
-                    <tr><td>@Localizer["Created by"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
-                    <tr><td>@Localizer["Last edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
-                </table>
+                <div class="mtd-desk-block-body">
+                    <table>
+                        <tr><td>@Localizer["Created by"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
+                        <tr><td>@Localizer["Last edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

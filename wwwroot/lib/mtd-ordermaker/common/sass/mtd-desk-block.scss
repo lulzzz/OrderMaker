@@ -6,8 +6,8 @@
 
 .mtd-desk-block {
     width: 100%;
-    max-width: 797px; 
-    margin:2px;
+    max-width: 797px;
+    margin: 2px;
 }
 
 .mtd-desk-block-title {
@@ -21,13 +21,23 @@
 .mtd-desk-block-content {
     padding: 4px;
     margin-bottom: 4px;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space:nowrap;
 }
+
+.mtd-desk-block-body {
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
 
 .mtd-desk-block-content table tr td:first-child {
     text-transform: uppercase;
     color: gray;
     font-size: 0.8em;
-    font-weight:  600;
+    font-weight: 600;
     vertical-align: middle;
 }
 
