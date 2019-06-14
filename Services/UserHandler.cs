@@ -78,5 +78,11 @@ namespace Mtd.OrderMaker.Web.Services
             return result;
         }
 
+
+        public async Task<bool> IsAdmin(WebAppUser user)
+        {                        
+            return  await _userManager.IsInRoleAsync(user, "Admin");                       
+        }
+
     }
 }

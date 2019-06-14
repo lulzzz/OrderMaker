@@ -26,6 +26,13 @@
 @{
     ViewData["Title"] = Localizer["Form view"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
+    string viewOwner = "Unknown";
+
+    if (Model.StoreOwner != null)
+    {
+        viewOwner = Model.StoreOwner.UserName;
+    }
+    ViewData["Owner"] = viewOwner;
 }
 
 @section Head{
@@ -44,6 +51,14 @@
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">edit</span>
         <span class="mdc-list-item__text">@Localizer["Edit"]</span>
     </li>
+    @if (Model.IsAdmin)
+    {
+        <li id="setowner" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">assignment_ind</span>
+            <span class="mdc-list-item__text">@Localizer["Set owner"]</span>
+        </li>
+    }
+
     <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
         <span class="mdc-list-item__text">@Localizer["Print"]</span>
@@ -61,8 +76,8 @@
             <span class="mdc-list-item__text">@Localizer["Create"]: @child.Name </span>
         </li>
     }
-}
 
+}
 
 
 <div class="mtd-desk">
@@ -89,7 +104,7 @@
                 <div class="mtd-desk-block-body">
                     <table>
                         <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-                        <tr><td>@Localizer["Owner"]</td><td>@Localizer["Unknown"]</td></tr>
+                        <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
                     </table>
                 </div>
             </div>
@@ -114,9 +129,57 @@
 
 
 
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/admin/setowner'>
+    @Html.AntiForgeryToken();    
+    <input id="setowner-id-store" name="setowner-id-store" value="@Model.MtdStore.Id" type="hidden" />
+
+    <div id="dialog-setowner" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="my-dialog-title"
+         aria-describedby="my-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="delete-form-title">
+                    @Localizer["Set owner for document"]
+                </h2>
+                <div class="mdc-dialog__content" id="delete-dialog-content">
+                    @Localizer["Select user and click 'Save' button"]
+                    <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                        <i class="mdc-select__dropdown-icon"></i>
+                        <select class="mdc-select__native-control"  asp-items="ViewBag.UsersList" name="setowner-id-user"></select>
+                        <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Users list"]</label>
+                        <div class="mdc-line-ripple"></div>
+                    </div>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" mtd-data-clicker class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                        <span class="mdc-button__label">@Localizer["Save"]</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
+</form>
 
 
 
+@section Scripts{
+    <script>
+        (() => {
+            const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-setowner'));
+
+            document.getElementById('setowner').addEventListener('click', () => {
+                dialog.open();
+            });
+        })();
+    </script>
+}
 
 
 

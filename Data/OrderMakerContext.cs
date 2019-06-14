@@ -46,6 +46,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
         public virtual DbSet<MtdStoreLink> MtdStoreLink { get; set; }
+        public virtual DbSet<MtdStoreOwner> MtdStoreOwner { get; set; }
         public virtual DbSet<MtdStoreStack> MtdStoreStack { get; set; }
         public virtual DbSet<MtdStoreStackDate> MtdStoreStackDate { get; set; }
         public virtual DbSet<MtdStoreStackDecimal> MtdStoreStackDecimal { get; set; }
@@ -649,7 +650,7 @@ namespace Mtd.OrderMaker.Web.Data
                 entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasColumnName("user_name")
-                    .HasColumnType("varchar(36)");
+                    .HasColumnType("varchar(256)");
 
                 entity.HasOne(d => d.MtdStoreNavigation)
                     .WithMany(p => p.MtdLogDocument)
@@ -748,6 +749,37 @@ namespace Mtd.OrderMaker.Web.Data
                     .WithMany(p => p.MtdStoreLink)
                     .HasForeignKey(d => d.MtdStore)
                     .HasConstraintName("fk_mtd_store_link_mtd_store1");
+            });
+
+            modelBuilder.Entity<MtdStoreOwner>(entity =>
+            {
+                entity.ToTable("mtd_store_owner");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_USER");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasColumnName("user_name")
+                    .HasColumnType("varchar(256)");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.MtdStoreOwner)
+                    .HasForeignKey<MtdStoreOwner>(d => d.Id)
+                    .HasConstraintName("fk_owner_store");
             });
 
             modelBuilder.Entity<MtdStoreStack>(entity =>

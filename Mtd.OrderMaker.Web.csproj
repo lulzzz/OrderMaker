@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.0.10</AssemblyVersion>
-    <FileVersion>1.0.0.10</FileVersion>
+    <AssemblyVersion>1.0.0.11</AssemblyVersion>
+    <FileVersion>1.0.0.11</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMaker</RepositoryUrl>
-    <PackageReleaseNotes>Bug fix: Date picker for  format 'ru-RU'.</PackageReleaseNotes>
+    <PackageReleaseNotes>Document owner status when create form. Ability change owner for Administrators on form view.</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
   </PropertyGroup>
@@ -31,7 +31,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20190609054945_AddConfigFiles.cs" />
     <Compile Remove="Migrations\20190609054945_AddConfigFiles.Designer.cs" />
     <Compile Remove="Migrations\20190610093653_LogDocument.cs" />
-    <Compile Remove="Migrations\20190610093653_LogDocument.Designer.cs" />    
+    <Compile Remove="Migrations\20190610093653_LogDocument.Designer.cs" />
+    <Compile Remove="Migrations\20190614090004_Test.cs" />
+    <Compile Remove="Migrations\20190614090004_Test.Designer.cs" />    
   </ItemGroup>
 
 

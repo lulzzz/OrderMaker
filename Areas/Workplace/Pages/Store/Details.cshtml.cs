@@ -20,9 +20,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.Models.LogDocument;
+using Mtd.OrderMaker.Web.Models.Store;
 using Mtd.OrderMaker.Web.Services;
 
 namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
@@ -41,6 +43,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
         public ChangesHistory ChangesHistory { get; set; } 
+        public MtdStoreOwner StoreOwner { get; set; }
+        public bool IsAdmin { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -57,6 +61,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
             bool isRight = await _userHandler.IsRight(user, RightsType.View, MtdStore.MtdForm);
+            IsAdmin = await _userHandler.IsAdmin(user);
+
 
             if (!isRight)
             {
@@ -66,6 +72,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             MtdForm = await _context.MtdForm.Include(m => m.InverseParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdStore.MtdForm);
             MtdLogDocument edited = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderByDescending(x => x.TimeCh).FirstOrDefaultAsync();
             MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x=>x.TimeCh).FirstOrDefaultAsync();
+
+            StoreOwner = await _context.MtdStoreOwner.Where(x => x.Id == MtdStore.Id).FirstOrDefaultAsync();
 
             ChangesHistory = new ChangesHistory
             {
@@ -84,6 +92,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                     ChangesHistory.CreateByUser = created.UserName;
                 }                
             }
+
+            ViewData["UsersList"] = new SelectList(_userHandler._userManager.Users, "Id", "Title"); 
 
             return Page();
         }

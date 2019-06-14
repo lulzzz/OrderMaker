@@ -175,6 +175,13 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 UserName = webAppUser.Title
             };
 
+            mtdStore.MtdStoreOwner = new MtdStoreOwner
+            {
+                UserId = webAppUser.Id,
+                UserName = webAppUser.Title,
+            };
+
+            
             await _context.MtdLogDocument.AddAsync(mtdLog);
 
             OutData outParam = await CreateData(mtdStore.Id);
