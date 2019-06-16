@@ -57,8 +57,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store.Stack
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
             var store = await _context.MtdStore.FindAsync(mtdStoreStack.MtdStore);
 
-            bool isRight = await _userHandler.IsRight(user, RightsType.View, store.MtdForm);
-            if (!isRight)
+            bool isViewer = await _userHandler.IsViewer(user, store.MtdForm,store.Id);
+            if (!isViewer)
             {
                 return Ok(403);
             }

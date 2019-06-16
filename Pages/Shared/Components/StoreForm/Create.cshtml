@@ -74,7 +74,7 @@
         <div style="padding-bottom:18px;">
             <form id="store-parent-form" method="post" autocomplete="off" action="/api/store/number/id" style="width: 100%">
                 @Html.AntiForgeryToken()
-                <input value="@Model.Store.MtdFormNavigation.Parent" type="hidden" name="idFromParant" />
+                <input value="@Model.Store.MtdFormNavigation.Parent" type="hidden" name="idFromParent" />
                 <input id="store-parent-number" value="@parentNumber" type="hidden" name="store-parent-number" />
             </form>
 

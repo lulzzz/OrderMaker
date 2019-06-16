@@ -46,7 +46,7 @@ namespace Mtd.OrderMaker.Web.Pages
         {
             WebAppUser user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
             
-            List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View); 
+            List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewOwn); 
 
             IQueryable<MtdForm> query = _context.MtdForm
                     .Include(x => x.MtdGroupNavigation)

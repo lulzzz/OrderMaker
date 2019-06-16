@@ -58,9 +58,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 return NotFound();
             }
 
-            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(webAppUser, RightsType.Edit, mtdStore.MtdForm);
-            if (!isRight)
+            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);            
+            bool isEditor = await _userHandler.IsEditor(webAppUser,mtdStore.MtdForm,mtdStore.Id);
+
+            if (!isEditor)
             {
                 return Ok(403);
             }
@@ -149,8 +150,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             string idFormParent = Request.Form["store-parent-id"];
 
             WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(webAppUser, RightsType.Create, idForm);
-            if (!isRight)
+            bool isCreator = await _userHandler.IsCreator(webAppUser,idForm);
+            if (!isCreator)
             {
                 return Ok(403);
             }
@@ -207,8 +208,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             }
 
             WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(webAppUser, RightsType.Delete, mtdStore.MtdForm);
-            if (!isRight)
+            bool isEraser = await _userHandler.IsEraser(webAppUser,mtdStore.MtdForm,mtdStore.Id);            
+
+            if (!isEraser)
             {
                 return Ok(403);
             }
@@ -227,7 +229,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         public async Task<IActionResult> OnPostGetIDAsync()
         {
             string result = "";
-            string idFormPart = Request.Form["idFromParant"];
+            string idFormPart = Request.Form["idFromParent"];
             string parentNumber = Request.Form["store-parent-number"];
 
             if (parentNumber.Length == 0) { return Ok(result); }

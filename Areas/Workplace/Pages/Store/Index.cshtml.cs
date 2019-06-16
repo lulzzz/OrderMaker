@@ -46,9 +46,10 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         {
 
             WebAppUser user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(user, RightsType.View, indexForm);
-
-            if (!isRight)
+            bool isViewer = await _userHandler.IsViewer(user, indexForm);
+            bool OwnerRight = await _userHandler.IsRight(user, RightsType.ViewOwn, indexForm);
+            
+            if (!isViewer & !OwnerRight)
             {
                 return Forbid(); 
             }

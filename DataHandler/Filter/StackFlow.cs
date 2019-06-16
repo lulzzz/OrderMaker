@@ -16,6 +16,9 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.DataHandler.Filter
@@ -25,7 +28,15 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
         public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery) {
 
             OutFlow outFlow = new OutFlow();
-            
+            bool ownOnly = _userRights.Where(x => x.Value.Contains("view-own")).Any();
+            if (ownOnly)
+            {
+                IList<string> storeIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
+                queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
+            }
+
+
+
             switch (typeQuery)
             {
                 case TypeQuery.number:

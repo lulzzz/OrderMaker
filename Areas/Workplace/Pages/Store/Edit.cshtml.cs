@@ -16,6 +16,7 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,10 +56,10 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(user, RightsType.Edit, MtdStore.MtdForm);
-
-            if (!isRight) {
+            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);            
+            bool isEditor = await _userHandler.IsEditor(user,MtdStore.MtdForm,MtdStore.Id);
+            
+            if (!isEditor) {
                 return Forbid();
             }
 

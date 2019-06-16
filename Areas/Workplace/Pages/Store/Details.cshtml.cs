@@ -42,9 +42,10 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
-        public ChangesHistory ChangesHistory { get; set; } 
+        public ChangesHistory ChangesHistory { get; set; }
         public MtdStoreOwner StoreOwner { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsEditor { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -60,18 +61,20 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(user, RightsType.View, MtdStore.MtdForm);
+            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);            
+            IsEditor = await _userHandler.IsEditor(user,MtdStore.MtdForm,MtdStore.Id);
             IsAdmin = await _userHandler.IsAdmin(user);
-
-
-            if (!isRight)
+            
+            if (!isViewer)
             {
                 return Forbid();
             }
 
+            
+
             MtdForm = await _context.MtdForm.Include(m => m.InverseParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdStore.MtdForm);
             MtdLogDocument edited = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderByDescending(x => x.TimeCh).FirstOrDefaultAsync();
-            MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x=>x.TimeCh).FirstOrDefaultAsync();
+            MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x => x.TimeCh).FirstOrDefaultAsync();
 
             StoreOwner = await _context.MtdStoreOwner.Where(x => x.Id == MtdStore.Id).FirstOrDefaultAsync();
 
@@ -80,7 +83,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 CreateByTime = MtdStore.Timecr.ToString()
             };
 
-            if (edited != null) {
+            if (edited != null)
+            {
                 ChangesHistory.LastEditedUser = edited.UserName;
                 ChangesHistory.LastEditedTime = edited.TimeCh.ToString();
             }
@@ -90,10 +94,10 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 if (MtdStore.Timecr.Date == created.TimeCh.Date)
                 {
                     ChangesHistory.CreateByUser = created.UserName;
-                }                
+                }
             }
 
-            ViewData["UsersList"] = new SelectList(_userHandler._userManager.Users, "Id", "Title"); 
+            ViewData["UsersList"] = new SelectList(_userHandler._userManager.Users, "Id", "Title");
 
             return Page();
         }

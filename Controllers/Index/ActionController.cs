@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -60,7 +61,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             string idForm = data.FirstOrDefault();
 
             var user = await _userManager.GetUserAsync(User);
-            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user);
+            IList<Claim> userRights = await _userManager.GetClaimsAsync(user);
+            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             MtdFilter mtdFilter = await handlerFilter.GetFilterAsync();
             if (mtdFilter == null) return NotFound();
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();

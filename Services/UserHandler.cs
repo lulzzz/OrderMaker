@@ -17,7 +17,9 @@
 */
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Web.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,23 +30,31 @@ namespace Mtd.OrderMaker.Web.Services
 {
     public enum RightsType
     {
-        View, Create, Edit, Delete
+        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn
     };
 
     public class UserHandler
     {
         public readonly UserManager<WebAppUser> _userManager;
 
-        public string RightView => "-view";
         public string RightCreate => "-create";
+        public string RightView => "-view";
         public string RightEdit => "-edit";
         public string RightDelete => "-delete";
+        public string RightViewOwn => "-view-own";
+        public string RightEditOwn => "-edit-own";
+        public string RightDeleteOwn => "-delete-own";
+
 
         private List<string> rights;
+        private OrderMakerContext _context;
+
         public ReadOnlyCollection<string> Rights => rights.AsReadOnly();
 
-        public UserHandler(UserManager<WebAppUser> userManager)
+
+        public UserHandler(OrderMakerContext context, UserManager<WebAppUser> userManager)
         {
+            _context = context;
             _userManager = userManager;
             rights = new List<string>()
             {RightView,RightCreate,RightDelete,RightEdit };
@@ -52,20 +62,29 @@ namespace Mtd.OrderMaker.Web.Services
 
         private string RightTypeToString(RightsType rightsType)
         {
-            return $"-{rightsType.ToString().ToLower()}";
+            string value = $"-{rightsType.ToString().ToLower()}";
+            value = value.Replace("own", "-own");
+            return value;
         }
 
 
-        public async Task<List<string>> GetFormIdsAsync(WebAppUser user, RightsType rightsType)
+        public async Task<List<string>> GetFormIdsAsync(WebAppUser user, params RightsType[] rightsTypes)
         {
-            string right = RightTypeToString(rightsType);
-            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
-            List<string> formIds = claims.Where(x => x.Value == right).Select(x => x.Type).ToList();
+            List<string> formIds = new List<string>();
+
+            foreach (RightsType rightsType in rightsTypes)
+            {
+                string right = RightTypeToString(rightsType);
+                IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+                List<string> fids = claims.Where(x => x.Value == right).Select(x => x.Type).ToList();
+                formIds.AddRange(fids.Where(x => !formIds.Contains(x)));
+            }
+
 
             return formIds;
         }
 
-        
+
 
         public async Task<bool> IsRight(WebAppUser user, RightsType rightsType, string idForm)
         {
@@ -78,10 +97,51 @@ namespace Mtd.OrderMaker.Web.Services
             return result;
         }
 
-
         public async Task<bool> IsAdmin(WebAppUser user)
-        {                        
-            return  await _userManager.IsInRoleAsync(user, "Admin");                       
+        {
+            return await _userManager.IsInRoleAsync(user, "Admin");
+        }
+
+        public async Task<bool> IsOwner(WebAppUser user, string idStore)
+        {
+            return await _context.MtdStoreOwner.Where(x => x.Id == idStore && x.UserId == user.Id).AnyAsync();
+        }
+
+        private async Task<bool> IsRights(string right, WebAppUser user, string idForm, string idStore = null)
+        {
+
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            bool isOk = claims.Where(x => x.Type == idForm && x.Value == right).Any();
+            if (isOk) return true;
+
+            bool ownRight = claims.Where(x => x.Type == idForm && x.Value == $"{right}-own").Any();
+            if (ownRight && idStore != null)
+            {
+                bool isOkOwner = await _context.MtdStoreOwner.Where(x => x.Id == idStore & x.UserId == user.Id).AnyAsync();
+                if (isOkOwner) return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> IsCreator(WebAppUser user, string idForm, string idStore = null)
+        {
+            return await IsRights("-create", user, idForm);
+        }
+
+        public async Task<bool> IsViewer(WebAppUser user, string idForm, string idStore = null)
+        {
+            return await IsRights("-view", user, idForm, idStore);
+        }
+
+        public async Task<bool> IsEditor(WebAppUser user, string idForm, string idStore = null)
+        {
+            return await IsRights("-edit", user, idForm, idStore);
+        }
+
+        public async Task<bool> IsEraser(WebAppUser user, string idForm, string idStore = null)
+        {
+            return await IsRights("-delete", user, idForm, idStore);
         }
 
     }

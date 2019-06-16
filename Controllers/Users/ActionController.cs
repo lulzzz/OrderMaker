@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -133,10 +134,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             foreach (MtdForm form in mtdForms)
             {
+                string[] noSelect = { "-view", "-edit", "-delete"};
                 foreach (string claimValue in claimValues)
                 {
                     Claim claim = new Claim(form.Id, claimValue);
-                    newClaims.Add(claim);
+                    if (!noSelect.Contains(claim.Value))
+                        { newClaims.Add(claim); }                    
                 };
             }
 

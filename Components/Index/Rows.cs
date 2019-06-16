@@ -23,9 +23,11 @@ using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Filter;
 using Mtd.OrderMaker.Web.DataHandler.Stack;
 using Mtd.OrderMaker.Web.Models.Index;
+using Mtd.OrderMaker.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.Components.Index
@@ -48,7 +50,8 @@ namespace Mtd.OrderMaker.Web.Components.Index
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user);
+            IList<Claim> userRights = await _userManager.GetClaimsAsync(user);
+            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync();
             OutFlow outFlow = await handlerFilter.GetStackFlowAsync(incomer, typeQuery);

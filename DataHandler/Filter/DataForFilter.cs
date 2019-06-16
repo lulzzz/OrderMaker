@@ -27,12 +27,14 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 {
     public partial class FilterHandler
     {
+       
         public async Task<OutFlow> GetDataForEmptyAsync(Incomer incomer)
-        {
+        {            
+
             return new OutFlow
-            {
-                Count = await _context.MtdStore.Where(x => x.MtdForm == incomer.IdForm).CountAsync(),
-                MtdStores = await _context.MtdStore.Where(x => x.MtdForm == incomer.IdForm).OrderByDescending(x => x.Sequence)
+            {                
+                Count = await queryMtdStore.Where(x => x.MtdForm == incomer.IdForm).CountAsync(),
+                MtdStores = await queryMtdStore.Where(x => x.MtdForm == incomer.IdForm).OrderByDescending(x => x.Sequence)
                 .Skip((incomer.Page - 1) * incomer.PageSize)
                 .Take(incomer.PageSize)
                 .ToListAsync()
@@ -41,7 +43,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 
         public async Task<OutFlow> GetDataForNumberAsync(Incomer incomer)
         {
-            MtdStore mtdStore = await _context.MtdStore.Where(x => x.MtdForm == incomer.IdForm & x.Sequence.ToString().Equals(incomer.SearchNumber)).FirstOrDefaultAsync();
+            MtdStore mtdStore = await queryMtdStore.Where(x => x.MtdForm == incomer.IdForm & x.Sequence.ToString().Equals(incomer.SearchNumber)).FirstOrDefaultAsync();
 
             return new OutFlow
             {
@@ -58,7 +60,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
             return new OutFlow
             {
                 Count = storeIds.Count(),
-                MtdStores = await _context.MtdStore.Where(x => storeIds.Contains(x.Id))
+                MtdStores = await queryMtdStore.Where(x => storeIds.Contains(x.Id))
                 .OrderByDescending(x => x.Sequence).Skip((incomer.Page - 1) * incomer.PageSize).Take(incomer.PageSize).ToListAsync()
             };
 
@@ -132,7 +134,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
             OutFlow paramOut = new OutFlow
             {
                 Count = storeIds.Count(),
-                MtdStores = await _context.MtdStore.Where(x => storeIds.Contains(x.Id))
+                MtdStores = await queryMtdStore.Where(x => storeIds.Contains(x.Id))
                 .OrderByDescending(x => x.Sequence).Skip((incomer.Page - 1) * incomer.PageSize).Take(incomer.PageSize).ToListAsync()
             };
 

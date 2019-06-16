@@ -18,9 +18,12 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.DataHandler.Filter
@@ -29,19 +32,24 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
     {
         private readonly OrderMakerContext _context;
         private MtdFilter register;
-        private IdentityUser _user;
+        private WebAppUser _user;
+        private IQueryable<MtdStore> queryMtdStore;
+        private IList<Claim> _userRights;
 
         public string IdForm { get; private set; }        
         
-        public FilterHandler(OrderMakerContext orderMakerContext, string idForm, IdentityUser user)
-        {
+        public FilterHandler(OrderMakerContext orderMakerContext, string idForm, WebAppUser user, IList<Claim> userRights)
+        {            
             _context = orderMakerContext;
             _user = user;
+            _userRights = userRights.Where(x=>x.Type == idForm).ToList();
             IdForm = idForm;
+            queryMtdStore = _context.MtdStore;
         }
 
         public async Task<MtdFilter> GetFilterAsync()
-        {
+        {            
+
             if (register == null)
             {
                 register = await _context.MtdFilter.Include(m=>m.MtdFilterColumn).FirstOrDefaultAsync(x => x.IdUser == _user.Id && x.MtdForm == IdForm);

@@ -25,8 +25,6 @@
 @{
     int colSpan = Model.MtdFormPartFields.Count + 2;
     var user = await userHandler._userManager.GetUserAsync(User);
-    bool isEdit = await userHandler.IsRight(user, Services.RightsType.Edit, Model.IdForm);
-    bool isDelete = await userHandler.IsRight(user, Services.RightsType.Delete, Model.IdForm);
 }
 
 <div class="mtd-index-rows">
@@ -93,12 +91,16 @@
                 <tr mtd-data-action="@store.Id" class="mtd-index-rows-actions" style="display: none">
                     <td colspan=@colSpan class=" mdc-elevation--z1">
                         <a asp-page="./Details" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>visibility</a>
-                        @if (isEdit)
+
+                        @{ bool isEditor = await userHandler.IsEditor(user, store.MtdForm, store.Id);}
+
+                        @if (isEditor)
                         {
                             <a asp-page="./Edit" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>edit</a>
                         }
                         <a href="#" onclick="CallPrint('@store.Id')" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>print</a>
-                        @if (isDelete)
+                        @{ bool isEraser = await userHandler.IsEraser(user, store.MtdForm, store.Id);}
+                        @if (isEraser)
                         {
                             <a mtd-data-row-delete="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>delete</a>
                         }

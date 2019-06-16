@@ -49,9 +49,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(user, RightsType.Create, idForm);
+            bool isCreator = await _userHandler.IsCreator(user, idForm);
 
-            if (!isRight)
+            if (!isCreator)
             {
                 return Forbid();
             }

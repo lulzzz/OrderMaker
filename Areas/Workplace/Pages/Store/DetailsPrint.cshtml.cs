@@ -17,6 +17,7 @@
 */
 
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -54,9 +55,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isRight = await _userHandler.IsRight(user, RightsType.View, MtdStore.MtdForm);
+            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);            
 
-            if (!isRight)
+            if (!isViewer)
             {
                 return Forbid();
             }
