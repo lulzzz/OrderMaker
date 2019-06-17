@@ -37,8 +37,8 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
         }
 
         public MtdForm MtdForm { get; set; }
-        public MtdFormPart MtdFormPart { get; set; }        
-
+        public MtdFormPart MtdFormPart { get; set; }
+        public bool UseApproval { get; set; }
         public async Task<IActionResult>  OnGetAsync(string id) {
 
             MtdFormPart = await _context.MtdFormPart.Include(m=>m.MtdFormPartHeader).FirstOrDefaultAsync(x=>x.Id == id);
@@ -47,6 +47,8 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
             {
                 return NotFound();
             }
+
+            UseApproval = MtdFormPart.Approval == 1 ? true : false;
 
             MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).Where(x => x.Id == MtdFormPart.MtdForm).FirstOrDefaultAsync();
             IList<MtdSysStyle> styles =  await _context.MtdSysStyle.ToListAsync();

@@ -37,6 +37,7 @@ namespace Mtd.OrderMaker.Web.Data
         public string MtdForm { get; set; }
         public bool Title { get; set; }
         public bool Child { get; set; }
+        public sbyte Approval { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdSysStyle MtdSysStyleNavigation { get; set; }

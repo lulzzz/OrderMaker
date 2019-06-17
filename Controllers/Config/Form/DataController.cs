@@ -294,12 +294,14 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
             string partStyle = Request.Form["partStyle"];
             string partTitle = Request.Form["partTitle"];
             string partChild = Request.Form["partChild"];
+            string partApproval = Request.Form["partApproval"];
             string partSeq = Request.Form["partSeq"];
 
             int styleId = int.Parse(partStyle);
             int sequence = int.Parse(partSeq);
             bool titleCheck = bool.Parse(partTitle);
             bool childCheck = bool.Parse(partChild);
+            bool approvalCheck = bool.Parse(partApproval);
 
             MtdFormPart mtdFormPart = new MtdFormPart
             {
@@ -311,7 +313,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 Title = titleCheck,
                 Child = childCheck,
                 MtdSysStyle = styleId,
-                Sequence = sequence
+                Sequence = sequence,
+                Approval = approvalCheck ? (sbyte)1 : (sbyte)0
 
             };
 

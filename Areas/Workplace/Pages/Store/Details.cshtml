@@ -134,7 +134,7 @@
 @if (Model.IsAdmin)
 {
     <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/admin/setowner'>
-        @Html.AntiForgeryToken();
+        @Html.AntiForgeryToken()
         <input id="setowner-id-store" name="setowner-id-store" value="@Model.MtdStore.Id" type="hidden" />
 
         <div id="dialog-setowner" class="mdc-dialog"
