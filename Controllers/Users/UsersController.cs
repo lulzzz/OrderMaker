@@ -48,7 +48,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IOptions<ConfigSettings> _options;
 
-        private readonly List<string> claimValues = new List<string>() { "-create", "-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own" };
+        private readonly List<string> claimValues = new List<string>() { "-create", "-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own", "-approver" };
 
         public UsersController(
             UserManager<WebAppUser> userManager,

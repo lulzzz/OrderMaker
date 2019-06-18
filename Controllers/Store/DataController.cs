@@ -58,8 +58,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 return NotFound();
             }
 
-            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);            
-            bool isEditor = await _userHandler.IsEditor(webAppUser,mtdStore.MtdForm,mtdStore.Id);
+            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            bool isEditor = await _userHandler.IsEditor(webAppUser, mtdStore.MtdForm, mtdStore.Id);
 
             if (!isEditor)
             {
@@ -75,8 +75,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             };
 
 
-            OutData outData = await CreateData(Id);
+            OutData outData = await CreateDataAsync(Id, webAppUser);
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
+
 
             IList<MtdStoreStack> stackOld = await _context.MtdStoreStack
                 .Include(m => m.MtdStoreStackText)
@@ -90,13 +91,15 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             foreach (MtdStoreStack stack in stackOld)
             {
                 MtdStoreStack stackForField = stackNew.SingleOrDefault(x => x.MtdFormPartField == stack.MtdFormPartField);
-
-                stack.MtdStoreStackText = stackForField.MtdStoreStackText;
-                stack.MtdStoreLink = stackForField.MtdStoreLink;
-                stack.MtdStoreStackDate = stackForField.MtdStoreStackDate;
-                stack.MtdStoreStackDecimal = stackForField.MtdStoreStackDecimal;
-                stack.MtdStoreStackFile = stackForField.MtdStoreStackFile;
-                stack.MtdStoreStackInt = stackForField.MtdStoreStackInt;
+                if (stackForField != null)
+                {
+                    stack.MtdStoreStackText = stackForField.MtdStoreStackText;
+                    stack.MtdStoreLink = stackForField.MtdStoreLink;
+                    stack.MtdStoreStackDate = stackForField.MtdStoreStackDate;
+                    stack.MtdStoreStackDecimal = stackForField.MtdStoreStackDecimal;
+                    stack.MtdStoreStackFile = stackForField.MtdStoreStackFile;
+                    stack.MtdStoreStackInt = stackForField.MtdStoreStackInt;
+                }
             }
 
 
@@ -150,7 +153,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             string idFormParent = Request.Form["store-parent-id"];
 
             WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isCreator = await _userHandler.IsCreator(webAppUser,idForm);
+            bool isCreator = await _userHandler.IsCreator(webAppUser, idForm);
             if (!isCreator)
             {
                 return Ok(403);
@@ -182,10 +185,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 UserName = webAppUser.Title,
             };
 
-            
+
             await _context.MtdLogDocument.AddAsync(mtdLog);
 
-            OutData outParam = await CreateData(mtdStore.Id);
+            OutData outParam = await CreateDataAsync(mtdStore.Id, webAppUser);
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
             await _context.MtdStoreStack.AddRangeAsync(stackNew);
 
@@ -208,7 +211,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             }
 
             WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            bool isEraser = await _userHandler.IsEraser(webAppUser,mtdStore.MtdForm,mtdStore.Id);            
+            bool isEraser = await _userHandler.IsEraser(webAppUser, mtdStore.MtdForm, mtdStore.Id);
 
             if (!isEraser)
             {
@@ -250,7 +253,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             return Ok(result);
         }
 
-        private async Task<OutData> CreateData(string Id)
+        private async Task<OutData> CreateDataAsync(string Id, WebAppUser user)
         {
 
             var store = await _context.MtdStore
@@ -258,7 +261,20 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                .ThenInclude(p => p.MtdFormPart)
                .FirstOrDefaultAsync(m => m.Id == Id);
 
-            List<string> partsIds = store.MtdFormNavigation.MtdFormPart.Select(s => s.Id).ToList();
+            bool isApprover = await _userHandler.IsApprover(user, store.MtdForm);
+            List<string> partsIds = new List<string>();
+            foreach (MtdFormPart formPart in store.MtdFormNavigation.MtdFormPart)
+            {
+                if (formPart.Approval == 1)
+                {
+                    if (isApprover) { partsIds.Add(formPart.Id); };
+                }
+                else
+                {
+                    partsIds.Add(formPart.Id);
+                }
+
+            }
 
             var fields = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                 .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id))

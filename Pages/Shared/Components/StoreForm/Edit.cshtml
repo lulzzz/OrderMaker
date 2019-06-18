@@ -20,6 +20,7 @@
 
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@inject Services.UserHandler userHandler
 
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
@@ -58,30 +59,46 @@
 
         @if (Model.Parent != null)
         {
-
             <div class="mtd-store-style-based">
                 <div style="position: absolute; color: gray;font-weight: 500; background-color: white;margin-top: -24px; left:0;  padding: 4px; border-radius: 20%; font-size: smaller">@Localizer["On based"]</div>
                 @Model.Parent.Store.MtdFormNavigation.Name <text>№</text> @Model.Parent.Store.Sequence.ToString("D9") <text>от</text> @Model.Parent.Store.Timecr.ToShortDateString()
             </div>
         }
 
-
-
-
         <div>
+
             @foreach (var part in Model.Owner.Parts)
             {
-                @if (part.Title)
-                {
-                    <div class="mtd-store-style-part">
-                        @part.Name
-                    </div>
-                }
 
-                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+                if (part.Approval == 0)
+                {
+                    if (part.Title)
+                    {
+                        <div class="mtd-store-style-part">
+                            @part.Name
+                        </div>
+                    }
+
+                    @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+
+                }
+                else
+                {
+                    var user = await userHandler._userManager.GetUserAsync(User);
+                    if (await userHandler.IsApprover(user, part.MtdForm))
+                    {
+                        if (part.Title)
+                        {
+                            <div class="mtd-store-style-part">
+                                @part.Name
+                            </div>
+                        }
+
+                        @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+                    }
+                }
             }
         </div>
     </div>
 </form>
 
- 

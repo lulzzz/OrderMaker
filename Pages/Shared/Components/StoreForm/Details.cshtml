@@ -70,16 +70,27 @@
 
     @foreach (var part in Model.Owner.Parts)
     {
-        @if (part.Title)
+        int counter = 0;
+        foreach (MtdFormPartField partField in part.MtdFormPartField)
         {
-            <div class="mtd-store-style-part">
-                @part.Name
-            </div>
+            counter += partField.MtdStoreStack.Count;
         }
-        else
-        { <div class="mtd-store-style-separator"></div>}
 
-        @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Owner })
+        if (counter > 0)
+        {
+            if (part.Title)
+            {
+                <div class="mtd-store-style-part">
+                    @part.Name
+                </div>
+            }
+            else
+            { <div class="mtd-store-style-separator"></div>}
+
+            @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Owner })
+        }
+
+
     }
 
 
