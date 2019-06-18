@@ -18,14 +18,14 @@
 
 @model Data.MtdStoreStack
 
-@{ 
+@{
     string dateValue = "";
     if (Model.MtdStoreStackDate.Register != null)
     {
         dateValue = Model.MtdStoreStackDate.Register.ToString("g");
         if (dateValue.Equals("01.01.0001 0:00"))
         {
-            dateValue = DateTime.Now.ToString("g");
+            dateValue = "";
         }
     }
 }

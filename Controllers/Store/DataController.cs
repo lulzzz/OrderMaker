@@ -302,8 +302,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         {
                             if (data.FirstOrDefault() != string.Empty)
                             {
-                                int result = int.Parse(data.FirstOrDefault());
-                                mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = result };
+                                bool isOkInt = int.TryParse(data.FirstOrDefault(), out int result);
+                                if (isOkInt)
+                                {
+                                    mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = result };
+                                }
+
                             }
                             break;
                         }
@@ -311,18 +315,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         {
                             if (data.FirstOrDefault() != string.Empty)
                             {
-                                decimal result;
-                                try
-                                {
-                                    string separ = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                                    result = decimal.Parse(data.FirstOrDefault().Replace(".", separ));
+                                string separ = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                                bool isOkDecimal = decimal.TryParse(data.FirstOrDefault().Replace(".", separ), out decimal result);
+                                if (isOkDecimal) {
+                                    mtdStoreStack.MtdStoreStackDecimal = new MtdStoreStackDecimal { Register = result };
                                 }
-                                catch (Exception e)
-                                {
-                                    throw e;
-                                }
-
-                                mtdStoreStack.MtdStoreStackDecimal = new MtdStoreStackDecimal { Register = result };
+                                
                             }
                             break;
                         }
@@ -332,8 +330,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         {
                             if (data.FirstOrDefault() != string.Empty)
                             {
-                                DateTime dateTime = DateTime.Parse(data.FirstOrDefault());
-                                mtdStoreStack.MtdStoreStackDate = new MtdStoreStackDate { Register = dateTime };
+                                bool isOkDate = DateTime.TryParse(data.FirstOrDefault(), out DateTime dateTime);
+                                if (isOkDate)
+                                {
+                                    mtdStoreStack.MtdStoreStackDate = new MtdStoreStackDate { Register = dateTime };
+                                }
+
                             }
                             break;
                         }
@@ -371,14 +373,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
                                     if (stackOld != null && stackOld.MtdStoreStackFile != null)
                                     {
-
                                         mtdStoreStack.MtdStoreStackFile = new MtdStoreStackFile()
                                         {
                                             FileName = stackOld.MtdStoreStackFile.FileName,
                                             FileSize = stackOld.MtdStoreStackFile.FileSize,
                                             Register = stackOld.MtdStoreStackFile.Register,
                                             FileType = stackOld.MtdStoreStackFile.FileType,
-
                                         };
                                     }
                                 }
@@ -400,8 +400,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
                     case 12:
                         {
-                            bool check = bool.Parse(data.FirstOrDefault());
-                            mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = check ? 1 : 0 };
+                            bool isOkCheck = bool.TryParse(data.FirstOrDefault(), out bool check);
+                            if (isOkCheck)
+                            {
+                                mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = check ? 1 : 0 };
+                            }                            
                             break;
                         }
 
