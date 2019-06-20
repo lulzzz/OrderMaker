@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
             UserName = user.UserName;
             UserTitle = user.Title;
 
-            MtdForms = await _context.MtdForm.ToListAsync();
+            MtdForms = await _context.MtdForm.Include(x=>x.MtdFormPart).ToListAsync();
             return Page();
         }
     }

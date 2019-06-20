@@ -48,7 +48,13 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IOptions<ConfigSettings> _options;
 
-        private readonly List<string> claimValues = new List<string>() { "-create", "-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own"};
+        private readonly List<string> claimValues = new List<string>() {
+            "-create","-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own"          
+        };
+
+        private readonly List<string> claimParts = new List<string>() {
+            "-part-create", "-part-view", "-part-edit"
+        };
 
         public UsersController(
             UserManager<WebAppUser> userManager,
@@ -159,7 +165,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
             await _userManager.RemoveClaimsAsync(user,claims);
 
-            IList<MtdForm> forms = await _context.MtdForm.ToListAsync();
+            IList<MtdForm> forms = await _context.MtdForm.Include(x=>x.MtdFormPart).ToListAsync();
             
 
             foreach (MtdForm form in forms)
@@ -172,7 +178,23 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                         Claim claim = new Claim(form.Id, claimValue);                        
                         newClaims.Add(claim);
                     }
+
                 };
+
+                foreach (MtdFormPart mtdFormPart in form.MtdFormPart)
+                {
+                    foreach (string claimPart in claimParts)
+                    {
+                        string value = Request.Form[$"{mtdFormPart.Id}{claimPart}"];
+                        if (value == "true")
+                        {
+                            Claim claim = new Claim(mtdFormPart.Id, claimPart);
+                            newClaims.Add(claim);
+                        }
+
+                    };
+
+                }
                 
             }
 

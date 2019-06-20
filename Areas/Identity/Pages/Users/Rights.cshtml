@@ -116,162 +116,245 @@
                 <tbody>
                     @foreach (var form in Model.MtdForms)
                     {
-                    <tr mtd-rights="@form.Id">
-                        <td>@form.Name</td>
-                        <td>
-                            @{
-                                bool checkCreate = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-create").Any();
-                            }
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-create" name="@form.Id-create" @if (checkCreate) { <text> checked</text>} />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                        /*indeterminate_check_box*/
+                        <tr>
+                            <td mtd-rights="@form.Id" style="cursor: pointer">
+                                <i id="@form.Id-icon" class="material-icons">
+                                    add_box
+                                </i>
+                                <span class="mtd-users-rights-formname">@form.Name</span>
+                            </td>
+                            <td>
+                                @{
+                                    bool checkCreate = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-create").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-create" name="@form.Id-create" @if (checkCreate) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>                       
-                        <td>
-                            @{
-                                bool checkView = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view").Any();
-                            }
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-view" name="@form.Id-view" @if (checkView) { <text> checked</text>} />
+                            </td>
+                            <td>
+                                @{
+                                    bool checkView = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-view" name="@form.Id-view" @if (checkView) { <text> checked</text>} />
 
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-view">@Localizer["All"]</label>
                                 </div>
-                                <label for="@form.Id-view">@Localizer["All"]</label>
-                            </div>
-                            @{
-                                bool checkViewOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view-own").Any();
-                            }
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-view-own" name="@form.Id-view-own" @if (checkViewOwn) { <text> checked</text>} />
+                                @{
+                                    bool checkViewOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view-own").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-view-own" name="@form.Id-view-own" @if (checkViewOwn) { <text> checked</text>} />
 
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-view-own">@Localizer["Only own"]</label>
                                 </div>
-                                <label for="@form.Id-view-own">@Localizer["Only own"]</label>
-                            </div>
 
-                        </td>
+                            </td>
 
-                        <td>
-                            @{
-                                bool checkEdit = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-edit").Any();
-                            }
+                            <td>
+                                @{
+                                    bool checkEdit = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-edit").Any();
+                                }
 
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-edit" name="@form.Id-edit" @if (checkEdit) { <text> checked</text>} />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-edit" name="@form.Id-edit" @if (checkEdit) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-edit">@Localizer["All"]</label>
                                 </div>
-                                <label for="@form.Id-edit">@Localizer["All"]</label>
-                            </div>
-                            @{
-                                bool checkEditOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-edit-own").Any();
-                            }
+                                @{
+                                    bool checkEditOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-edit-own").Any();
+                                }
 
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-edit-own" name="@form.Id-edit-own" @if (checkEditOwn) { <text> checked</text>} />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-edit-own" name="@form.Id-edit-own" @if (checkEditOwn) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-edit-own">@Localizer["Only own"]</label>
                                 </div>
-                                <label for="@form.Id-edit-own">@Localizer["Only own"]</label>
-                            </div>
-                        </td>
-                        <td>
-                            @{
-                                bool checkDelete = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-delete").Any();
-                            }
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-delete" name="@form.Id-delete" @if (checkDelete) { <text> checked</text>} />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                            </td>
+                            <td>
+                                @{
+                                    bool checkDelete = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-delete").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-delete" name="@form.Id-delete" @if (checkDelete) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-delete">@Localizer["All"]</label>
                                 </div>
-                                <label for="@form.Id-delete">@Localizer["All"]</label>
-                            </div>
-                            @{
-                                bool checkDeleteOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-delete-own").Any();
-                            }
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox">
-                                    <input type="checkbox"
-                                           class="mdc-checkbox__native-control"
-                                           id="@form.Id-delete-own" name="@form.Id-delete-own" @if (checkDeleteOwn) { <text> checked</text>} />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                                @{
+                                    bool checkDeleteOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-delete-own").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-delete-own" name="@form.Id-delete-own" @if (checkDeleteOwn) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
                                     </div>
+                                    <label for="@form.Id-delete-own">@Localizer["Only own"]</label>
                                 </div>
-                                <label for="@form.Id-delete-own">@Localizer["Only own"]</label>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+
+                        foreach (var part in form.MtdFormPart)
+                        {
+                            <tr mtd-rights-parts="@part.Id" mtd-rights-parent="@form.Id" style="display: none">
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;@part.Name</td>
+                                <td>
+                                    @{
+                                        bool checkPartCreate = Model.Claims.Where(x => x.Type == part.Id && x.Value == "-part-create").Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-create" name="@part.Id-part-create" @if (checkPartCreate) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @{
+                                        bool checkPartView = Model.Claims.Where(x => x.Type == part.Id && x.Value == "-part-view").Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-view" name="@part.Id-part-view" @if (checkPartView) { <text> checked</text>} />
+
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
+                                            </div>
+                                        </div>
+                                        <label for="@part.Id-part-view"></label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @{
+                                        bool checkPartEdit = Model.Claims.Where(x => x.Type == part.Id && x.Value == "-part-edit").Any();
+                                    }
+
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-edit" name="@part.Id-part-edit" @if (checkPartEdit) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
+                                            </div>
+                                        </div>
+                                        <label for="@part.Id-part-edit"></label>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+
                     }
                 </tbody>
             </table>
@@ -280,33 +363,6 @@
     </div>
 </form>
 
-@section Scripts{ 
-    <script>        
-        const boxes = document.querySelectorAll("[mtd-rights]");
-        const rights = ["view", "edit", "delete"];
-        
-        boxes.forEach((item) => {
-            const id = item.getAttribute('mtd-rights');
-
-            rights.forEach((right) => {
-
-                const idAll = `${id}-${right}`;
-                const idOwn = `${id}-${right}-own`;
-                const inputAll = document.getElementById(idAll);
-                const inputOwn = document.getElementById(idOwn);
-
-                inputOwn.addEventListener('change', () => {
-                    if (inputOwn.checked) {
-                        inputAll.checked = false;
-                    }
-                });
-
-                inputAll.addEventListener('change', () => {
-                    if (inputAll.checked) {
-                        inputOwn.checked = false;
-                    }
-                });
-            })
-        });
-    </script>
-    }
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/users/js/mtd-user-rights.js" asp-append-version="true"></script>
+}

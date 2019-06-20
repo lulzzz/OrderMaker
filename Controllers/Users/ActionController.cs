@@ -126,7 +126,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             if (userId == string.Empty) { return NotFound(); }
             var user = await _userManager.FindByIdAsync(userId);
 
-            IList<MtdForm> mtdForms = await _context.MtdForm.ToListAsync();
+            IList<MtdForm> mtdForms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
 
             List<Claim> newClaims = new List<Claim>();
             IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
@@ -134,20 +134,30 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             foreach (MtdForm form in mtdForms)
             {
-                string[] noSelect = { "-view", "-edit", "-delete"};
+                string[] noSelect = { "-view", "-edit", "-delete" };
                 foreach (string claimValue in claimValues)
                 {
                     Claim claim = new Claim(form.Id, claimValue);
                     if (!noSelect.Contains(claim.Value))
-                        { newClaims.Add(claim); }                    
+                    { newClaims.Add(claim); }
                 };
+
+                foreach (MtdFormPart mtdFormPart in form.MtdFormPart)
+                {
+                    foreach (string claimPart in claimParts)
+                    {
+                        Claim claim = new Claim(mtdFormPart.Id, claimPart);
+                        newClaims.Add(claim);
+                    };
+
+                }
             }
 
             try
             {
                 await _userManager.AddClaimsAsync(user, newClaims);
             }
-            catch 
+            catch
             {
                 throw;
             }
