@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.Models.Index;
+using Mtd.OrderMaker.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,18 +33,21 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
     public class Display : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userHandler;
 
-        public Display(OrderMakerContext orderMakerContext, UserManager<WebAppUser> userManager)
+        public Display(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
-            _userManager = userManager;
+            _userHandler = userHandler;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
             List<DisplayData> displayDatas = new List<DisplayData>();
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+
+            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
+
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
             if (filter != null)
             {
@@ -72,11 +76,14 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                         if (mtdStore != null)
                         {
                             var fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1)
+                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1 & partIds.Contains(x.MtdFormPartNavigation.Id))
                                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
-                            IList<long> ids = await _context.MtdStoreStack.Where(x => x.MtdStore == mtdStore.Id & x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
-                            MtdStoreStackText data = await _context.MtdStoreStackText.FirstOrDefaultAsync(x => ids.Contains(x.Id));
-                            displayData.Value = data.Register;
+                            if (fieldForList != null) {
+                                IList<long> ids = await _context.MtdStoreStack.Where(x => x.MtdStore == mtdStore.Id & x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
+                                MtdStoreStackText data = await _context.MtdStoreStackText.FirstOrDefaultAsync(x => ids.Contains(x.Id));
+                                displayData.Value = data.Register;
+                            }
+                            
                         }
 
                     }

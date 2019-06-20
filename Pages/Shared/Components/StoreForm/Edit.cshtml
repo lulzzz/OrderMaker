@@ -21,6 +21,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject Services.UserHandler userHandler
+@{
+    var user = await userHandler._userManager.GetUserAsync(User);
+}
 
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
@@ -69,15 +72,17 @@
 
             @foreach (var part in Model.Owner.Parts)
             {
-
-                if (part.Title)
+                if (await userHandler.IsEditorPartAsync(user, part.Id))
                 {
-                    <div class="mtd-store-style-part">
-                        @part.Name
-                    </div>
-                }
+                    if (part.Title)
+                    {
+                        <div class="mtd-store-style-part">
+                            @part.Name
+                        </div>
+                    }
 
-                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+                    @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+                }
 
             }
         </div>

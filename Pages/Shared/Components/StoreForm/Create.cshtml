@@ -25,6 +25,7 @@
 @{
     string action = $"/api/store/create";
     string idStore = Model.Store.Id == null ? Model.Store.MtdForm : Model.Store.Id;
+    var user = await userHandler._userManager.GetUserAsync(User);    
 }
 
 
@@ -112,7 +113,8 @@
         <div>
             @foreach (var part in Model.Parts)
             {
-                                
+                if (await userHandler.IsCreatorPartAsync(user, part.Id))
+                {
                     if (part.Title)
                     {
                         <div class="mtd-store-style-part">
@@ -120,7 +122,8 @@
                         </div>
                     }
                     @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
-                                
+                }
+
             }
         </div>
     </form>

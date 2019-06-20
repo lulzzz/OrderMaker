@@ -143,7 +143,32 @@ namespace Mtd.OrderMaker.Web.Services
         {
             return await IsRights("-delete", user, idForm, idStore);
         }
+        
+        public async Task<bool> IsCreatorPartAsync (WebAppUser user, string idPart)
+        {
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            return claims.Where(x => x.Type == idPart && x.Value == "-part-create").Any();        
+        }
 
+        public async Task<bool> IsEditorPartAsync(WebAppUser user, string idPart)
+        {
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            return claims.Where(x => x.Type == idPart && x.Value == "-part-edit").Any();
+        }
+
+        public async Task<bool> IsViewerPartAsync(WebAppUser user, string idPart)
+        {
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            return claims.Where(x => x.Type == idPart && x.Value == "-part-view").Any();
+        }
+
+        public async Task<List<string>> GetAllowPartsForView(WebAppUser user, string idForm)
+        {
+            List<string> idsAll = await _context.MtdFormPart.Where(x=>x.MtdForm==idForm).Select(x=>x.Id).ToListAsync();
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            return claims.Where(x => idsAll.Contains(x.Type) && x.Value == "-part-view").Select(x=>x.Type).ToList();
+            
+        }
 
     }
 }

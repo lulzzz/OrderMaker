@@ -18,6 +18,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Filter;
@@ -36,21 +37,22 @@ namespace Mtd.OrderMaker.Web.Components.Index
     public class Rows : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userHandler;
         public int pageCount = 0;
 
 
-        public Rows(OrderMakerContext orderMakerContext, UserManager<WebAppUser> userManager)
+        public Rows(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
-            _userManager = userManager;
+            _userHandler = userHandler;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
-            IList<Claim> userRights = await _userManager.GetClaimsAsync(user);
+            IList<Claim> userRights = await _userHandler._userManager.GetClaimsAsync(user);
             FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync();
@@ -63,7 +65,9 @@ namespace Mtd.OrderMaker.Web.Components.Index
 
             IList<string> storeIds = mtdStore.Select(s => s.Id).ToList();
             IList<string> fieldIds =  fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
-            
+
+            IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
+            fieldIds = allowFiieldIds.Where(x=>fieldIds.Contains(x)).ToList();
 
             StackHandler handlerStack = new StackHandler(_context);
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, fieldIds);
@@ -73,7 +77,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 IdForm = idForm,
                 SearchNumber = incomer.SearchNumber,
                 PageCount = pageCount,
-                MtdFormPartFields = incomer.FieldForColumn,
+                MtdFormPartFields = incomer.FieldForColumn.Where(x=>fieldIds.Contains(x.Id)).ToList(),
                 MtdStores = mtdStore,
                 MtdStoreStack = mtdStoreStack
             };

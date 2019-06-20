@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.Models.Index;
+using Mtd.OrderMaker.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,20 +33,21 @@ namespace Mtd.OrderMaker.Web.Components.Index
     public class Columns : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userHandler;
 
-        public Columns(OrderMakerContext orderMakerContext, UserManager<WebAppUser> userManager)
+        public Columns(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
-            _userManager = userManager;
+            _userHandler = userHandler;
         }
         
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
            
+            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
-            var user = await _userManager.GetUserAsync(HttpContext.User);
             IList<MtdFilterColumn> mtdFilterColumns = await _context.MtdFilterColumn
                 .Include(m => m.MtdFormPartFieldNavigation)
                 .Include(x=>x.MtdFilterNavigation)
@@ -55,7 +57,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
 
             IList<MtdFormPartField> mtdFormPartFields = await _context.MtdFormPartField
                 .Include(x => x.MtdFormPartNavigation)
-                .Where(x => x.MtdFormPartNavigation.MtdForm == idForm)
+                .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && partIds.Contains(x.MtdFormPart))
                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence)
                 .ToListAsync();
 

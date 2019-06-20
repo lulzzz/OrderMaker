@@ -31,12 +31,10 @@ namespace Mtd.OrderMaker.Web.Components.Index
     public class Cell : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
 
-        public Cell(OrderMakerContext orderMakerContext, UserManager<WebAppUser> userManager)
+        public Cell(OrderMakerContext orderMakerContext)
         {
-            _context = orderMakerContext;
-            _userManager = userManager;
+            _context = orderMakerContext;            
         }
 
         public async Task<IViewComponentResult> InvokeAsync(IList<MtdStoreStack> stack, string idStore, string idField, int idType)

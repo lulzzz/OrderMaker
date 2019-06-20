@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.Models.Index;
+using Mtd.OrderMaker.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,22 +34,23 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
     public class Selector : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userHandler;
 
-        public Selector(OrderMakerContext orderMakerContext, UserManager<WebAppUser> userManager)
+        public Selector(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
-            _userManager = userManager;
+            _userHandler = userHandler;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
 
             var query = _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm & x.MtdSysType != 7 & x.MtdSysType != 8 & x.Active)
+                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm & x.Active & partIds.Contains(x.MtdFormPart))
                     .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);
 
             IList<MtdFormPartField> mtdFields;

@@ -38,6 +38,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private enum TypeAction { Create, Edit };
 
         public DataController(OrderMakerContext context, UserHandler userHandler)
         {
@@ -75,7 +76,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             };
 
 
-            OutData outData = await CreateDataAsync(Id, webAppUser);
+            OutData outData = await CreateDataAsync(Id, webAppUser, TypeAction.Edit);
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
 
 
@@ -188,7 +189,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             await _context.MtdLogDocument.AddAsync(mtdLog);
 
-            OutData outParam = await CreateDataAsync(mtdStore.Id, webAppUser);
+            OutData outParam = await CreateDataAsync(mtdStore.Id, webAppUser, TypeAction.Create);
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
             await _context.MtdStoreStack.AddRangeAsync(stackNew);
 
@@ -223,7 +224,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             await _context.SaveChangesAsync();
 
             return Ok();
-        }        
+        }
 
         [HttpPost("number/id")]
         [ValidateAntiForgeryToken]
@@ -250,15 +251,40 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             return Ok(result);
         }
 
-        private async Task<OutData> CreateDataAsync(string Id, WebAppUser user)
+        private async Task<OutData> CreateDataAsync(string Id, WebAppUser user, TypeAction typeAction)
         {
 
             var store = await _context.MtdStore
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
-               .FirstOrDefaultAsync(m => m.Id == Id);            
+               .FirstOrDefaultAsync(m => m.Id == Id);
 
-            IList<string> partsIds = store.MtdFormNavigation.MtdFormPart.Select(x=>x.Id).ToList();
+            List<string> partsIds = new List<string>();
+
+            foreach (var part in store.MtdFormNavigation.MtdFormPart)
+            {
+                switch (typeAction)
+                {
+                    case TypeAction.Create:
+                        {
+                            if (await _userHandler.IsCreatorPartAsync(user, part.Id))
+                            {
+                                partsIds.Add(part.Id);
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            if (await _userHandler.IsEditorPartAsync(user, part.Id))
+                            {
+                                partsIds.Add(part.Id);
+                            }
+                            break;
+                        }
+                }
+            }
+
+
             var fields = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                 .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id))
                 .OrderBy(x => x.MtdFormPartNavigation.Sequence)
@@ -300,10 +326,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                             {
                                 string separ = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
                                 bool isOkDecimal = decimal.TryParse(data.FirstOrDefault().Replace(".", separ), out decimal result);
-                                if (isOkDecimal) {
+                                if (isOkDecimal)
+                                {
                                     mtdStoreStack.MtdStoreStackDecimal = new MtdStoreStackDecimal { Register = result };
                                 }
-                                
+
                             }
                             break;
                         }
@@ -387,7 +414,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                             if (isOkCheck)
                             {
                                 mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = check ? 1 : 0 };
-                            }                            
+                            }
                             break;
                         }
 
