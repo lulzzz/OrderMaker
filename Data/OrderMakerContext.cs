@@ -444,11 +444,6 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.Approval)
-                    .HasColumnName("approval")
-                    .HasColumnType("tinyint(4)")
-                    .HasDefaultValueSql("'0'");
-
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasColumnName("description")

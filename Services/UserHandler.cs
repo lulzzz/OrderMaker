@@ -30,7 +30,7 @@ namespace Mtd.OrderMaker.Web.Services
 {
     public enum RightsType
     {
-        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, Approver
+        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn
     };
 
     public class UserHandler
@@ -43,8 +43,7 @@ namespace Mtd.OrderMaker.Web.Services
         public string RightDelete => "-delete";
         public string RightViewOwn => "-view-own";
         public string RightEditOwn => "-edit-own";
-        public string RightDeleteOwn => "-delete-own";
-        public string RightApprover => "-approver";
+        public string RightDeleteOwn => "-delete-own";        
 
 
         private List<string> rights;
@@ -145,10 +144,6 @@ namespace Mtd.OrderMaker.Web.Services
             return await IsRights("-delete", user, idForm, idStore);
         }
 
-        public async Task<bool> IsApprover(WebAppUser user, string idForm)
-        {
-            return await IsRights("-approver", user, idForm);
-        }
 
     }
 }

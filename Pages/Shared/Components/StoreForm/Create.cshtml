@@ -112,33 +112,15 @@
         <div>
             @foreach (var part in Model.Parts)
             {
-                if (part.Approval == 0)
-                {
+                                
                     if (part.Title)
                     {
                         <div class="mtd-store-style-part">
                             @part.Name
                         </div>
                     }
-
                     @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
-
-                }
-                else
-                {
-                    var user = await userHandler._userManager.GetUserAsync(User);
-                    if (await userHandler.IsApprover(user, part.MtdForm))
-                    {
-                        if (part.Title)
-                        {
-                            <div class="mtd-store-style-part">
-                                @part.Name
-                            </div>
-                        }
-
-                        @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
-                    }
-                }
+                                
             }
         </div>
     </form>

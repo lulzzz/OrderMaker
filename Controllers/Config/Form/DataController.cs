@@ -313,8 +313,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 Title = titleCheck,
                 Child = childCheck,
                 MtdSysStyle = styleId,
-                Sequence = sequence,
-                Approval = approvalCheck ? (sbyte)1 : (sbyte)0
+                Sequence = sequence             
 
             };
 

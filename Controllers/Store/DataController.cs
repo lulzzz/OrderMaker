@@ -223,9 +223,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             await _context.SaveChangesAsync();
 
             return Ok();
-        }
-
-
+        }        
 
         [HttpPost("number/id")]
         [ValidateAntiForgeryToken]
@@ -239,7 +237,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             parentNumber = parentNumber.TrimStart(new char[] { '0' });
             bool isOk = int.TryParse(parentNumber, out int num);
-
 
             if (!isOk) { return Ok(result); }
 
@@ -259,23 +256,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             var store = await _context.MtdStore
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
-               .FirstOrDefaultAsync(m => m.Id == Id);
+               .FirstOrDefaultAsync(m => m.Id == Id);            
 
-            bool isApprover = await _userHandler.IsApprover(user, store.MtdForm);
-            List<string> partsIds = new List<string>();
-            foreach (MtdFormPart formPart in store.MtdFormNavigation.MtdFormPart)
-            {
-                if (formPart.Approval == 1)
-                {
-                    if (isApprover) { partsIds.Add(formPart.Id); };
-                }
-                else
-                {
-                    partsIds.Add(formPart.Id);
-                }
-
-            }
-
+            IList<string> partsIds = store.MtdFormNavigation.MtdFormPart.Select(x=>x.Id).ToList();
             var fields = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                 .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id))
                 .OrderBy(x => x.MtdFormPartNavigation.Sequence)
