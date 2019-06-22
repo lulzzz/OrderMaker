@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.1.7</AssemblyVersion>
-    <FileVersion>1.0.1.7</FileVersion>
+    <AssemblyVersion>1.0.1.8</AssemblyVersion>
+    <FileVersion>1.0.1.8</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,7 +18,8 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMaker</RepositoryUrl>
-    <PackageReleaseNotes>Fixed: configurator error while saving part of the form</PackageReleaseNotes>
+    <PackageReleaseNotes>Build 1 to the task of approving documents.
+Database schema. Configurator (create/edit/delete).</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.0.1</Version>
@@ -34,7 +35,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20190610093653_LogDocument.cs" />
     <Compile Remove="Migrations\20190610093653_LogDocument.Designer.cs" />
     <Compile Remove="Migrations\20190614090004_Test.cs" />
-    <Compile Remove="Migrations\20190614090004_Test.Designer.cs" />    
+    <Compile Remove="Migrations\20190614090004_Test.Designer.cs" />
+    <Compile Remove="Migrations\20190622124122_ApprovalScheme.cs" />
+    <Compile Remove="Migrations\20190622124122_ApprovalScheme.Designer.cs" />    
   </ItemGroup>
 
 

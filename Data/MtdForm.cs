@@ -26,6 +26,7 @@ namespace Mtd.OrderMaker.Web.Data
         public MtdForm()
         {
             InverseParentNavigation = new HashSet<MtdForm>();
+            MtdApproval = new HashSet<MtdApproval>();
             MtdFilter = new HashSet<MtdFilter>();
             MtdFormList = new HashSet<MtdFormList>();
             MtdFormPart = new HashSet<MtdFormPart>();
@@ -47,6 +48,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual MtdFormDesk MtdFormDesk { get; set; }
         public virtual MtdFormHeader MtdFormHeader { get; set; }
         public virtual ICollection<MtdForm> InverseParentNavigation { get; set; }
+        public virtual ICollection<MtdApproval> MtdApproval { get; set; }
         public virtual ICollection<MtdFilter> MtdFilter { get; set; }
         public virtual ICollection<MtdFormList> MtdFormList { get; set; }
         public virtual ICollection<MtdFormPart> MtdFormPart { get; set; }

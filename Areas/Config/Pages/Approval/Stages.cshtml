@@ -1,0 +1,64 @@
+﻿@*
+    OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model StagesModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Stages list"];
+    ViewData["SecondTitle"] = Localizer["Approval chain management"];
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="/config/approval/edit?id=@Model.MtdApproval.Id">@Localizer["Approval editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+    <div class="mtd-desk">
+        <div id="stagesCreator" class="mtd-desk-creator">
+            <a mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </a>
+        </div>
+
+        <div class="mtd-desk-search">
+            <form id="stageFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
+                    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
+                    <input id="search-text" name="searchText" value="" class="mdc-text-field__input"
+                           type="text"
+                           placeholder="@Localizer["Search for text"]"
+                           aria-label="Search for text"
+                           autocomplete="off">
+                </div>
+            </form>
+        </div>      
+
+    </div>
+
+<form mtd-data-form method="post" action="/api/config/form/part/sequence">
+    @Html.AntiForgeryToken()
+    <input id="fieldSeqData" name="fieldSeqData" type="hidden" />    
+    <input name="fieldApproval" type="hidden" value="@Model.MtdApproval.Id" />
+    <input id="configListSeq" mtd-data-clicker type="hidden" />
+</form>

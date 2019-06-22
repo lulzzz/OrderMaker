@@ -31,6 +31,8 @@ namespace Mtd.OrderMaker.Web.Data
         {
         }
 
+        public virtual DbSet<MtdApproval> MtdApproval { get; set; }
+        public virtual DbSet<MtdApprovalStage> MtdApprovalStage { get; set; }
         public virtual DbSet<MtdConfigFile> MtdConfigFiles { get; set; }
         public virtual DbSet<MtdFilter> MtdFilter { get; set; }
         public virtual DbSet<MtdFilterColumn> MtdFilterColumn { get; set; }
@@ -43,8 +45,10 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdFormPartField> MtdFormPartField { get; set; }
         public virtual DbSet<MtdFormPartHeader> MtdFormPartHeader { get; set; }
         public virtual DbSet<MtdGroupForm> MtdGroupForm { get; set; }
+        public virtual DbSet<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
+        public virtual DbSet<MtdStoreApproval> MtdStoreApproval { get; set; }
         public virtual DbSet<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual DbSet<MtdStoreOwner> MtdStoreOwner { get; set; }
         public virtual DbSet<MtdStoreStack> MtdStoreStack { get; set; }
@@ -63,6 +67,96 @@ namespace Mtd.OrderMaker.Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<MtdApproval>(entity =>
+            {
+                entity.ToTable("mtd_approval");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdForm)
+                    .HasName("fk_approvel_form_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.MtdForm)
+                    .IsRequired()
+                    .HasColumnName("mtd_form")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(120)");
+
+                entity.HasOne(d => d.MtdFormNavigation)
+                    .WithMany(p => p.MtdApproval)
+                    .HasForeignKey(d => d.MtdForm)
+                    .HasConstraintName("fk_approvel_form");
+            });
+
+            modelBuilder.Entity<MtdApprovalStage>(entity =>
+            {
+                entity.ToTable("mtd_approval_stage");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(120)");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(512)");
+
+
+                entity.HasIndex(e => e.MtdApproval)
+                    .HasName("fk_stage_approval_idx");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("IX_USER");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.BlockParts)
+                    .IsRequired()
+                    .HasColumnName("block_parts")
+                    .HasColumnType("longtext");
+
+                entity.Property(e => e.MtdApproval)
+                    .IsRequired()
+                    .HasColumnName("mtd_approval")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Stage)
+                    .HasColumnName("stage")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.HasOne(d => d.MtdApprovalNavigation)
+                    .WithMany(p => p.MtdApprovalStage)
+                    .HasForeignKey(d => d.MtdApproval)
+                    .HasConstraintName("fk_stage_approval");
+            });                    
 
             modelBuilder.Entity<MtdConfigFile>(entity =>
             {
@@ -615,6 +709,58 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("varchar(36)");
             });
 
+            modelBuilder.Entity<MtdLogApproval>(entity =>
+            {
+                entity.ToTable("mtd_log_approval");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdApproval)
+                    .HasName("fk_log_approve_idx");
+
+                entity.HasIndex(e => e.MtdApprovalStage)
+                    .HasName("fk_log_approval_stage_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.MtdApproval)
+                    .IsRequired()
+                    .HasColumnName("mtd_approval")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdApprovalStage)
+                    .HasColumnName("mtd_approval_stage")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Result)
+                    .HasColumnName("result")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.Timech)
+                    .HasColumnName("timech")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.HasOne(d => d.MtdApprovalNavigation)
+                    .WithMany(p => p.MtdLogApproval)
+                    .HasForeignKey(d => d.MtdApproval)
+                    .HasConstraintName("fk_log_approval");
+
+                entity.HasOne(d => d.MtdApprovalStageNavigation)
+                    .WithMany(p => p.MtdLogApproval)
+                    .HasForeignKey(d => d.MtdApprovalStage)
+                    .HasConstraintName("fk_log_approval_stage");
+            });
+
             modelBuilder.Entity<MtdLogDocument>(entity =>
             {
                 entity.ToTable("mtd_log_document");
@@ -710,6 +856,49 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey(d => d.Parent)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_mtd_store_parent");
+            });
+
+            modelBuilder.Entity<MtdStoreApproval>(entity =>
+            {
+                entity.ToTable("mtd_store_approval");
+
+                entity.HasIndex(e => e.Approved)
+                    .HasName("IX_APPROVED");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdApproveStage)
+                    .HasName("fk_store_approve_stage_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Approved)
+                    .HasColumnName("approved")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.MtdApproveStage)
+                    .HasColumnName("md_approve_stage")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.PartsApproved)
+                    .IsRequired()
+                    .HasColumnName("parts_approved")
+                    .HasColumnType("longtext");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.MtdStoreApproval)
+                    .HasForeignKey<MtdStoreApproval>(d => d.Id)
+                    .HasConstraintName("fk_store_approve");
+
+                entity.HasOne(d => d.MdApproveStageNavigation)
+                    .WithMany(p => p.MtdStoreApproval)
+                    .HasForeignKey(d => d.MtdApproveStage)
+                    .HasConstraintName("fk_store_approve_stage");
             });
 
             modelBuilder.Entity<MtdStoreLink>(entity =>
