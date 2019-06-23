@@ -1,5 +1,6 @@
 ﻿@import "@material/elevation/_mixins.scss";
 @import "mtd-desk-block.scss";
+@import "mtd-desk-draggable.scss";
 
 .mtd-desk {
     background-color: white;
@@ -56,10 +57,10 @@
 
 .mtd-desk-field {
     display: flex;
-    flex-direction: column;
-    padding: 8px;  
+    flex-direction: column;  
     width: 280px;
     margin: 4px;
+    padding: 8px;
 }
 
 .mtd-desk-field label {
@@ -73,9 +74,10 @@
     padding-bottom: 48px;
 }
 
-.mtd-desk-field--border{    
+.mtd-desk-field--border {
     border-radius: 4px;
     border: 1px solid lightgray;
+    
 }
 
 .mtd-desk-creator {

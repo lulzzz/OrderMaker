@@ -39,7 +39,7 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
 
         [BindProperty]
         public MtdApproval MtdApproval { get; set; }                
-
+        public IList<MtdApprovalStage> Stages { get; set; }
         public async Task<IActionResult> OnGetAsync(string idApproval)
         {
             MtdApproval = await _context.MtdApproval.Include(m => m.MtdApprovalStage)
@@ -49,7 +49,8 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
             {
                 return NotFound();
             }
-            
+
+            Stages = await _context.MtdApprovalStage.Where(x => x.MtdApproval == MtdApproval.Id).OrderBy(x => x.Stage).ToListAsync();
 
             return Page();
         }

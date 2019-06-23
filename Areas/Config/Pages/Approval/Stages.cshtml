@@ -33,32 +33,67 @@
     <li>@ViewBag.Title</li>
 }
 
-    <div class="mtd-desk">
-        <div id="stagesCreator" class="mtd-desk-creator">
-            <a mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
-                <span class="material-icons mdc-fab__icon">add</span>
-                <span class="mdc-fab__label">@Localizer["Create"]</span>
-            </a>
-        </div>
-
-        <div class="mtd-desk-search">
-            <form id="stageFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-                <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
-                    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
-                    <input id="search-text" name="searchText" value="" class="mdc-text-field__input"
-                           type="text"
-                           placeholder="@Localizer["Search for text"]"
-                           aria-label="Search for text"
-                           autocomplete="off">
-                </div>
-            </form>
-        </div>      
-
+<div class="mtd-desk">
+    <div id="stagesCreator" class="mtd-desk-creator">
+        <a mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">@Localizer["Create"]</span>
+        </a>
     </div>
 
-<form mtd-data-form method="post" action="/api/config/form/part/sequence">
+    <div style="padding: 24px">
+        <div>
+            <span style="font-size:large; font-weight:600">@Model.MtdApproval.Name</span>
+        </div>
+        <div>
+            <span>@Model.MtdApproval.Description</span>
+        </div>
+    </div>
+
+    <ul id="drgList" class="mdc-list mdc-list--two-line">
+        @foreach (var stage in Model.Stages)
+        {
+        <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-desk-draggable-item mdc-list-item"
+            data-value="@stage.Id" draggable="true" role="button" aria-checked="false">           
+                <div style="padding: 8px;">
+                    @{
+                        int endStage = Model.Stages.Max(x => x.Stage);
+                    }
+                    @if (stage.Stage < endStage)
+                    {<i class="material-icons">arrow_downward</i> }
+                    else
+                    { <i class="material-icons">done</i>}
+
+                    @stage.Stage
+                </div>
+                <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__primary-text">@stage.Name</span>
+                    <span class="mdc-list-item__secondary-text">@stage.Description</span>
+                </span>
+
+                <div class="mtd-desk-draggable-bedit">
+                    <button class="mdc-icon-button"
+                            aria-label="edit"
+                            aria-hidden="true"
+                            aria-pressed="false">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+                <div class="mtd-desk-draggable-bdrag">
+                    <i class="material-icons" style="color:gray">drag_handle</i>
+                </div>           
+        </li>
+        }
+    </ul>
+</div>
+
+<form mtd-data-form method="post" action="/api/config/approval/stage/sequence">
     @Html.AntiForgeryToken()
-    <input id="fieldSeqData" name="fieldSeqData" type="hidden" />    
-    <input name="fieldApproval" type="hidden" value="@Model.MtdApproval.Id" />
-    <input id="configListSeq" mtd-data-clicker type="hidden" />
+    <input id="drgData" name="drgData" type="hidden" />
+    <input id="drgSequence" mtd-data-clicker type="hidden" />
+    <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
 </form>
+
+@section Scripts {
+    <script src="~/lib/mtd-ordermaker/common/js/mtd-draggable.js" asp-append-version="true"></script>
+}
