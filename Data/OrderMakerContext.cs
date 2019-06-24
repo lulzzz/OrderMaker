@@ -717,20 +717,12 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasName("id_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.MtdApproval)
-                    .HasName("fk_log_approve_idx");
-
                 entity.HasIndex(e => e.MtdApprovalStage)
                     .HasName("fk_log_approval_stage_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("int(11)");
-
-                entity.Property(e => e.MtdApproval)
-                    .IsRequired()
-                    .HasColumnName("mtd_approval")
-                    .HasColumnType("varchar(36)");
 
                 entity.Property(e => e.MtdApprovalStage)
                     .HasColumnName("mtd_approval_stage")
@@ -750,10 +742,6 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("user_id")
                     .HasColumnType("varchar(36)");
 
-                entity.HasOne(d => d.MtdApprovalNavigation)
-                    .WithMany(p => p.MtdLogApproval)
-                    .HasForeignKey(d => d.MtdApproval)
-                    .HasConstraintName("fk_log_approval");
 
                 entity.HasOne(d => d.MtdApprovalStageNavigation)
                     .WithMany(p => p.MtdLogApproval)
@@ -878,6 +866,11 @@ namespace Mtd.OrderMaker.Web.Data
 
                 entity.Property(e => e.Approved)
                     .HasColumnName("approved")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.Complete)
+                    .HasColumnName("complete")
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 

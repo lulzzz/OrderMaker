@@ -7,8 +7,7 @@ namespace Mtd.OrderMaker.Web.Data
     {
         public MtdApproval()
         {
-            MtdApprovalStage = new HashSet<MtdApprovalStage>();
-            MtdLogApproval = new HashSet<MtdLogApproval>();
+            MtdApprovalStage = new HashSet<MtdApprovalStage>();            
         }
 
         public string Id { get; set; }
@@ -17,7 +16,6 @@ namespace Mtd.OrderMaker.Web.Data
         public string MtdForm { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
-        public virtual ICollection<MtdApprovalStage> MtdApprovalStage { get; set; }
-        public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
+        public virtual ICollection<MtdApprovalStage> MtdApprovalStage { get; set; }        
     }
 }

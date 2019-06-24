@@ -47,6 +47,22 @@
 }
 
 @section Action  {
+
+    @if (Model.IsApprover)
+    {
+        <li class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
+            <span class="mdc-list-item__text">@Localizer["Approve"]</span>
+        </li>
+
+        <li class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_down</span>
+            <span class="mdc-list-item__text">@Localizer["Reject"]</span>
+        </li>
+
+        <hr/>
+    }
+
     @if (Model.IsEditor)
     {
         <li mtd-data-href="/workplace/store/edit?id=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
@@ -86,8 +102,21 @@
 
 <div class="mtd-desk">
     <div class="mtd-desk-blocks">
-        <div class="mtd-desk-block mtd-desk-block--border">
-            <div class="mtd-desk-block-content">
+        <div class="mtd-desk-block">
+
+            <div class="mtd-desk-block-content mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <label>
+                        <i class="material-icons" aria-hidden="true">assignment_turned_in</i>
+                        @Localizer["Approval"]
+                    </label>
+                </div>
+                <div class="mtd-desk-block-body">
+                    test
+                </div>
+            </div>
+
+            <div class="mtd-desk-block-content  mtd-desk-block--border">
                 <div class="mtd-desk-block-title">
                     <label>
                         <i class="material-icons" aria-hidden="true">print</i>
@@ -168,10 +197,7 @@
             </div>
             <div class="mdc-dialog__scrim"></div>
         </div>
-
     </form>
-
-
 
     @section Scripts{
         <script>
