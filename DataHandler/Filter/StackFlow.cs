@@ -17,6 +17,7 @@
 */
 
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,10 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
         public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery) {
 
             OutFlow outFlow = new OutFlow();
+
+            //List<string> storesForUser = await ApprovalHandler.GetStoreIds(_context, _user);
+            //queryMtdStore = queryMtdStore.Where(x => storesForUser.Contains(x.Id));
+
             bool ownOnly = _userRights.Where(x => x.Value.Contains("view-own")).Any();
             if (ownOnly)
             {

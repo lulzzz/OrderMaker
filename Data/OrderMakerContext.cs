@@ -869,11 +869,6 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.Complete)
-                    .HasColumnName("complete")
-                    .HasColumnType("tinyint(4)")
-                    .HasDefaultValueSql("'0'");
-
                 entity.Property(e => e.MtdApproveStage)
                     .HasColumnName("md_approve_stage")
                     .HasColumnType("int(11)");

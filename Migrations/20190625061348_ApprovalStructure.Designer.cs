@@ -9,8 +9,8 @@ using Mtd.OrderMaker.Web.Data;
 namespace Mtd.OrderMaker.Web.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    [Migration("20190624151949_ApproveSchema2")]
-    partial class ApproveSchema2
+    [Migration("20190625061348_ApprovalStructure")]
+    partial class ApprovalStructure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -760,12 +760,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.Property<sbyte>("Approved")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("approved")
-                        .HasColumnType("tinyint(4)")
-                        .HasDefaultValueSql("'0'");
-
-                    b.Property<sbyte>("Complete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("complete")
                         .HasColumnType("tinyint(4)")
                         .HasDefaultValueSql("'0'");
 

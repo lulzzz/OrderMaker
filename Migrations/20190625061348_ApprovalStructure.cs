@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mtd.OrderMaker.Web.Migrations
 {
-    public partial class ApprovalScheme : Migration
+    public partial class ApprovalStructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                 {
                     id = table.Column<int>(type: "int(11)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    mtd_approval = table.Column<string>(type: "varchar(36)", nullable: false),
                     mtd_approval_stage = table.Column<int>(type: "int(11)", nullable: false),
                     user_id = table.Column<string>(type: "varchar(36)", nullable: false),
                     timech = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -67,12 +66,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_mtd_log_approval", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_log_approval",
-                        column: x => x.mtd_approval,
-                        principalTable: "mtd_approval",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_log_approval_stage",
                         column: x => x.mtd_approval_stage,
@@ -139,11 +132,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                 table: "mtd_log_approval",
                 column: "id",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "fk_log_approve_idx",
-                table: "mtd_log_approval",
-                column: "mtd_approval");
 
             migrationBuilder.CreateIndex(
                 name: "fk_log_approval_stage_idx",

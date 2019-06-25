@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.DataHandler.Filter;
 using Mtd.OrderMaker.Web.DataHandler.Stack;
 using Mtd.OrderMaker.Web.Models.Index;
@@ -51,7 +52,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
         {
             var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
-
+                    
             IList<Claim> userRights = await _userHandler._userManager.GetClaimsAsync(user);
             FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();

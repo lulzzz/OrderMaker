@@ -16,6 +16,7 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public bool IsAdmin { get; set; }
         public bool IsEditor { get; set; }
         public bool IsApprover { get; set; }
+        public bool IsFirstStage { get; set; }
+        public int ApprovalStatus { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -63,16 +67,16 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);            
-            IsEditor = await _userHandler.IsEditor(user,MtdStore.MtdForm,MtdStore.Id);
+            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
+            IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
             IsAdmin = await _userHandler.IsAdmin(user);
-            
+
             if (!isViewer)
             {
                 return Forbid();
             }
 
-            
+
             MtdForm = await _context.MtdForm.Include(m => m.InverseParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdStore.MtdForm);
             MtdLogDocument edited = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderByDescending(x => x.TimeCh).FirstOrDefaultAsync();
             MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x => x.TimeCh).FirstOrDefaultAsync();
@@ -102,6 +106,21 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
             IsApprover = await approvalHandler.IsApproverAsync(user);
+            IsFirstStage = await approvalHandler.IsFirstStageAsync();
+            IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
+            ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
+
+            ApprovalStatus = 0;
+            if (!IsFirstStage) { ApprovalStatus = 1; }
+            if (await approvalHandler.IsComplete())
+            {
+                var allStages = await approvalHandler.GetStagesAsync();
+                List<int> stageIds = allStages.Select(x => x.Id).ToList();
+                IList<MtdLogApproval> logs =  await approvalHandler.GetHistory();
+
+                ApprovalStatus = logs.OrderByDescending(x=>x.Timech).FirstOrDefault().Result == 0 ? 2 : 3; 
+            }
+            
 
             return Page();
         }

@@ -761,12 +761,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnType("tinyint(4)")
                         .HasDefaultValueSql("'0'");
 
-                    b.Property<sbyte>("Complete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("complete")
-                        .HasColumnType("tinyint(4)")
-                        .HasDefaultValueSql("'0'");
-
                     b.Property<int>("MtdApproveStage")
                         .HasColumnName("md_approve_stage")
                         .HasColumnType("int(11)");
