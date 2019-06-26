@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Services;
 using System;
 using System.Collections.Generic;
@@ -258,8 +259,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
                .FirstOrDefaultAsync(m => m.Id == Id);
-
+            
             List<string> partsIds = new List<string>();
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
+            List<string> blockedParts = await approvalHandler.GetBlockedPartsIds();
 
             foreach (var part in store.MtdFormNavigation.MtdFormPart)
             {
@@ -275,7 +278,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         }
                     default:
                         {
-                            if (await _userHandler.IsEditorPartAsync(user, part.Id))
+                            if (await _userHandler.IsEditorPartAsync(user, part.Id) && !blockedParts.Contains(part.Id))
                             {
                                 partsIds.Add(part.Id);
                             }

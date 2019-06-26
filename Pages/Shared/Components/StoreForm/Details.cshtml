@@ -59,19 +59,16 @@
         @foreach (var part in Model.Parent.Parts.Where(x => x.Child))
         {
 
-            if (await userHandler.IsViewerPartAsync(user, part.Id))
+            @if (part.Title)
             {
-                @if (part.Title)
-                {
-                    <div class="mtd-store-style-part">
-                        @part.Name
-                    </div>
-                }
-                else
-                { <div class="mtd-store-style-separator"></div>}
-
-                @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Parent })
+                <div class="mtd-store-style-part">
+                    @part.Name
+                </div>
             }
+            else
+            { <div class="mtd-store-style-separator"></div>}
+
+            @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Parent })
 
         }
     }
@@ -79,33 +76,18 @@
 
     @foreach (var part in Model.Owner.Parts)
     {
-        if (await userHandler.IsViewerPartAsync(user, part.Id))
+
+        if (part.Title)
         {
-            int counter = 0;
-            foreach (MtdFormPartField partField in part.MtdFormPartField)
-            {
-                counter += partField.MtdStoreStack.Count;
-            }
-
-            if (counter > 0)
-            {
-
-                if (part.Title)
-                {
-                    <div class="mtd-store-style-part">
-                        @part.Name
-                    </div>
-                }
-                else
-                { <div class="mtd-store-style-separator"></div>}
-
-                @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Owner })
-
-            }
+            <div class="mtd-store-style-part">
+                @part.Name
+            </div>
         }
+        else
+        { <div class="mtd-store-style-separator"></div>}
 
+        @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Owner })
     }
-
 
 </div>
 

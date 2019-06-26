@@ -72,18 +72,14 @@
 
             @foreach (var part in Model.Owner.Parts)
             {
-                if (await userHandler.IsEditorPartAsync(user, part.Id))
+                if (part.Title)
                 {
-                    if (part.Title)
-                    {
-                        <div class="mtd-store-style-part">
-                            @part.Name
-                        </div>
-                    }
-
-                    @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+                    <div class="mtd-store-style-part">
+                        @part.Name
+                    </div>
                 }
 
+                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
             }
         </div>
     </div>

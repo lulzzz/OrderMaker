@@ -18,8 +18,11 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Models.Store;
+using Mtd.OrderMaker.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,10 +35,12 @@ namespace Mtd.OrderMaker.Web.Components.Store
     public class Form : ViewComponent
     {
         private readonly OrderMakerContext _context;
+        private readonly UserHandlerTrial _userHandler;
 
-        public Form(OrderMakerContext orderMakerContext)
+        public Form(OrderMakerContext orderMakerContext, UserHandlerTrial userHandler)
         {
             _context = orderMakerContext;
+            _userHandler = userHandler;
         }
 
         private async Task<IList<MtdFormPart>> GetPartsAsync(string idForm)
@@ -60,15 +65,34 @@ namespace Mtd.OrderMaker.Web.Components.Store
                 .ToListAsync();
         }
 
-        private async Task<DataSet> CreateDataSetAsync(MtdStore store)
+        private async Task<DataSet> CreateDataSetAsync(MtdStore store, FormType type = FormType.Details)
         {
             if (store == null) return null;
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);            
+            List<MtdFormPart> mtdFormParts = new List<MtdFormPart>();
+            IList<MtdFormPart> parts = await GetPartsAsync(store.MtdForm);
 
-            IList<MtdFormPart> mtdFormParts = await GetPartsAsync(store.MtdForm);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
+            List<string> blockedParts = await approvalHandler.GetBlockedPartsIds();
+
+            foreach (MtdFormPart formPart in parts)
+            {
+                if (type == FormType.Edit)
+                {                    
+                    bool isEditor = await _userHandler.IsEditorPartAsync(webAppUser, formPart.Id);
+                    if (isEditor && !blockedParts.Contains(formPart.Id)) { mtdFormParts.Add(formPart);}
+
+                } else
+                {
+                    bool isViewer = await _userHandler.IsViewerPartAsync(webAppUser, formPart.Id);
+                    if (isViewer) { mtdFormParts.Add(formPart); }
+                }                
+            }
+
             IList<MtdFormPartField> mtdFormPartFields = await GetFieldsAsync(mtdFormParts);
 
             var mtdStore = await _context.MtdStore
-                .Include(m=>m.ParentNavigation)
+                .Include(m => m.ParentNavigation)
                 .Include(m => m.MtdFormNavigation)
                 .ThenInclude(m => m.MtdFormHeader)
                 .Include(m => m.MtdFormNavigation)
@@ -106,6 +130,7 @@ namespace Mtd.OrderMaker.Web.Components.Store
 
         }
 
+
         public async Task<IViewComponentResult> InvokeAsync(MtdStore store, FormType type = FormType.Details)
         {
 
@@ -114,12 +139,22 @@ namespace Mtd.OrderMaker.Web.Components.Store
                 return View();
             }
 
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
+
             if (type == FormType.Create)
             {
                 store.MtdFormNavigation.MtdFormHeader = await _context.MtdFormHeader.FindAsync(store.MtdForm);
                 store.MtdFormNavigation.ParentNavigation = await _context.MtdForm.FindAsync(store.MtdFormNavigation.Parent);
 
-                IList<MtdFormPart> mtdFormParts = await GetPartsAsync(store.MtdForm);
+                List<MtdFormPart> mtdFormParts = new List<MtdFormPart>();
+                IList<MtdFormPart> parts = await GetPartsAsync(store.MtdForm);
+
+                foreach (MtdFormPart formPart in parts)
+                {
+                    bool isCreator = await _userHandler.IsCreatorPartAsync(webAppUser, formPart.Id);
+                    if (isCreator) { mtdFormParts.Add(formPart); }
+                }
+
                 IList<MtdFormPartField> mtdFormPartFields = await GetFieldsAsync(mtdFormParts);
 
                 DataSet dataSetForCreate = new DataSet()
@@ -132,16 +167,20 @@ namespace Mtd.OrderMaker.Web.Components.Store
 
                 return View("Create", dataSetForCreate);
             }
-            
 
             DataContainer dataContainer = new DataContainer
             {
-                Owner = await CreateDataSetAsync(store),
+                Owner = await CreateDataSetAsync(store, type),
                 Parent = await CreateDataSetAsync(store.ParentNavigation)
             };
 
             return View(type.ToString(), dataContainer);
 
+
+
+
         }
+
+
     }
 }
