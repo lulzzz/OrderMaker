@@ -28,6 +28,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
         public string SearchNumber { get; set; }
         public int PageSize { get;  set; }
         public int Page { get; set; }
+        public int WaitList { get; set; }
         public IList<MtdFormPartField> FieldForColumn { get; set; }
         public IList<MtdFilterField> FieldForFilter { get; set; }
     }

@@ -51,6 +51,7 @@
 
 @await Component.InvokeAsync("IndexPlace", new { idForm = ViewBag.idForm })
 
+
 @section Scripts {
     <script src="~/lib/mtd-ordermaker/index/js/mtd-index.js" asp-append-version="true"></script>
     <script>
@@ -58,6 +59,11 @@
             window.open('./Store/DetailsPrint?id=' + id, '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=1,status=0');
         }
 
-        var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementById('add-to-favorites'));
+        const approvalList = document.getElementById('approval-list');
+        if (approvalList) {
+            var toggleButton = new mdc.iconButton.MDCIconButtonToggle(approvalList);
+            toggleButton.unbounded = true;
+        }
+
     </script>
 }

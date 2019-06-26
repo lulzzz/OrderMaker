@@ -35,6 +35,7 @@ namespace Mtd.OrderMaker.Web.Data
         public string SearchText { get; set; }
         public string SearchNumber { get; set; }
         public int Page { get; set; }
+        public int WaitList { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual ICollection<MtdFilterColumn> MtdFilterColumn { get; set; }

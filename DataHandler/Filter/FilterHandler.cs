@@ -68,7 +68,9 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 SearchText = "",
                 Page = 1,
                 PageSize = 10,
-                FieldForColumn = await GetFieldsAsync()
+                FieldForColumn = await GetFieldsAsync(),
+                WaitList = 0,
+
         };
 
             if (mtdFilter != null)
@@ -79,6 +81,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 ps.PageSize = mtdFilter.PageSize;
                 ps.Page = mtdFilter.Page;                
                 ps.FieldForFilter = await GetAdvancedAsync();
+                ps.WaitList = mtdFilter.WaitList;
             }
 
             return ps;

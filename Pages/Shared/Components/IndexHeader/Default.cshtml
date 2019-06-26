@@ -59,15 +59,23 @@
         <div>
             <button id="indexButtonColumnEdit" class="mdc-icon-button material-icons mdc-theme--secondary">view_list</button>
         </div>
-        <div> 
-            <button id="add-to-favorites"
-                    class="mdc-icon-button mdc-theme--primary"
-                    aria-label="Add to favorites"
-                    aria-hidden="true"
-                    aria-pressed="false">
-                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on"  style="color:red">assignment_turned_in</i>
-                <i class="material-icons mdc-icon-button__icon">assignment_turned_in</i>
-            </button>
+        <div>
+            <form mtd-data-form method="post" action="/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                @Html.AntiForgeryToken()
+                <input mtd-data-clicker type="hidden" id="id-form-waitlist" name="id-form-waitlist" value="@Model.IdForm" />
+                <button mtd-data-clicker id="approval-list"
+                        class="mdc-icon-button mdc-theme--primary"
+                        aria-label="Approval Wait List"
+                        aria-hidden="true"
+                        aria-pressed="false"
+                        type="button">
+                    <i class="material-icons mdc-icon-button__icon @if (Model.WaitList) {<text>mdc-icon-button__icon--on</text>}">assignment_turned_in</i>
+                    <i class="material-icons mdc-icon-button__icon
+                   @if (!Model.WaitList) {<text>mdc-icon-button__icon--on</text>}" style="color:red">assignment_turned_in</i>
+                </button>
+            </form>
+
         </div>
     </div>
 </div>
+

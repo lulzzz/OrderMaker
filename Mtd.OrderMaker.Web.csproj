@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.1.11</AssemblyVersion>
-    <FileVersion>1.0.1.11</FileVersion>
+    <AssemblyVersion>1.0.1.12</AssemblyVersion>
+    <FileVersion>1.0.1.12</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,9 +18,8 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMaker</RepositoryUrl>
-    <PackageReleaseNotes>Build 4  to the task of approving documents.
-Removing migration '20190622145657_ApprovalScheme'
-Removing migration '20190624151949_ApproveSchema2'
+    <PackageReleaseNotes>Build 5  to the task of approving documents.
+Add Filter for Approval Wait List
 </PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
@@ -47,7 +46,9 @@ Removing migration '20190624151949_ApproveSchema2'
     <Compile Remove="Migrations\20190622145657_ApprovalScheme.cs" />
     <Compile Remove="Migrations\20190622145657_ApprovalScheme.Designer.cs" />
     <Compile Remove="Migrations\20190624151949_ApproveSchema2.cs" />
-    <Compile Remove="Migrations\20190624151949_ApproveSchema2.Designer.cs" />    
+    <Compile Remove="Migrations\20190624151949_ApproveSchema2.Designer.cs" />
+    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.cs" />
+    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.Designer.cs" />    
   </ItemGroup>
 
 

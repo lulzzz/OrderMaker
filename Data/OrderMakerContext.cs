@@ -224,6 +224,11 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'1'");
 
+                entity.Property(e => e.WaitList)
+                    .HasColumnName("waitlist")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.Property(e => e.PageSize)
                     .HasColumnName("page_size")
                     .HasColumnType("int(11)")

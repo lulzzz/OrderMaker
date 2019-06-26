@@ -85,7 +85,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         [HttpPost("search/number")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostSerarchIndexAsync()
-        {            
+        {
 
             string form = Request.Form["formId"];
             string value = Request.Form["searchNumber"];
@@ -138,7 +138,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             _context.MtdFilter.Update(filter);
             await _context.SaveChangesAsync();
             return Ok();
-        }        
+        }
 
         [HttpPost("pagemove")]
         [ValidateAntiForgeryToken]
@@ -297,7 +297,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             List<MtdFilterColumn> columns = new List<MtdFilterColumn>();
             int seq = 0;
-            foreach (string field in fieldIds.Where(x=>x != ""))
+            foreach (string field in fieldIds.Where(x => x != ""))
             {
                 seq++;
                 columns.Add(new MtdFilterColumn
@@ -311,7 +311,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             try
             {
-                if (filter.MtdFilterColumn != null) {
+                if (filter.MtdFilterColumn != null)
+                {
                     _context.MtdFilterColumn.RemoveRange(filter.MtdFilterColumn);
                     await _context.SaveChangesAsync();
                 }
@@ -326,5 +327,37 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
         }
 
+
+        [HttpPost("waitlist/set")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostWaitListSetAsync()
+        {
+            string idForm = Request.Form["id-form-waitlist"];
+            WebAppUser user = await _userManager.GetUserAsync(HttpContext.User);
+            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.IdUser == user.Id && x.MtdForm == idForm).FirstOrDefaultAsync();
+            if (mtdFilter == null)
+            {
+                mtdFilter = new MtdFilter
+                {
+                    IdUser = user.Id,
+                    MtdForm = idForm,
+                    PageSize = 10,
+                    SearchText = "",
+                    SearchNumber = "",
+                    Page = 1,
+                    WaitList = 1,
+                };
+                await _context.MtdFilter.AddAsync(mtdFilter);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+            mtdFilter.WaitList = mtdFilter.WaitList == 0 ? 1 : 0;
+            _context.MtdFilter.Update(mtdFilter);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
+        }
     }
 }

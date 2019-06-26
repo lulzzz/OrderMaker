@@ -30,9 +30,12 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 
             OutFlow outFlow = new OutFlow();
 
-            //List<string> storesForUser = await ApprovalHandler.GetStoreIds(_context, _user);
-            //queryMtdStore = queryMtdStore.Where(x => storesForUser.Contains(x.Id));
-
+            if (incomer.WaitList == 1)
+            {
+                List<string> storesForUser = await ApprovalHandler.GetStoreIds(_context, _user);
+                queryMtdStore = queryMtdStore.Where(x => storesForUser.Contains(x.Id));
+            }
+            
             bool ownOnly = _userRights.Where(x => x.Value.Contains("view-own")).Any();
             if (ownOnly)
             {

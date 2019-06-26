@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Models.Store;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Mtd.OrderMaker.Web.Components.Store.Stack
             {
                 var fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                         .Where(x => x.MtdFormPartNavigation.MtdForm == field.MtdFormList.MtdForm & x.MtdSysType == 1)
-                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o=>o.Sequence).FirstOrDefaultAsync();
+                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o=>o.Sequence).FirstOrDefaultAsync();                
 
                 IList<long> stackIds = await _context.MtdStoreStack.Where(x => x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
 

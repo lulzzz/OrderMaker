@@ -45,10 +45,9 @@ namespace Mtd.OrderMaker.Web.Components.Index
             string searchText = "";
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x=>x.IdUser == user.Id && x.MtdForm==idForm);
             if (filter != null) searchText = filter.SearchText;
+            bool whiteList = filter.WaitList == 0 ? false : true;
 
-
-
-            return View("Default",new HeaderModelView { IdForm = idForm, SearchText=searchText});
+            return View("Default",new HeaderModelView { IdForm = idForm, SearchText=searchText, WaitList=whiteList});
         }
     }
 }
