@@ -114,6 +114,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
         {
             MtdApprovalStage first = await GetCurrentStageAsync();
             MtdApprovalStage current = await GetFirstStageAsync();
+            if (current == null) { return false; }
             return first.Id.Equals(current.Id);
         }
 
@@ -131,14 +132,24 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
         public async Task<IList<MtdApprovalStage>> GetStagesAsync()
         {
             MtdApproval mtdApproval = await GetApproval();
-            return mtdApproval.MtdApprovalStage.OrderBy(x => x.Stage).ToList();
+            if (mtdApproval != null)
+            {
+                return mtdApproval.MtdApprovalStage.OrderBy(x => x.Stage).ToList();
+            }
+
+            return new List<MtdApprovalStage>();
         }
 
         public async Task<List<MtdApprovalStage>> GetStagesDownAsync()
         {
             MtdApproval mtdApproval = await GetApproval();
-            MtdApprovalStage currentStage = await GetCurrentStageAsync();
-            return mtdApproval.MtdApprovalStage.Where(x=>x.Stage<currentStage.Stage).OrderBy(x => x.Stage).ToList();
+            if(mtdApproval != null)
+            {
+                MtdApprovalStage currentStage = await GetCurrentStageAsync();
+                return mtdApproval.MtdApprovalStage.Where(x => x.Stage < currentStage.Stage).OrderBy(x => x.Stage).ToList();
+            }
+
+            return new List<MtdApprovalStage>();
         }
 
         public async Task<MtdApprovalStage> GetFirstStageAsync()
