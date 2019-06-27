@@ -82,7 +82,7 @@
         <hr />
         <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('clicker-approve').click()">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
-            <span class="mdc-list-item__text">@Localizer["Start approve"]</span>
+            <span class="mdc-list-item__text">@Localizer["Start approval"]</span>
         </li>
     }
 
@@ -106,19 +106,19 @@
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
-                <span>Approval is required</span>
-                <div style="padding-bottom: 4px;">
-                    <button class="mdc-button mdc-button--raised" style="color: white" onclick="document.getElementById('clicker-approve').click()">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
-                        <span class="mdc-button__label">Approve</span>
-                    </button>
+                <span> @Localizer["Approval is required"]</span>
+                                <div style="padding-bottom: 4px;">
+                                    <button class="mdc-button mdc-button--raised" style="color: white" onclick="document.getElementById('clicker-approve').click()">
+                                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
+                                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+                                    </button>
 
-                    <button id="reject-button" class="mdc-button mdc-button--raised">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
-                        <span class="mdc-button__label">Reject</span>
-                    </button>
-                </div>
-            </div>
+                                    <button id="reject-button" class="mdc-button mdc-button--raised">
+                                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
+                                        <span class="mdc-button__label">@Localizer["Reject"]</span>
+                                    </button>
+                                </div>
+</div>
         </div>
     }
     <div class="mtd-desk-blocks">
@@ -287,7 +287,7 @@
                                             <div class="mdc-checkbox__mixedmark"></div>
                                         </div>
                                     </div>
-                                    <label for="checkbox-complete">@Localizer["Complete the approval chain"]</label>
+                                    <label for="checkbox-complete">@Localizer["Complete the approval process"]</label>
                                 </div>
                             </div>
                             @Localizer["Select the stage to which the approval process will be returned."]

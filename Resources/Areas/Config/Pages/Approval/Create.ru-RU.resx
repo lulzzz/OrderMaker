@@ -117,22 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Configuration and setup" xml:space="preserve">
-    <value>Конфигурация и настройка</value>
+  <data name="Approvals" xml:space="preserve">
+    <value>Согласования</value>
   </data>
   <data name="Configurator" xml:space="preserve">
     <value>Конфигуратор</value>
   </data>
-  <data name="Display elements" xml:space="preserve">
-    <value>Отображение элементов</value>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
   </data>
-  <data name="Forms" xml:space="preserve">
-    <value>Формы</value>
+  <data name="Creating new approval chain" xml:space="preserve">
+    <value>Создание новой цепочки согласования</value>
   </data>
-  <data name="Interface" xml:space="preserve">
-    <value>Интерфейс</value>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
   </data>
-  <data name="Templates setting" xml:space="preserve">
-    <value>Настройка шаблонов</value>
+  <data name="Form Approval Chain" xml:space="preserve">
+    <value>Цепочка согласований для формы</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Наименование</value>
+  </data>
+  <data name="New approval" xml:space="preserve">
+    <value>Новое согласование</value>
+  </data>
+  <data name="New approval chain was created" xml:space="preserve">
+    <value>Новое цепочка огласований была создана</value>
   </data>
 </root>
