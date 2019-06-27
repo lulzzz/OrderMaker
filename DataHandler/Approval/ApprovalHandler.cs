@@ -33,10 +33,10 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
         private MtdStore storeCache;
         private MtdApproval approvalCache;
 
-        public static async Task<List<string>> GetStoreIds(OrderMakerContext context, WebAppUser user)
+        public static async Task<List<string>> GetWaitStoreIds(OrderMakerContext context, WebAppUser user)
         {
             List<int> stagesUser = await context.MtdApprovalStage.Where(x => x.UserId == user.Id).Select(x => x.Id).ToListAsync();
-            return await context.MtdStoreApproval.Where(x => stagesUser.Contains(x.MtdApproveStage)).Select(x => x.Id).ToListAsync();
+            return await context.MtdStoreApproval.Where(x => x.Approved == 0 && stagesUser.Contains(x.MtdApproveStage)).Select(x => x.Id).ToListAsync();
         }
 
         private async Task<MtdStore> GetStoreAsync()
