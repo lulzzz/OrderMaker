@@ -16,26 +16,39 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Web.DataConfig;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Localization;
 
 namespace Mtd.OrderMaker.Web.Services
 {
+    public class BlankEmail
+    {
+        public string Email { get; set; }
+        public string Subject { get; set; }
+        public string Header { get; set; }
+        public List<string> Content { get; set; }
+    }
 
     public class EmailSender : IEmailSender
     {
         private EmailSettings _emailSettings { get; }
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public EmailSender(IOptions<EmailSettings> emailSettings)
+
+        public EmailSender(IOptions<EmailSettings> emailSettings, IHostingEnvironment hostingEnvironment)
         {
             _emailSettings = emailSettings.Value;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
@@ -45,6 +58,39 @@ namespace Mtd.OrderMaker.Web.Services
             return Task.FromResult(0);
         }
 
+
+        public async Task<bool> SendEmailBlankAsync(BlankEmail blankEmail)
+        {
+
+            try
+            {
+
+                string message = string.Empty;
+                foreach (string p in blankEmail.Content)
+                {
+                    message += $"<p>{p}</p>";
+                }
+
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string contentRootPath = _hostingEnvironment.ContentRootPath;
+                var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", "blank.html");
+                var htmlArray = File.ReadAllText(file);
+                string htmlText = htmlArray.ToString();
+
+                htmlText = htmlText.Replace("{title}", "OrderMaker");
+                htmlText = htmlText.Replace("{header}", blankEmail.Header);
+                htmlText = htmlText.Replace("{content}", message);
+
+                await SendEmailAsync(blankEmail.Email, blankEmail.Subject, htmlText);
+            }
+            catch
+            {
+                return false;
+            }
+
+
+            return true;
+        }
 
         private async Task Execute(string email, string subject, string message)
         {

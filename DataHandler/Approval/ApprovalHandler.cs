@@ -164,6 +164,15 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             return mtdApprovalStages.OrderByDescending(x => x.Stage).FirstOrDefault();
         }
 
+        public async Task<MtdApprovalStage> GetPrevStage()
+        {
+            MtdApprovalStage prevStage = await GetCurrentStageAsync();
+            IList<MtdApprovalStage> stages = await GetStagesAsync();
+            var stage = stages.Where(x => x.Stage < prevStage.Stage).FirstOrDefault();
+            if (stage != null) { prevStage = stage; }
+            return prevStage;
+        }
+
         public async Task<MtdApprovalStage> GetNextStage()
         {
             MtdApprovalStage current = await GetCurrentStageAsync();
@@ -292,7 +301,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         public async Task<IList<MtdLogApproval>> GetHistory()
@@ -320,6 +329,21 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             }
 
             return ids;
+        }
+
+        public async Task<string> GetOwnerID()
+        {
+            MtdStore mtdStore = await GetStoreAsync();
+            if (mtdStore.MtdStoreOwner == null) return string.Empty;
+            return mtdStore.MtdStoreOwner.UserId;
+        }
+
+        public async Task<string> GetStoreID()
+        {
+            string result = string.Empty;
+            MtdStore mtdStore = await GetStoreAsync();
+            if (mtdStore != null) { result = mtdStore.Id; }
+            return result; 
         }
 
     }

@@ -191,6 +191,18 @@
                             }
 
                         }
+                        else
+                        {
+                            <tr>
+                                <td>@Localizer["Approval status"]</td>
+                                <td>
+                                    <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
+                                        <i style="vertical-align:middle" class="material-icons">new_releases</i>
+                                        @Localizer["Not started"]
+                                    </span>
+                                </td>
+                            </tr>
+                        }
 
                     </table>
                 </div>
@@ -328,9 +340,12 @@
                 const dialogApproval = document.getElementById('dialog-approval');
                 if (dialogApproval) {
                     const d = new mdc.dialog.MDCDialog(dialogApproval);
-                    document.getElementById('reject-button').addEventListener('click', () => {
-                        d.open();
-                    });
+                    const rb = document.getElementById('reject-button');
+                    if (rb) {
+                        rb.addEventListener('click', () => {
+                            d.open();
+                        });
+                    }                    
                 }
 
                 const checkComplete = document.getElementById("checkbox-complete");
