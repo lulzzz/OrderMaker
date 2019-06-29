@@ -47,7 +47,8 @@
 
                 @foreach (var field in Model.MtdFormPartFields)
                 {
-                    <li id="@field.Id-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked="false" 
+                    bool isChecked = Model.MtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any();                    
+                    <li id="@field.Id-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked=@isChecked.ToString().ToLower()
                         data-value="@field.Id"
                         data-part="@field.MtdFormPart">
                         <span class="mdc-list-item__graphic">

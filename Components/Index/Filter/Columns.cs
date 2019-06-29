@@ -53,13 +53,33 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 .Include(x=>x.MtdFilterNavigation)
                 .Where(x => x.MtdFilterNavigation.IdUser == user.Id && x.MtdFilterNavigation.MtdForm == idForm)
                 .OrderBy(x=>x.Sequence)
-                .ToListAsync();   
+                .ToListAsync();
 
-            IList<MtdFormPartField> mtdFormPartFields = await _context.MtdFormPartField
+            List<MtdFormPartField> mtdFormPartFields = new List<MtdFormPartField>();
+            IList<MtdFormPartField> tempFields = await _context.MtdFormPartField             
                 .Include(x => x.MtdFormPartNavigation)
                 .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && partIds.Contains(x.MtdFormPart))
                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence)
                 .ToListAsync();
+
+            int sequence = 0;
+            foreach (var column in mtdFilterColumns)
+            {
+                sequence++;
+                var field = tempFields.Where(x => x.Id == column.MtdFormPartField).FirstOrDefault();
+                field.Sequence = sequence;
+                mtdFormPartFields.Add(field);
+            }
+            
+            foreach(var field in tempFields)
+            {
+                if (!mtdFilterColumns.Where(x=>x.MtdFormPartField == field.Id).Any())
+                {
+                    sequence++;
+                    field.Sequence = sequence;
+                    mtdFormPartFields.Add(field);
+                }
+            }
 
             IList<MtdFormPart> mtdFormParts = mtdFormPartFields.GroupBy(x => x.MtdFormPartNavigation.Id)
                 .Select(g => g.FirstOrDefault(x=>x.MtdFormPartNavigation.Id==g.Key).MtdFormPartNavigation)
