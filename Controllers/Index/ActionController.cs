@@ -24,17 +24,38 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Filter;
 using Mtd.OrderMaker.Web.DataHandler.Stack;
+using Mtd.OrderMaker.Web.Services;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace Mtd.OrderMaker.Web.Controllers.Index
 {
+    public static class IWorkBookExtensions
+    {
+
+        public static void WriteExcelToResponse(this IWorkbook book, HttpContext httpContext, string templateName)
+        {
+            var response = httpContext.Response;
+            response.ContentType = "application/vnd.ms-excel";
+            if (!string.IsNullOrEmpty(templateName))
+            {
+                var contentDisposition = new Microsoft.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                contentDisposition.SetHttpFileName(templateName);
+                response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
+            }
+            book.Write(response.Body);
+        }
+    }
+
     [Route("api/action/index")]
     [ApiController]
     [Authorize(Roles = "Admin,User")]
@@ -42,13 +63,13 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
     {
 
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandlerTrial _userHandler;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ActionController(OrderMakerContext context, UserManager<WebAppUser> userManager, IHostingEnvironment hostingEnvironment)
+        public ActionController(OrderMakerContext context, UserHandlerTrial userHandler, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
-            _userManager = userManager;
+            _userHandler = userHandler;
             _hostingEnvironment = hostingEnvironment;
         }
 
@@ -60,8 +81,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             if (data.FirstOrDefault() == null || data.FirstOrDefault().Equals(string.Empty)) return NotFound();
             string idForm = data.FirstOrDefault();
 
-            var user = await _userManager.GetUserAsync(User);
-            IList<Claim> userRights = await _userManager.GetClaimsAsync(user);
+            var user = await _userHandler.GetUserAsync(User);
+            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
+
+            IList<Claim> userRights = await _userHandler.GetClaimsAsync(user);
             FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             MtdFilter mtdFilter = await handlerFilter.GetFilterAsync();
             if (mtdFilter == null) return NotFound();
@@ -76,62 +99,54 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             IList<string> storeIds = mtdStore.Select(s => s.Id).ToList();
             IList<string> fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
 
+            IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
+            fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
+
             StackHandler handlerStack = new StackHandler(_context);
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, fieldIds);
-            IList<MtdFormPartField> columns = incomer.FieldForColumn.Where(x => x.MtdSysType != 8 && x.MtdSysType != 7).ToList();            
-            return await Export(mtdStore, columns, mtdStoreStack);
+            IList<MtdFormPartField> columns = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList();          
+            
+            IWorkbook workbook = CreateWorkbook(mtdStore, columns, mtdStoreStack);
+            workbook.WriteExcelToResponse(HttpContext, "OrderMakerList.xlsx");
+
+            return Ok();
         }
 
-        private async Task<IActionResult> Export(IList<MtdStore> mtdStores, IList<MtdFormPartField> partFields, IList<MtdStoreStack> storeStack)
+        private IWorkbook CreateWorkbook(IList<MtdStore> mtdStores, IList<MtdFormPartField> partFields, IList<MtdStoreStack> storeStack)
         {
-            string prefixFile = new Random().Next().ToString();
-            string sWebRootFolder = $"{_hostingEnvironment.WebRootPath}/files";
-            string sFileName = $"{prefixFile}OrderMaker.xlsx";
-            FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
-            var memory = new MemoryStream();
-            using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))
-            {
-                IWorkbook workbook = new XSSFWorkbook();
 
-                ISheet sheet1 = workbook.CreateSheet("Sheet1");                
-                var rowIndex = 0;
-                var colIndex = 0;
-                IRow rowTitle = sheet1.CreateRow(rowIndex);
-                rowTitle.CreateCell(0).SetCellValue("ID");
+            IWorkbook workbook = new XSSFWorkbook();
+
+            ISheet sheet1 = workbook.CreateSheet("Sheet1");
+            var rowIndex = 0;
+            var colIndex = 0;
+            IRow rowTitle = sheet1.CreateRow(rowIndex);
+            rowTitle.CreateCell(0).SetCellValue("ID");
+            foreach (var field in partFields)
+            {                
+                colIndex++;
+                rowTitle.CreateCell(colIndex).SetCellValue(field.Name);
+            }
+            
+            colIndex = 0;
+            rowIndex++;
+            foreach (var store in mtdStores)
+            {
+                IRow row = sheet1.CreateRow(rowIndex);
+                row.CreateCell(colIndex).SetCellValue(store.Sequence.ToString("D9"));
                 foreach (var field in partFields)
                 {
-                    sheet1.AutoSizeColumn(colIndex);
                     colIndex++;
-                    rowTitle.CreateCell(colIndex).SetCellValue(field.Name);
+                    MtdStoreStack stack = storeStack.FirstOrDefault(x => x.MtdStore == store.Id && x.MtdFormPartField == field.Id);
+                    ICell cell = row.CreateCell(colIndex);
+                    SetValuefoCell(stack, field, cell);
                 }
-
                 colIndex = 0;
                 rowIndex++;
-                foreach (var store in mtdStores)
-                {
-                    IRow row = sheet1.CreateRow(rowIndex);
-                    row.CreateCell(colIndex).SetCellValue(store.Sequence.ToString("D9"));
-                    foreach (var field in partFields)
-                    {
-                        colIndex++;
-                        MtdStoreStack stack = storeStack.FirstOrDefault(x => x.MtdStore == store.Id && x.MtdFormPartField == field.Id);
-                        ICell cell = row.CreateCell(colIndex);
-                        SetValuefoCell(stack, field, cell);                        
-                    }
-                    colIndex = 0;
-                    rowIndex++;
-                }
-                
-                workbook.Write(fs);
-            }
-            using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
             }
 
-            file.Delete();
-            memory.Position = 0;            
-            return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName.Replace(prefixFile,""));
+            sheet1.AutoSizeColumn(0);
+            return workbook;           
         }
 
         private void SetValuefoCell(MtdStoreStack stack, MtdFormPartField field, ICell cell)

@@ -65,10 +65,15 @@ namespace Mtd.OrderMaker.Web.Components.Index
             int sequence = 0;
             foreach (var column in mtdFilterColumns)
             {
-                sequence++;
+                
                 var field = tempFields.Where(x => x.Id == column.MtdFormPartField).FirstOrDefault();
-                field.Sequence = sequence;
-                mtdFormPartFields.Add(field);
+                if (field != null)
+                {
+                    sequence++;
+                    field.Sequence = sequence;
+                    mtdFormPartFields.Add(field);
+                }
+                
             }
             
             foreach(var field in tempFields)
