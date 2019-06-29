@@ -78,9 +78,10 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 IdForm = idForm,
                 SearchNumber = incomer.SearchNumber,
                 PageCount = pageCount,
-                MtdFormPartFields = incomer.FieldForColumn.Where(x=>fieldIds.Contains(x.Id)).ToList(),
+                MtdFormPartFields = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList(),
                 MtdStores = mtdStore,
-                MtdStoreStack = mtdStoreStack
+                MtdStoreStack = mtdStoreStack,
+                WaitList = incomer.WaitList == 1 ? true : false
             };
 
             return View("Default", rowsModel);

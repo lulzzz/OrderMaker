@@ -29,5 +29,6 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public IList<MtdStore> MtdStores { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields { get; set; }
         public IList<MtdStoreStack> MtdStoreStack { get; set; }
+        public bool WaitList { get; set; }
     }
 }

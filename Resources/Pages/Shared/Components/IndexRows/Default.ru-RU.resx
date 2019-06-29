@@ -120,4 +120,7 @@
   <data name="ID Number" xml:space="preserve">
     <value>Номер</value>
   </data>
+  <data name="There are no documents requiring approval." xml:space="preserve">
+    <value>Нет документов требующих утверждения.</value>
+  </data>
 </root>

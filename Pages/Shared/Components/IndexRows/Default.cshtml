@@ -78,6 +78,12 @@
                 }
             </tbody>
         </table>
+        @if(Model.MtdStores.Count == 0 && Model.WaitList)
+        {
+            <div style="font-weight: bold; text-align: center; color: gray">
+                <p>@Localizer["There are no documents requiring approval."]</p>
+            </div>
+        }
     </div>
 </div>
 @await Component.InvokeAsync("IndexFooter", new { idForm = Model.IdForm, pageCount = Model.PageCount })
