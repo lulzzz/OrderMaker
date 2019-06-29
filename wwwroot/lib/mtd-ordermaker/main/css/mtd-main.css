@@ -135,18 +135,10 @@ form {
   padding-left: 16px;
   display: flex;
   align-items: center;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background-color: white;
+  border-top: 1px solid lightgray;
   height: 56px;
   font-size: small;
-}
-@media (max-height: 640px) {
-  .mtd-main-footer {
-    display: none;
-  }
 }
 .app-bar {
   position: absolute;

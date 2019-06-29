@@ -212,15 +212,14 @@
                     @RenderBody()
                 </div>
                 <footer>
-                    <div class="mtd-main-footer mdc-elevation--z4">
+                    <div class="mtd-main-footer">
                         <div style="flex-grow:1">
-                            &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a>
+                            &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a> All rights reserved.
                         </div>
                         <div style="padding-right: 16px;">
                             <p style="color:#7b7b7b" class="text-right">@Localizer["web application version"]: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</p>
                         </div>
                     </div>
-
                 </footer>
             </div>
         </main>

@@ -147,6 +147,12 @@
   <data name="Created by" xml:space="preserve">
     <value>Создано</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Delete document" xml:space="preserve">
+    <value>Удалить документ</value>
+  </data>
   <data name="Desktop" xml:space="preserve">
     <value>Рабочий стол</value>
   </data>
@@ -209,6 +215,12 @@
   </data>
   <data name="Start approval" xml:space="preserve">
     <value>Начать согласование</value>
+  </data>
+  <data name="The document was deleted" xml:space="preserve">
+    <value>Документ был удален</value>
+  </data>
+  <data name="The document will be permanently deleted" xml:space="preserve">
+    <value>Документ будет удален без возможности восстановления</value>
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>Неизвестно</value>

@@ -5,12 +5,14 @@
   overflow-x: auto;
 }
 .mtd-index-rows table {
-  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 .mtd-index-rows table th {
   height: 64px;
   text-align: left !important;
-  padding: 8px;
+  padding: 7px;
+  font-size: small;
 }
 .mtd-index-rows table th:not(:first-child) {
   font-weight: 100;
@@ -19,33 +21,38 @@
 .mtd-index-rows table th:first-child {
   color: gray;
   text-align: center;
-  width: 11em;
+  width: 7em;
+}
+.mtd-index-rows table td {
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
 }
 .mtd-index-rows table td,
 th:not(:first-child) {
   padding-left: 16px;
   padding-right: 12px;
-  white-space: nowrap;
-  min-width: 145px;
+  max-width: 280px;
+}
+.mtd-index-rows table td:first-child {
+  width: 7em;
+  vertical-align: middle;
 }
 .mtd-index-rows table tbody tr {
   height: 48px;
   border-top: 1px solid lightgray;
-  cursor: default;
+  cursor: pointer;
 }
 .mtd-index-rows-selected {
   background-color: whitesmoke !important;
+  box-shadow: 1px 1px 3px #ccc;
+  border-collapse: collapse;
 }
 .mtd-index-rows table tbody tr:hover {
   background-color: whitesmoke;
   opacity: 1 !important;
 }
-.mtd-index-rows table td:first-child {
-  max-width: 11em;
-}
 .mtd-index-rows-actions {
   background-color: whitesmoke;
-  position: relative;
   animation-name: mtd-data-action-index;
   animation-duration: 0.2s;
   animation-delay: 0.1s;

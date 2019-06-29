@@ -64,6 +64,11 @@
         </li>
     }
 
+    <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
+        <span class="mdc-list-item__text">@Localizer["Print"]</span>
+    </li>
+
     @if (Model.IsAdmin)
     {
         <li id="setowner" class="mdc-list-item" role="menuitem">
@@ -72,10 +77,13 @@
         </li>
     }
 
-    <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
-        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
-        <span class="mdc-list-item__text">@Localizer["Print"]</span>
-    </li>
+    @if (Model.IsEditor)
+    {
+        <li id="eraser" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+            <span class="mdc-list-item__text">@Localizer["Delete"]</span>
+        </li>
+    }
 
     @if (Model.IsApprover && Model.IsFirstStage)
     {
@@ -107,18 +115,18 @@
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
                 <span> @Localizer["Approval is required"]</span>
-                                <div style="padding-bottom: 4px;">
-                                    <button class="mdc-button mdc-button--raised" style="color: white" onclick="document.getElementById('clicker-approve').click()">
-                                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
-                                        <span class="mdc-button__label">@Localizer["Approve"]</span>
-                                    </button>
+                <div style="padding-bottom: 4px;">
+                    <button class="mdc-button mdc-button--raised" style="color: white" onclick="document.getElementById('clicker-approve').click()">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
+                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+                    </button>
 
-                                    <button id="reject-button" class="mdc-button mdc-button--raised">
-                                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
-                                        <span class="mdc-button__label">@Localizer["Reject"]</span>
-                                    </button>
-                                </div>
-</div>
+                    <button id="reject-button" class="mdc-button mdc-button--raised">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
+                        <span class="mdc-button__label">@Localizer["Reject"]</span>
+                    </button>
+                </div>
+            </div>
         </div>
     }
     <div class="mtd-desk-blocks">
@@ -326,6 +334,39 @@
         </form>
     }
 
+    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
+        @Html.AntiForgeryToken()
+        <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
+        <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]."type="hidden" />
+    </form>
+
+    <div id="dialog-store-delete" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="my-dialog-title"
+         aria-describedby="my-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="delete-dialog-title">
+                    @Localizer["Delete document"]?
+                </h2>
+                <div class="mdc-dialog__content" id="delete-dialog-content">
+                    @Localizer["The document will be permanently deleted"].
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                        <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
+
     @section Scripts{
         <script>
             (() => {
@@ -345,7 +386,7 @@
                         rb.addEventListener('click', () => {
                             d.open();
                         });
-                    }                    
+                    }
                 }
 
                 const checkComplete = document.getElementById("checkbox-complete");
@@ -359,6 +400,14 @@
                         }
                     });
                 }
+
+                const eraser = document.getElementById("eraser");
+                if (eraser) {
+                    const dialogDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-store-delete'));
+                    eraser.addEventListener('click', () => { 
+                        dialogDelete.open();
+                    });
+                }                               
 
             })();
         </script>

@@ -27,88 +27,57 @@
     var user = await userHandler._userManager.GetUserAsync(User);
 }
 
-<div class="mtd-index-rows">
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-                        @Html.AntiForgeryToken()
-                        <input name="formId" asp-for="@Model.IdForm" type="hidden" />
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-                            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">filter_list</i>
-                            <input mtd-data-input type="text" id="indexSearchNumber" name="searchNumber" class="mdc-text-field__input " autocomplete="off" asp-for="@Model.SearchNumber" />
-                            <div class="mdc-notched-outline">
-                                <div class="mdc-notched-outline__leading"></div>
-                                <div class="mdc-notched-outline__notch">
-                                    <label for="indexSearchNumber" class="mdc-floating-label @{if (@Model.SearchNumber.Length > 0) { <text>mdc-floating-label--float-above</text>} }">@Localizer["ID Number"]</label>
-                                </div>
-                                <div class="mdc-notched-outline__trailing"></div>
-                            </div>
-                        </div>
-                    </form>
-                </th>
-                @foreach (var item in Model.MtdFormPartFields)
-                {
+
+<div class="mtd-index-rows" style="display:flex; position:relative">
+    <div class="mdc-elevation--z8" style="margin: 0 auto; left: 50%;">
+        <table>
+            <thead>
+                <tr>
                     <th>
-                        @item.Name
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var store in Model.MtdStores)
-            {
-                <tr mtd-data-row="@store.Id" mtd-data-class="mtd-index-rows-selected">
-                    <td>
-                        <div style="display: flex">
-                            <div class="mdc-form-field">
-                                <div class="mdc-checkbox" data-mdc-ripple-is-unbounded>
-                                    <input type="checkbox" class="mdc-checkbox__native-control" id="@store.Id-checkbox" />
-                                    <div class="mdc-checkbox__background">
-                                        <svg class="mdc-checkbox__checkmark"
-                                             viewBox="0 0 24 24">
-                                            <path class="mdc-checkbox__checkmark-path"
-                                                  fill="none"
-                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                        </svg>
-                                        <div class="mdc-checkbox__mixedmark"></div>
+                        <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                            @Html.AntiForgeryToken()
+                            <input name="formId" asp-for="@Model.IdForm" type="hidden" />
+                            <div class="mdc-text-field mdc-text-field--outlined">                                
+                                <input mtd-data-input type="text" id="indexSearchNumber" name="searchNumber" class="mdc-text-field__input " autocomplete="off" asp-for="@Model.SearchNumber" />
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <label for="indexSearchNumber" class="mdc-floating-label @{if (@Model.SearchNumber.Length > 0) { <text>mdc-floating-label--float-above</text>} }">@Localizer["ID Number"]</label>
                                     </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
                                 </div>
                             </div>
+                        </form>
+                    </th>
+                    @foreach (var item in Model.MtdFormPartFields)
+                    {
+                        <th>
+                            @item.Name
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var store in Model.MtdStores)
+                {
+                    <tr mtd-data-href="/workplace/store/details?id=@store.Id">
+                        <td>
                             <div style="align-self: center">
                                 @store.Sequence.ToString("D9")
                             </div>
-                        </div>
-                    </td>
-                    @foreach (var field in Model.MtdFormPartFields)
-                    {
-                        <td>
-                            @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
                         </td>
-                    }
-                </tr>
-                <tr mtd-data-action="@store.Id" class="mtd-index-rows-actions" style="display: none">
-                    <td colspan=@colSpan class=" mdc-elevation--z1">
-                        <a asp-page="./Details" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>visibility</a>
-
-                        @{ bool isEditor = await userHandler.IsEditor(user, store.MtdForm, store.Id);}
-
-                        @if (isEditor)
+                        @foreach (var field in Model.MtdFormPartFields)
                         {
-                            <a asp-page="./Edit" asp-route-id="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>edit</a>
+                            <td>
+                                <div style="max-height: 2.8em; overflow:hidden; padding: 2px; text-overflow: ellipsis">
+                                    @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
+                                </div>                                
+                            </td>
                         }
-                        <a href="#" onclick="CallPrint('@store.Id')" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>print</a>
-                        @{ bool isEraser = await userHandler.IsEraser(user, store.MtdForm, store.Id);}
-                        @if (isEraser)
-                        {
-                            <a mtd-data-row-delete="@store.Id" class="mdc-icon-button material-icons mdc-theme--secondary" data-mdc-ripple-is-unbounded>delete</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
-
 @await Component.InvokeAsync("IndexFooter", new { idForm = Model.IdForm, pageCount = Model.PageCount })
