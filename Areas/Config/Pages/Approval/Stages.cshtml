@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -53,8 +54,8 @@
     <ul id="drgList" class="mdc-list mdc-list--two-line">
         @foreach (var stage in Model.Stages)
         {
-        <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-desk-draggable-item mdc-list-item"
-            data-value="@stage.Id" draggable="true" role="button" aria-checked="false">           
+            <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-desk-draggable-item mdc-list-item"
+                data-value="@stage.Id" draggable="true" role="button" aria-checked="false">
                 <div style="padding: 8px;">
                     @{
                         int endStage = Model.Stages.Max(x => x.Stage);
@@ -81,8 +82,8 @@
                 </div>
                 <div class="mtd-desk-draggable-bdrag">
                     <i class="material-icons" style="color:gray">drag_handle</i>
-                </div>           
-        </li>
+                </div>
+            </li>
         }
     </ul>
 </div>

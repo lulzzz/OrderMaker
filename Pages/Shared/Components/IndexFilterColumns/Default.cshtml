@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -47,7 +48,7 @@
 
                 @foreach (var field in Model.MtdFormPartFields)
                 {
-                    bool isChecked = Model.MtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any();                    
+                    bool isChecked = Model.MtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any();
                     <li id="@field.Id-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked=@isChecked.ToString().ToLower()
                         data-value="@field.Id"
                         data-part="@field.MtdFormPart">

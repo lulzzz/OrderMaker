@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -27,7 +28,7 @@
     ViewData["SecondTitle"] = Localizer["Display elements"];
 }
 
-@section Head {    
+@section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
 }
 
@@ -49,7 +50,7 @@
             <div class="mtd-desk-field">
                 <label>@Localizer["Image for main menu"]</label>
                 <div style="display: flex; margin-top: 8px;">
-                    @{                        
+                    @{
                         <div style="max-width: 48px; overflow:hidden">
                             <img src="@ViewBag.ImgMenu" height="48" />
                         </div>

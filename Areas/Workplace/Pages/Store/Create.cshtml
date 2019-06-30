@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -51,17 +52,17 @@
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/moment/dist/js/moment-with-locales.min.js" asp-append-version="true"></script>
     <script src="~/lib/xdan/dist/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
-    
-    
+
+
     <script>
         $("input.mtd-data-datepicker").each(function () {
             $(this).datetimepicker({
-                timepicker: false,                
+                timepicker: false,
                 mask: @Localizer["'19/39/9999'"],
-                format: @Localizer["'m/d/Y'"],                
+                format: @Localizer["'m/d/Y'"],
                 defaultDate: new Date(),
                 validateOnBlur: false,
-            });            
+            });
         });
 
         $("input.mtd-data-datetimepicker").each(function () {
@@ -71,10 +72,10 @@
                 validateOnBlur: false,
                 mask: @Localizer["'19/39/9999 29:59'"],
                 format: @Localizer["'m/d/Y h:i A'"],
-                defaultDate: new Date(),            
-            });            
+                defaultDate: new Date(),
+            });
         });
-        $.datetimepicker.setLocale(@Localizer["'en'"]);    
+        $.datetimepicker.setLocale(@Localizer["'en'"]);
     </script>
 
 }

@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -30,13 +31,13 @@
         </div>
     </div>
     <div id="indexModal" class="mtd-index-modal" style="display: none;"></div>
-    
+
     @await Component.InvokeAsync("IndexHeader", new { idForm = Model.IdForm })
     @await Component.InvokeAsync("IndexFilterDisplay", new { idForm = Model.IdForm })
     @await Component.InvokeAsync("IndexFilterSelector", new { idForm = Model.IdForm })
     @await Component.InvokeAsync("IndexFilterColumns", new { idForm = Model.IdForm })
     @await Component.InvokeAsync("IndexRows", new { idForm = Model.IdForm })
-    
+
 </div>
 
 

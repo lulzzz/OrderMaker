@@ -1,4 +1,37 @@
-﻿					GNU GENERAL PUBLIC LICENSE
+﻿  
+﻿Licensing Information User Manual
+
+OrderMaker 1.0
+__________________________________________________________________
+
+Introduction
+   
+   This License Information User Manual contains product license
+   and other licensing information, including licensing information for
+   third-party software which may be included in this distribution of
+   OrderMaker 1.0
+
+   Last updated: June 2019.
+
+Licensing Information   
+
+   This software is released under version 3 of the GNU General
+   Public License (GPLv3), as set forth below, with the following
+   additional permissions:
+
+   This distribution of OrderMaker 1.0 is distributed with certain software
+   (including but not limited to Pomelo.EntityFrameworkCore.MySql and DotNetCore.NPOI) 
+   that is licensed under separate terms, as designated in a particular file or component or in the
+   license documentation. Without limiting your rights under the GPLv3,
+   the author of OrderMaker hereby grant you an additional permission to link
+   the program and your derivative works with the separately licensed
+   software that they have included with the program.
+
+   MTD OrderMaker http://ordermaker.org
+   Copyright(c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved. 
+
+ 
+					GNU GENERAL PUBLIC LICENSE
 					Version 3, 19 November 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>

@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -337,7 +338,7 @@
     <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
         @Html.AntiForgeryToken()
         <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
-        <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]."type="hidden" />
+        <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]." type="hidden" />
     </form>
 
     <div id="dialog-store-delete" class="mdc-dialog"
@@ -404,10 +405,10 @@
                 const eraser = document.getElementById("eraser");
                 if (eraser) {
                     const dialogDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-store-delete'));
-                    eraser.addEventListener('click', () => { 
+                    eraser.addEventListener('click', () => {
                         dialogDelete.open();
                     });
-                }                               
+                }
 
             })();
         </script>

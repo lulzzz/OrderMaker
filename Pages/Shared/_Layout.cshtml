@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -64,7 +65,7 @@
             <div style="padding-top: 16px; padding-bottom: 16px;">
                 <div style="display:flex; flex-direction: column; align-items: center">
                     <div>
-                        @{ 
+                        @{
                             string pathImgMenu = "/lib/mtd-ordermaker/images/logo-mtd.png";
                             var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
                             if (imgMenu != string.Empty) { pathImgMenu = imgMenu; }
@@ -118,14 +119,14 @@
                     {
                         <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
                     }
-                        <span style="padding-left: 8px">
-                            @{
-                                string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
-                                var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
-                                if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
-                            }
-                            <img src="@pathAppBar" height="32" />
-                        </span>
+                    <span style="padding-left: 8px">
+                        @{
+                            string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
+                            var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
+                            if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
+                        }
+                        <img src="@pathAppBar" height="32" />
+                    </span>
                 </section>
                 @if (SignInManager.IsSignedIn(User))
                 {
@@ -212,15 +213,15 @@
                     @RenderBody()
                 </div>
                 @*<footer>
-                    <div class="mtd-main-footer">
-                        <div style="flex-grow:1">
-                            &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a> All rights reserved.
+                        <div class="mtd-main-footer">
+                            <div style="flex-grow:1">
+                                &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a> All rights reserved.
+                            </div>
+                            <div style="padding-right: 16px;">
+                                <p style="color:#7b7b7b" class="text-right">@Localizer["web application version"]: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</p>
+                            </div>
                         </div>
-                        <div style="padding-right: 16px;">
-                            <p style="color:#7b7b7b" class="text-right">@Localizer["web application version"]: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</p>
-                        </div>
-                    </div>
-                </footer>*@
+                    </footer>*@
             </div>
         </main>
     </div>

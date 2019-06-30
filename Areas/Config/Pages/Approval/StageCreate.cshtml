@@ -1,8 +1,9 @@
 ﻿@*
-    OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev. All rights reserved.
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -104,30 +105,30 @@
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; align-items:center; ">            
-            <div class="mtd-desk-fields" style="max-width: 620px;">              
+        <div style="display: flex; flex-direction: column; align-items:center; ">
+            <div class="mtd-desk-fields" style="max-width: 620px;">
                 <span style="font-weight: bold; font-size:medium; padding: 8px; text-align:center">@Localizer["Parts of the form that will be uneditable after approval"]</span>
                 @foreach (var part in Model.MtdFormParts)
                 {
-                <div class="mtd-desk-field mtd-desk-field--border">
-                    <div class="mdc-form-field">
-                        <div class="mdc-checkbox">
-                            <input type="checkbox"
-                                   class="mdc-checkbox__native-control"
-                                   id="@part.Id" name="@part.Id" />
-                            <div class="mdc-checkbox__background">
-                                <svg class="mdc-checkbox__checkmark"
-                                     viewBox="0 0 24 24">
-                                    <path class="mdc-checkbox__checkmark-path"
-                                          fill="none"
-                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                </svg>
-                                <div class="mdc-checkbox__mixedmark"></div>
+                    <div class="mtd-desk-field mtd-desk-field--border">
+                        <div class="mdc-form-field">
+                            <div class="mdc-checkbox">
+                                <input type="checkbox"
+                                       class="mdc-checkbox__native-control"
+                                       id="@part.Id" name="@part.Id" />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark"
+                                         viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path"
+                                              fill="none"
+                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
                             </div>
+                            <label for="@part.Id">@part.Name</label>
                         </div>
-                        <label for="@part.Id">@part.Name</label>
                     </div>
-                </div>
                 }
             </div>
         </div>
