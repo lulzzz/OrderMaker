@@ -32,7 +32,6 @@
 }
 .mtd-store-style-title {
   flex-grow: 1;
-  align-self: center;
   font-size: x-large;
   font-weight: bold;
   text-transform: uppercase;
@@ -199,6 +198,7 @@
   flex-grow: 1;
   padding: 0px 4px 0px 4px;
   min-height: 50px;
+  white-space: nowrap;
 }
 .mtd-store-view-col-name {
   color: gray;

@@ -32,7 +32,6 @@
 }
 .mtd-store-style-title {
   flex-grow: 1;
-  align-self: center;
   font-size: x-large;
   font-weight: bold;
   text-transform: uppercase;
