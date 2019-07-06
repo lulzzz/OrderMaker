@@ -45,7 +45,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdFormPart> MtdFormPart { get; set; }
         public virtual DbSet<MtdFormPartField> MtdFormPartField { get; set; }
         public virtual DbSet<MtdFormPartHeader> MtdFormPartHeader { get; set; }
-        public virtual DbSet<MtdGroupForm> MtdGroupForm { get; set; }
+        public virtual DbSet<MtdCategoryForm> MtdCategoryForm { get; set; }
         public virtual DbSet<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
@@ -357,7 +357,7 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasName("id_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.MtdGroup)
+                entity.HasIndex(e => e.MtdCategory)
                     .HasName("fk_form_grooup_idx");
 
                 entity.Property(e => e.Id)
@@ -374,9 +374,9 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("description")
                     .HasColumnType("varchar(512)");
 
-                entity.Property(e => e.MtdGroup)
+                entity.Property(e => e.MtdCategory)
                     .IsRequired()
-                    .HasColumnName("mtd_group")
+                    .HasColumnName("mtd_category")
                     .HasColumnType("varchar(36)");
 
                 entity.Property(e => e.Name)
@@ -401,9 +401,9 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'0'");
 
-                entity.HasOne(d => d.MtdGroupNavigation)
+                entity.HasOne(d => d.MtdCategoryNavigation)
                     .WithMany(p => p.MtdForm)
-                    .HasForeignKey(d => d.MtdGroup)
+                    .HasForeignKey(d => d.MtdCategory)
                     .HasConstraintName("fk_form_grooup");
 
                 entity.HasOne(d => d.ParentNavigation)
@@ -684,9 +684,9 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasConstraintName("fk_image_form_part");
             });
 
-            modelBuilder.Entity<MtdGroupForm>(entity =>
+            modelBuilder.Entity<MtdCategoryForm>(entity =>
             {
-                entity.ToTable("mtd_group_form");
+                entity.ToTable("mtd_category_form");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id_UNIQUE")

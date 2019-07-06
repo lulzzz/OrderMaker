@@ -21,9 +21,9 @@ using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
 {
-    public partial class MtdGroupForm
+    public partial class MtdCategoryForm
     {
-        public MtdGroupForm()
+        public MtdCategoryForm()
         {
             MtdForm = new HashSet<MtdForm>();
         }

@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.2.5</AssemblyVersion>
-    <FileVersion>1.0.2.5</FileVersion>
+    <AssemblyVersion>1.0.2.6</AssemblyVersion>
+    <FileVersion>1.0.2.6</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMaker</RepositoryUrl>
-    <PackageReleaseNotes>Date added to the list of documents.</PackageReleaseNotes>
+    <PackageReleaseNotes>Rename FormGroup</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.0.2</Version>
@@ -33,6 +33,8 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Areas\Identity\Data\Migrations\20190409084256_CustomUserData.Designer.cs" />
     <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.cs" />
     <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.Designer.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190705131958_AddGroupPolicy.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190705131958_AddGroupPolicy.Designer.cs" />
     <Compile Remove="Migrations\20190609054945_AddConfigFiles.cs" />
     <Compile Remove="Migrations\20190609054945_AddConfigFiles.Designer.cs" />
     <Compile Remove="Migrations\20190610093653_LogDocument.cs" />
@@ -46,7 +48,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20190624151949_ApproveSchema2.cs" />
     <Compile Remove="Migrations\20190624151949_ApproveSchema2.Designer.cs" />
     <Compile Remove="Migrations\20190626073129_AdFilterWaitList.cs" />
-    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.Designer.cs" />    
+    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.Designer.cs" />
+    <Compile Remove="Migrations\20190705080759_RenameGroup.cs" />
+    <Compile Remove="Migrations\20190705080759_RenameGroup.Designer.cs" />    
   </ItemGroup>
 
 
