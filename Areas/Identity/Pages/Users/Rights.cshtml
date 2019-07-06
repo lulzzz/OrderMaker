@@ -280,7 +280,7 @@
                             </td>
                         </tr>
 
-                        foreach (var part in form.MtdFormPart)
+                        foreach (var part in form.MtdFormPart.OrderBy(x=>x.Sequence))
                         {
                             <tr mtd-rights-parts="@part.Id" mtd-rights-parent="@form.Id" style="display: none">
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;@part.Name</td>

@@ -180,7 +180,7 @@ namespace Mtd.OrderMaker.Web
                 {
                     Name = "Admin",
                     NormalizedName = "ADMIN",
-                    Title = "Administartor",
+                    Title = "Administrator",
                     Seq = 30
                 };
 
@@ -230,12 +230,12 @@ namespace Mtd.OrderMaker.Web
 
             var context = serviceProvider.GetRequiredService<OrderMakerContext>();
 
-            Task<bool> formGroup = context.MtdGroupForm.AnyAsync();
+            Task<bool> formGroup = context.MtdCategoryForm.AnyAsync();
             formGroup.Wait();
 
             if (!formGroup.Result)
             {
-                MtdGroupForm mtdGroupForm = new MtdGroupForm
+                MtdCategoryForm mtdGroupForm = new MtdCategoryForm
                 {
                     Id = "17101180-9250-4498-BE4E-4A941AD6713C",
                     Name = "Default",
@@ -243,7 +243,7 @@ namespace Mtd.OrderMaker.Web
                     Parent = "17101180-9250-4498-BE4E-4A941AD6713C"
                 };
 
-                context.MtdGroupForm.Add(mtdGroupForm);
+                context.MtdCategoryForm.Add(mtdGroupForm);
                 context.SaveChanges();
             }
 

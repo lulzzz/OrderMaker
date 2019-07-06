@@ -38,13 +38,13 @@ namespace Mtd.OrderMaker.Web.Data
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
-        public string MtdGroup { get; set; }
+        public string MtdCategory { get; set; }
         public int Sequence { get; set; }
         public string Parent { get; set; }
         public sbyte VisibleNumber { get; set; }
         public sbyte VisibleDate { get; set; }
 
-        public virtual MtdGroupForm MtdGroupNavigation { get; set; }
+        public virtual MtdCategoryForm MtdCategoryNavigation { get; set; }
         public virtual MtdForm ParentNavigation { get; set; }
         public virtual MtdFormDesk MtdFormDesk { get; set; }
         public virtual MtdFormHeader MtdFormHeader { get; set; }

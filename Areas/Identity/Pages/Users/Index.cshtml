@@ -137,6 +137,7 @@
 </div>
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/delete'>
+    @Html.AntiForgeryToken()
     <input id="user-delete-id" name="user-delete-id" type="hidden" value="Not Selected" />
     <input id="deleteClicker" mtd-data-clicker type="hidden" />
 </form>

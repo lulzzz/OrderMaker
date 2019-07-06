@@ -50,7 +50,7 @@ namespace Mtd.OrderMaker.Web.Pages
             List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewOwn); 
 
             IQueryable<MtdForm> query = _context.MtdForm
-                    .Include(x => x.MtdGroupNavigation)
+                    .Include(x => x.MtdCategoryNavigation)
                     .Include(x=>x.MtdFormHeader)
                     .Include(x => x.MtdFormDesk)
                     .Where(x=> formIds.Contains(x.Id));

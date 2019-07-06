@@ -67,9 +67,9 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
                 return Page();
             }
 
-            var group = await _context.MtdGroupForm.FirstOrDefaultAsync();
+            var group = await _context.MtdCategoryForm.FirstOrDefaultAsync();
 
-            MtdForm.MtdGroup = group.Id;
+            MtdForm.MtdCategory = group.Id;
             MtdForm.Parent = MtdForm.Parent == "null" ? null : MtdForm.Parent;
             MtdForm.Active = true;
 

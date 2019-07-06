@@ -51,7 +51,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public bool IsEditor { get; set; }
         public bool IsApprover { get; set; }
         public bool IsFirstStage { get; set; }
-        public int ApprovalStatus { get; set; }
+        public int ApprovalStatus { get; set; }        
+        public List<MtdFormPart> BlockParts { get; set; }
+        public bool IsFormApproval { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -111,6 +113,13 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
             ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
 
+            List<string> partIds = await approvalHandler.GetBlockedPartsIds();
+            BlockParts = new List<MtdFormPart>();
+            if (partIds.Count > 0)
+            {
+                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).ToListAsync();
+            }
+            IsFormApproval = await approvalHandler.IsApprovalFormAsync();
             ApprovalStatus = 0;
             if (!IsFirstStage) { ApprovalStatus = 1; }
             if (await approvalHandler.IsComplete())
