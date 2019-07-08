@@ -21,7 +21,6 @@
 .mtd-ui-material-form .mtd-ui-text-label {
   position: absolute;
   top: 0.25rem;
-  pointer-events: none;
   padding-left: 0.125rem;
   z-index: 1;
   color: #b3b3b3;
@@ -122,6 +121,15 @@
   border: none;
   line-height: 1.6;
   box-shadow: none;
+}
+.mtd-ui-material-form .mtd-ui-text-label:hover {
+  color: navy !important;
+  cursor: pointer;
+}
+.mtd-ui-material-form .mtd-ui-text-label:hover:after {
+  font-family: "Material Icons";
+  font-size: 0.9rem;
+  content: ' help';
 }
 .mtd-field-file-choose {
   margin: 0 auto;

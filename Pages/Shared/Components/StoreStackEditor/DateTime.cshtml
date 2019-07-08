@@ -38,7 +38,7 @@
         <div class="mtd-store-edit-col-root">
             <div class="mtd-ui-material-form">
                 <input class="mtd-data-datetimepicker" type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
-                <label for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+                <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
                 <i class="mtd-ui-text-bottom"></i>
             </div>
         </div>
@@ -46,7 +46,7 @@
     default:
         <div class="mtd-ui-material-form">
             <input class="mtd-data-datetimepicker" type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
-            <label for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+            <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
             <i class="mtd-ui-text-bottom"></i>
         </div>
         break;

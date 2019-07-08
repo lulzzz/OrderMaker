@@ -78,3 +78,26 @@
     </script>
 
 }
+
+<div id="dialog-info" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-dialog-title">
+                @Localizer["Info about "] <span id="dialog-info-title"></span> 
+            </h2>
+            <div class="mdc-dialog__content" id="dialog-info-content">
+               
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>

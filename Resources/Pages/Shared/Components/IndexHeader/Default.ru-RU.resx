@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add filter" xml:space="preserve">
+    <value>Добавить фильтр</value>
+  </data>
+  <data name="Column list" xml:space="preserve">
+    <value>Колонки списка</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
   <data name="Search for text" xml:space="preserve">
     <value>Поиск по тексту</value>
+  </data>
+  <data name="Wait list" xml:space="preserve">
+    <value>Лист ожидания</value>
   </data>
 </root>

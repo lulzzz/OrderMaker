@@ -22,7 +22,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Models.Index;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.Components.Index
@@ -42,6 +44,8 @@ namespace Mtd.OrderMaker.Web.Components.Index
         public async Task<IViewComponentResult> InvokeAsync(string idForm) {
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            var mtdFormList =  await ApprovalHandler.GetWaitStoreIds(_context, user);
+            int pending = mtdFormList.Count();
 
             string searchText = "";
             bool whiteList = false;
@@ -49,9 +53,9 @@ namespace Mtd.OrderMaker.Web.Components.Index
             if (filter != null) {
                 searchText = filter.SearchText;
                 whiteList = filter.WaitList == 0 ? false : true;
-            } 
-            
-            return View("Default",new HeaderModelView { IdForm = idForm, SearchText=searchText, WaitList=whiteList});
+            }
+
+            return View("Default", new HeaderModelView { IdForm = idForm, SearchText = searchText, WaitList = whiteList, Pending = pending });
         }
     }
 }

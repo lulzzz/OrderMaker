@@ -25,5 +25,6 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public string IdForm { get; set; }
         public string SearchText { get; set; }     
         public bool WaitList { get; set; }
+        public int Pending { get; set; }
     }
 }

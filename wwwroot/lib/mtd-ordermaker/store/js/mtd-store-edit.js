@@ -183,5 +183,20 @@ const ListenerForParent = () => {
         });
     });
 
+    const dialog = document.getElementById('dialog-info');
+    if (dialog) {
+        const dialogInfo = new mdc.dialog.MDCDialog(dialog);
+        const dialogInfoContent = document.getElementById('dialog-info-content');
+        const dialogInfoTitle = document.getElementById('dialog-info-title');
+        document.querySelectorAll('[mtd-info]').forEach((item) => {
+            item.addEventListener('click', (e) => {
+                const note = item.getAttribute('mtd-info');
+                dialogInfoTitle.innerHTML = e.target.textContent;
+                dialogInfoContent.innerHTML = note;
+                dialogInfo.open();
+
+            });
+        });
+    }
 
 })();

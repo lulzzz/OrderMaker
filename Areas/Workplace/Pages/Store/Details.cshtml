@@ -65,9 +65,9 @@
                     @Localizer["Are you  confirm your approval?"]
                     @if (Model.BlockParts.Count > 0)
                     {
-                        <div>
+                        <div style="padding: 4px; background-color: whitesmoke">
                             @Localizer["After approval of the document the Parts below will not be editable:"]
-                            <div style="font-weight:600">
+                            <div style="font-weight:600; margin-top: 4px;">
                                 @foreach (var part in Model.BlockParts)
                                 {
                                     <text>@part.Name </text>

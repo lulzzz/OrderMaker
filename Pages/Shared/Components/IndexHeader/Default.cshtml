@@ -54,26 +54,48 @@
         </form>
     </div>
     <div class="mtd-index-header-buttons">
-        <div>
+        <div class="mtd-desk-hint-ibutton">
             <button id="indexButtonFilterAdd" class="mdc-icon-button material-icons mdc-theme--secondary">add_box</button>
+            <div class="mtd-desk-hint-ibutton_info">
+                <span>@Localizer["Add filter"]</span>
+            </div>
         </div>
         <div>
-            <button id="indexButtonColumnEdit" class="mdc-icon-button material-icons mdc-theme--secondary">view_list</button>
+            <div class="mtd-desk-hint-ibutton">
+                <button id="indexButtonColumnEdit" class="mdc-icon-button material-icons mdc-theme--secondary">view_list</button>
+                <div class="mtd-desk-hint-ibutton_info">
+                    <span>@Localizer["Column list"]</span>
+                </div>
+            </div>
+            
         </div>
         <div>
             <form mtd-data-form method="post" action="/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                 @Html.AntiForgeryToken()
                 <input mtd-data-clicker type="hidden" id="id-form-waitlist" name="id-form-waitlist" value="@Model.IdForm" />
-                <button mtd-data-clicker id="approval-list"
-                        class="mdc-icon-button mdc-theme--primary"
-                        aria-label="Approval Wait List"
-                        aria-hidden="true"
-                        aria-pressed="false"
-                        type="button">
-                    <i class="material-icons mdc-icon-button__icon @if (Model.WaitList) {<text>mdc-icon-button__icon--on</text>}">assignment_turned_in</i>
-                    <i class="material-icons mdc-icon-button__icon
+                @if (Model.Pending > 0)
+                {
+                    <div style="position: absolute; text-align: center; min-width: 1.5em; background-color: red; font-size: 0.7em; color: white; padding: 3px; top: -5px; margin-left: 24px; border-radius: 100%">
+                        @Model.Pending
+                    </div>
+                }
+
+                <div class="mtd-desk-hint-ibutton">
+                    <button mtd-data-clicker id="approval-list"
+                            class="mdc-icon-button mdc-theme--primary"
+                            aria-label="Approval Wait List"
+                            aria-hidden="true"
+                            aria-pressed="false"
+                            type="button">
+                        <i class="material-icons mdc-icon-button__icon @if (Model.WaitList) {<text>mdc-icon-button__icon--on</text>}">assignment_turned_in</i>
+                        <i class="material-icons mdc-icon-button__icon
                    @if (!Model.WaitList) {<text>mdc-icon-button__icon--on</text>}" style="color:red">assignment_turned_in</i>
-                </button>
+                    </button>
+                    <div class="mtd-desk-hint-ibutton_info">
+                        <span>@Localizer["Wait list"]</span>
+                    </div>
+                </div>
+
             </form>
 
         </div>

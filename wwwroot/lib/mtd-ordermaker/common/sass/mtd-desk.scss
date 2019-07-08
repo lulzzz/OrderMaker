@@ -95,3 +95,26 @@
     padding-left: 48px;
     padding-right: 8px;
 }
+
+.mtd-desk-hint-ibutton {
+    position: relative;    
+}
+
+.mtd-desk-hint-ibutton .mtd-desk-hint-ibutton_info {
+    visibility: hidden;
+    position: absolute;
+    font-size: 0.7em;
+    width: 64px;
+    text-align: center;
+    margin-left: -12px;
+    padding: 4px;
+    background-color: gray;
+    color: white;
+    z-index: 1;
+    border-radius: 4px;
+    @include mdc-elevation(3);
+}
+
+.mtd-desk-hint-ibutton:hover .mtd-desk-hint-ibutton_info {
+    visibility: visible;
+}
