@@ -68,6 +68,9 @@ const ListenerFilter = () => {
     const selectTerm = new mdc.select.MDCSelect(document.getElementById("indexSelectTerm"));
     const selectFilter = new mdc.textField.MDCTextField(document.getElementById("indexSelectFilter"));
     const selectBlock = document.getElementById(`indexSelectBlock`);
+    const inputField = document.getElementById("indexInputField"); 
+    const selectPeriod = document.getElementById("indexSelectPeriod"); 
+
     const indexFormSelector = document.getElementById("indexFormSelector");
     const buttonApply = document.getElementById("indexButtonApply");
     const buttonCancel = document.getElementById("indexButtonCancel");
@@ -81,22 +84,32 @@ const ListenerFilter = () => {
 
     selectField.listen('MDCSelect:change', (e) => {
         e.preventDefault();
-        const li = document.getElementById(`${selectField.value}-lifilter`);
-        const typeField = li.attributes.getNamedItem("data-type").nodeValue;
-        const idField = li.attributes.getNamedItem("data-value").nodeValue;
-        const input = document.getElementById("indexInputFilter");
+        let selectedValue = selectField.value;
+        selectBlock.style.display = "flex";
+        selectPeriod.hidden = true;
 
+        if (selectedValue === "period") {
+            selectedValue = "period";
+            selectBlock.style.display = "none";
+            selectPeriod.hidden = false;
+        }
+
+        const li = document.getElementById(`${selectedValue}`);
+        const typeField = li.getAttribute("data-type");
+        const idField = li.getAttribute("data-value");     
+        const input = document.getElementById("indexInputFilter");        
+        inputField.value = idField;
 
         input.placeholder = "";
         input.step = "1";
         input.value = "";
-        selectBlock.style.display = "flex";
 
         selectLists.forEach((item) => {
             const id = item.attributes.getNamedItem("mtd-data-list").nodeValue;
             this[`select${id}`].value = "";
             item.style.display = "none";
         });
+
 
 
         switch (typeField) {

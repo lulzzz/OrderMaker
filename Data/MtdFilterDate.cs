@@ -17,17 +17,17 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Web.Data;
+using System;
 using System.Collections.Generic;
 
-
-namespace Mtd.OrderMaker.Web.Models.Index
+namespace Mtd.OrderMaker.Web.Data
 {
-    public class SelectorModelView
+    public partial class MtdFilterDate
     {
-        public string IdForm { get; set; }
-        public IList<MtdSysTerm> MtdSysTerms { get; set; }
-        public IList<MtdFormPartField> MtdFormPartFields { get; set; }
-        public List<SelectorList> StoreList {get;set;}        
+        public int Id { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
+
+        public virtual MtdFilter IdNavigation { get; set; }
     }
 }

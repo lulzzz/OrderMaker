@@ -54,7 +54,7 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
             {
                 List<MtdFilterField> mtdFilterFields = await _context.MtdFilterField
                     .Include(x => x.MtdTermNavigation)
-                    .Include(m => m.MtdFormPartFieldNavigation)
+                    .Include(m => m.MtdFormPartFieldNavigation)                    
                     .Where(x => x.MtdFilter == filter.Id)
                     .ToListAsync();
                 foreach (var field in mtdFilterFields)
@@ -64,7 +64,8 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                     {
                         Id = field.Id,
                         Header = $"{field.MtdFormPartFieldNavigation.Name} ({field.MtdTermNavigation.Sign})",
-                        Value = ""
+                        Value = "",
+                        Type = "-field"
                     };
 
                     if (field.MtdFormPartFieldNavigation.MtdSysType != 11)
@@ -77,7 +78,7 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                         if (mtdStore != null)
                         {
                             var fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1 & partIds.Contains(x.MtdFormPartNavigation.Id))
+                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1 )
                                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
                             if (fieldForList != null) {
                                 IList<long> ids = await _context.MtdStoreStack.Where(x => x.MtdStore == mtdStore.Id & x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
@@ -90,6 +91,19 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                     }
 
                     displayDatas.Add(displayData);
+                }
+
+                MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.FindAsync(filter.Id);
+                if (mtdFilterDate != null)
+                {
+                    DisplayData displayDate = new DisplayData()
+                    {
+                        Id = filter.Id,
+                        Header = "Period",
+                        Value = $"{mtdFilterDate.DateStart.ToShortDateString()} {mtdFilterDate.DateEnd.ToShortDateString()}",
+                        Type = "-date"
+                    };
+                    displayDatas.Add(displayDate);
                 }
             }
 

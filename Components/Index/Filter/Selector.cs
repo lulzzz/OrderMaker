@@ -30,7 +30,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.Components.Index.Filter
-{
+{    
+
     [ViewComponent(Name = "IndexFilterSelector")]
     public class Selector : ViewComponent
     {

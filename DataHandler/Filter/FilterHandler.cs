@@ -37,23 +37,31 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
         private IQueryable<MtdStore> queryMtdStore;
         private IList<Claim> _userRights;
 
-        public string IdForm { get; private set; }        
-        
+        public string IdForm { get; private set; }
+
         public FilterHandler(OrderMakerContext orderMakerContext, string idForm, WebAppUser user, IList<Claim> userRights)
-        {            
+        {
             _context = orderMakerContext;
             _user = user;
-            _userRights = userRights.Where(x=>x.Type == idForm).ToList();
+            _userRights = userRights.Where(x => x.Type == idForm).ToList();
             IdForm = idForm;
             queryMtdStore = _context.MtdStore;
         }
 
         public async Task<MtdFilter> GetFilterAsync()
-        {            
+        {
 
             if (register == null)
             {
-                register = await _context.MtdFilter.Include(m=>m.MtdFilterColumn).FirstOrDefaultAsync(x => x.IdUser == _user.Id && x.MtdForm == IdForm);
+                register = await _context.MtdFilter
+                    .Include(x => x.MtdFilterDate)
+                    .Include(m => m.MtdFilterColumn)
+                    .FirstOrDefaultAsync(x => x.IdUser == _user.Id && x.MtdForm == IdForm);
+
+                if (register != null && register.MtdFilterDate != null)
+                {
+                    queryMtdStore = queryMtdStore.Where(x => x.Timecr.Date >= register.MtdFilterDate.DateStart.Date & x.Timecr.Date <= register.MtdFilterDate.DateEnd.Date);
+                }
             }
             return register;
         }
@@ -72,7 +80,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 FieldForColumn = await GetFieldsAsync(),
                 WaitList = 0,
 
-        };
+            };
 
             if (mtdFilter != null)
             {
@@ -80,7 +88,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 ps.SearchText = mtdFilter.SearchText;
                 ps.SearchNumber = mtdFilter.SearchNumber;
                 ps.PageSize = mtdFilter.PageSize;
-                ps.Page = mtdFilter.Page;                
+                ps.Page = mtdFilter.Page;
                 ps.FieldForFilter = await GetAdvancedAsync();
                 ps.WaitList = mtdFilter.WaitList;
             }
@@ -114,16 +122,16 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
             IList<MtdFormPartField> result;
 
             MtdFilter mtdFilter = await GetFilterAsync();
-            
+
             if (mtdFilter != null && mtdFilter.MtdFilterColumn != null && mtdFilter.MtdFilterColumn.Count > 0)
             {
                 List<string> fIds = mtdFilter.MtdFilterColumn.Select(x => x.MtdFormPartField).ToList();
                 IList<MtdFormPartField> tempFields = await _context.MtdFormPartField.Where(x => fIds.Contains(x.Id)).ToListAsync();
 
                 result = (from s in tempFields
-                                     join sa in mtdFilter.MtdFilterColumn on s.Id equals sa.MtdFormPartField
-                                     orderby sa.Sequence
-                                     select s).ToList();
+                          join sa in mtdFilter.MtdFilterColumn on s.Id equals sa.MtdFormPartField
+                          orderby sa.Sequence
+                          select s).ToList();
             }
             else
             {

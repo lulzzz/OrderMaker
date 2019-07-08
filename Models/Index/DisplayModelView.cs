@@ -27,6 +27,7 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public long Id { get; set; }        
         public string Header { get; set; }
         public string  Value { get; set; }
+        public string Type { get; set; }
     }
 
     public class DisplayModelView

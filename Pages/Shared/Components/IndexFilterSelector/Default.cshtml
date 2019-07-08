@@ -33,27 +33,22 @@
                         @Localizer["Adding filter"]
                     </div>
                 </div>
+
                 <div style="display: flex; flex-direction: column;padding: 12px 4px 4px 4px; background-color: white;">
-                    <div id="indexSelectField" class="mdc-select mdc-select--outlined">
-                        <input id="indexInputField" type="hidden" name="indexInputField">
+                    <input id="indexInputField" type="hidden" name="indexInputField" value="period">
+                    <div id="indexSelectField" class="mdc-select">
                         <i class="mdc-select__dropdown-icon"></i>
-                        <div class="mdc-select__selected-text"></div>
-                        <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-                            <ul class="mdc-list">
-                                @foreach (var item in Model.MtdFormPartFields)
-                                {
-                                    <li id="@item.Id-lifilter" class="mdc-list-item mdc-list-item" data-type="@item.MtdSysType" data-value="@item.Id">@item.Name</li>
-                                }
-                            </ul>
-                        </div>
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Form field"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
+                        <select class="mdc-select__native-control">
+                            <option id="period" data-type="period" data-value="period" value="period">@Localizer["Date of creation"]</option>
+                            @foreach (var item in Model.MtdFormPartFields)
+                            {
+                                <option id="@item.Id-lifilter" data-type="@item.MtdSysType" data-value="@item.Id" value="@item.Id-lifilter">@item.Name</option>
+                            }
+                        </select>
+                        <label class="mdc-floating-label">@Localizer["Form field"]</label>
+                        <div class="mdc-line-ripple"></div>
                     </div>
+
                     @foreach (var store in Model.StoreList)
                     {
                         <div mtd-data-list="@store.FieldAim.Id" id="@store.FieldAim.Id-indexlist" style="margin-top: 12px; width:100%; display:none">
@@ -82,17 +77,16 @@
 
                     }
 
-                    <div id="indexSelectBlock" style="display: flex; margin-top: 12px;">
+                    <div id="indexSelectBlock" style="display: none; margin-top: 12px;">
                         <div id="indexSelectTerm" class="mdc-select mdc-select--outlined" style="max-width: 150px">
-                            <input id="indexInputTerm" type="hidden" name="indexInputTerm">
+                            <input id="indexInputTerm" type="hidden" name="indexInputTerm" value="4">
                             <i class="mdc-select__dropdown-icon"></i>
                             <div class="mdc-select__selected-text mdc-menu-surface--anchor"></div>
                             <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
                                 <ul class="mdc-list">
-
                                     @foreach (var term in Model.MtdSysTerms)
                                     {
-                                        <li class="mdc-list-item" data-value="@term.Id" role="option">@term.Name (@term.Sign)</li>
+                                        <li class="mdc-list-item" data-value="@term.Id" role="option">@Localizer[@term.Name] (@term.Sign)</li>
                                     }
                                 </ul>
                             </div>
@@ -117,6 +111,21 @@
                         </div>
 
                     </div>
+
+
+                    <div id="indexSelectPeriod">        
+                        <div class="mdc-text-field">
+                            <input type="text" id="my-text-field" class="mdc-text-field__input mtd-data-datepicker" name="periodStart">
+                            <label class="mdc-floating-label mdc-floating-label--float-above" for="my-text-field">@Localizer["Date start"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                        <div class="mdc-text-field">
+                            <input type="text" id="my-text-field" class="mdc-text-field__input mtd-data-datepicker" name="periodFinish">
+                            <label class="mdc-floating-label mdc-floating-label--float-above" for="my-text-field">@Localizer["Date finish"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    </div>
+
                     <div style="text-align:right;padding-top:8px;">
                         <button id="indexButtonCancel" class="mdc-button" type="button">@Localizer["Cancel"]</button>
                         <button id="indexButtonApply" type="button" class="mdc-button" mtdfilter="@Model.IdForm">@Localizer["Apply"]</button>

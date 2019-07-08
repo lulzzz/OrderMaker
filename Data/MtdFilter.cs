@@ -39,6 +39,7 @@ namespace Mtd.OrderMaker.Web.Data
         public int WaitList { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
+        public virtual MtdFilterDate MtdFilterDate { get; set; }
         public virtual ICollection<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual ICollection<MtdFilterField> MtdFilterField { get; set; }
     }

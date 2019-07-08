@@ -129,10 +129,34 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="contains" xml:space="preserve">
+    <value>содержит</value>
+  </data>
+  <data name="Date finish" xml:space="preserve">
+    <value>Дата окончания</value>
+  </data>
+  <data name="Date of creation" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="Date start" xml:space="preserve">
+    <value>Дата начала</value>
+  </data>
+  <data name="equal" xml:space="preserve">
+    <value>равно</value>
+  </data>
   <data name="Filter value" xml:space="preserve">
     <value>Значение</value>
   </data>
   <data name="Form field" xml:space="preserve">
     <value>Поле формы</value>
+  </data>
+  <data name="less" xml:space="preserve">
+    <value>меньше</value>
+  </data>
+  <data name="more" xml:space="preserve">
+    <value>больше</value>
+  </data>
+  <data name="no equal" xml:space="preserve">
+    <value>не равно</value>
   </data>
 </root>

@@ -36,14 +36,14 @@
                         <input id="@item.Id-inputdisplay" value="" hidden />
                         <div>
                             <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
-                                @item.Header
+                                @Localizer[@item.Header]
                             </div>
                             <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
                                 @item.Value
                             </div>
                         </div>
                         <div style="align-self: center">
-                            <a mtd-data-clicker="@item.Id" href="#">
+                            <a mtd-data-clicker="@item.Id@item.Type" href="#">
                                 <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
                             </a>
                         </div>

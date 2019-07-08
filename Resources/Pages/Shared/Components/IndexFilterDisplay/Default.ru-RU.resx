@@ -120,4 +120,7 @@
   <data name="Clear" xml:space="preserve">
     <value>Очистить</value>
   </data>
+  <data name="Period" xml:space="preserve">
+    <value>Период</value>
+  </data>
 </root>

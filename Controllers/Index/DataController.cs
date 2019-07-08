@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using System;
@@ -182,10 +183,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterAddAsync()
         {
-
+            var valueField = Request.Form["indexInputField"];
             var idForm = Request.Form["indexInputForm"];
             var valueFilter = Request.Form["indexInputFilter"];
-            var valueField = Request.Form["indexInputField"];
             var valueTerm = Request.Form["indexInputTerm"];
             var valueFieldList = Request.Form[$"{valueField}-inputlist"];
 
@@ -211,8 +211,51 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
                 await _context.SaveChangesAsync();
             }
 
-            var term = int.Parse(valueTerm);
+            if (valueField != "period")
+            {
+                await SaveFilterField(valueField, valueTerm, result, filter);
 
+            } else
+            {
+                var dateStart = Request.Form["periodStart"];
+                var dateFinish = Request.Form["periodFinish"];
+
+                bool isOkDateStart = DateTime.TryParse(dateStart, out DateTime dateTimeStart);
+                bool isOkDateFinish = DateTime.TryParse(dateFinish, out DateTime dateTimeFinish);
+
+                if (isOkDateStart && isOkDateFinish)
+                {
+                    MtdFilterDate mtdFilterDate = new MtdFilterDate
+                    {
+                        Id = filter.Id,
+                        DateStart = dateTimeStart,
+                        DateEnd = dateTimeFinish
+                    };
+
+                    bool isExists = await _context.MtdFilterDate.Where(x=>x.Id == filter.Id).AnyAsync();
+                 
+                    if (isExists)
+                    {
+                        _context.MtdFilterDate.Update(mtdFilterDate);                        
+                    } else
+                    {
+                        await _context.MtdFilterDate.AddAsync(mtdFilterDate);
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                }
+
+            }
+            
+
+            return Ok();
+
+        }
+
+        private async Task SaveFilterField(StringValues valueField, StringValues valueTerm, string result, MtdFilter filter)
+        {
+            var term = int.Parse(valueTerm);
             MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = valueField, MtdTerm = term, Value = result };
 
             try
@@ -221,10 +264,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex) { throw ex.InnerException; }
-
-
-            return Ok();
-
         }
 
         [HttpPost("filter/remove")]
@@ -232,16 +271,33 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         public async Task<IActionResult> PostFilterRemoveAsync()
         {
             string strID = Request.Form["idField"];
-            long idField = long.Parse(strID);
-            MtdFilterField mtdFilterField = new MtdFilterField { Id = idField };
-
-            try
+            if (strID.Contains("-field"))
             {
-                _context.MtdFilterField.Remove(mtdFilterField);
-                await _context.SaveChangesAsync();
+                strID = strID.Replace("-field", "");
+                bool ok = int.TryParse(strID,out int idField);
+                if (!ok) return Ok();
+                MtdFilterField mtdFilterField = new MtdFilterField { Id = idField };
+                try
+                {
+                    _context.MtdFilterField.Remove(mtdFilterField);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex) { throw ex.InnerException; }
             }
-            catch (Exception ex) { throw ex.InnerException; }
 
+            if (strID.Contains("-date"))
+            {
+                strID = strID.Replace("-date", "");
+                bool ok = int.TryParse(strID, out int idFilter);
+                if (!ok) return Ok();
+                MtdFilterDate filterDate = new MtdFilterDate { Id = idFilter };
+                try
+                {
+                    _context.MtdFilterDate.Remove(filterDate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex) { throw ex.InnerException; }
+            }
 
             return Ok();
 
