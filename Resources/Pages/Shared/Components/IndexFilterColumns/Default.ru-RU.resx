@@ -126,10 +126,19 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Date of creation" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="ID Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
   <data name="List columns" xml:space="preserve">
     <value>Список колонок</value>
   </data>
   <data name="Part" xml:space="preserve">
     <value>Раздел</value>
+  </data>
+  <data name="Service fields" xml:space="preserve">
+    <value>Служебные поля</value>
   </data>
 </root>

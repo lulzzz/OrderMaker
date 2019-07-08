@@ -160,6 +160,18 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
             return result;
         }
 
+        public async Task<bool> IsShowDate()
+        {
+            MtdFilter mtdFilter = await GetFilterAsync();
+            return mtdFilter.ShowDate == 1 ? true: false;
+        }
+
+        public async Task<bool> IsShowNumber()
+        {
+            MtdFilter mtdFilter = await GetFilterAsync();
+            return mtdFilter.ShowNumber == 1 ? true : false;
+        }
+
 
     }
 }

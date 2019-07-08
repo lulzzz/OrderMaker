@@ -28,6 +28,46 @@
             @Localizer["List columns"]
         </div>
     </div>
+    <div style="padding: 8px;">
+        <div style="display: flex; padding: 8px; border: 1px solid lightgray; position:relative">
+            <span style="position: absolute; background-color: white; top: -12px">@Localizer["Service fields"]</span>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"
+                           id="show-number" checked="@Model.ShowNumber" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="show-number">@Localizer["ID Number"]</label>
+            </div>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"
+                           id="show-date" checked="@Model.ShowDate" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="show-date">@Localizer["Date of creation"]</label>
+            </div>
+        </div>
+
+    </div>
     <div style="padding: 8px">
         <div id="indexSelectPart" class="mdc-select mdc-select--outlined" style="width: 100%; border-bottom: 1px solid gray;">
             <i class="mdc-select__dropdown-icon"></i>
@@ -80,6 +120,8 @@
             @Html.AntiForgeryToken()
             <input type="text" id="indexDataColumnIdForm" name="indexDataColumnIdForm" value="@Model.IdForm" hidden />
             <input type="text" id="indexDataColumnList" name="indexDataColumnList" value="@Model.IdForm" hidden />
+            <input type="text" id="indexDataColumnNumber" name="indexDataColumnNumber" value="@Model.ShowNumber" hidden />
+            <input type="text" id="indexDataColumnDate" name="indexDataColumnDate" value="@Model.ShowDate" hidden />
             <div style="text-align:right; padding-top:8px; border-top: 1px solid gray">
                 <button id="indexButtonColCancel" class="mdc-button" type="button">@Localizer["Cancel"]</button>
                 <button id="indexButtonColApply" type="button" class="mdc-button" mtdfilter="@Model.IdForm">@Localizer["Apply"]</button>

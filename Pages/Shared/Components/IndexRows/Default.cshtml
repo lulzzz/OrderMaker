@@ -34,7 +34,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>
+                    <th  @if (!Model.ShowNumber) {<text>hidden</text>}>
                         <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                             @Html.AntiForgeryToken()
                             <input name="formId" asp-for="@Model.IdForm" type="hidden" />
@@ -50,22 +50,13 @@
                             </div>
                         </form>
                     </th>
-                    <th>
+                    <th @if (!Model.ShowDate) {<text>hidden</text>}>
                         @Localizer["Date of creation"]
                     </th>
                     @foreach (var item in Model.MtdFormPartFields)
                     {
                     <th>
                         <span>@item.Name</span>
-                        @*@if (item.MtdSysType == 2 || item.MtdSysType == 12)
-                        {
-                            <span style="writing-mode: vertical-rl; text-orientation: mixed; max-height: 64px; overflow: hidden; text-overflow:ellipsis">@item.Name</span>
-                        }
-                        else
-                        {
-
-                        }*@
-
                     </th>
                     }
                 </tr>
@@ -74,12 +65,12 @@
                 @foreach (var store in Model.MtdStores)
                 {
                     <tr mtd-data-href="/workplace/store/details?id=@store.Id">
-                        <td>
+                        <td @if (!Model.ShowNumber) {<text>hidden</text>}>
                             <div style="align-self: center">
                                 @store.Sequence.ToString("D9")                                                                
                             </div>
                         </td>
-                        <td>
+                        <td @if (!Model.ShowDate) {<text>hidden</text>}>
                             <span>@store.Timecr.ToShortDateString()</span>
                         </td>
                         @foreach (var field in Model.MtdFormPartFields)

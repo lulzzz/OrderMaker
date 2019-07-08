@@ -331,6 +331,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             var idForm = Request.Form["indexDataColumnIdForm"];
             var data = Request.Form["indexDataColumnList"];
+            var showNumber = Request.Form["indexDataColumnNumber"];
+            var showDate = Request.Form["indexDataColumnDate"];
 
             List<string> fieldIds = new List<string>();
             if (data.FirstOrDefault() != null && data.FirstOrDefault().Length > 0) fieldIds = data.FirstOrDefault().Split(",").ToList();
@@ -368,6 +370,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             try
             {
+                filter.ShowNumber = showNumber == "true" ? (sbyte)1 : (sbyte)0;
+                filter.ShowDate = showDate == "true" ? (sbyte)1 : (sbyte)0;
+
+                _context.MtdFilter.Update(filter);
+
                 if (filter.MtdFilterColumn != null)
                 {
                     _context.MtdFilterColumn.RemoveRange(filter.MtdFilterColumn);

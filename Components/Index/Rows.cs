@@ -82,7 +82,9 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 MtdFormPartFields = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList(),
                 MtdStores = mtdStore,
                 MtdStoreStack = mtdStoreStack,
-                WaitList = incomer.WaitList == 1 ? true : false
+                WaitList = incomer.WaitList == 1 ? true : false,
+                ShowDate = await handlerFilter.IsShowDate(),
+                ShowNumber = await handlerFilter.IsShowNumber()
             };
 
             return View("Default", rowsModel);

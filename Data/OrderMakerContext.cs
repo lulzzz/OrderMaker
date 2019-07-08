@@ -246,6 +246,16 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("searchText")
                     .HasColumnType("varchar(256)");
 
+                entity.Property(e => e.ShowNumber)
+                    .HasColumnName("show_number")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'1'");
+
+                entity.Property(e => e.ShowDate)
+                    .HasColumnName("show_date")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'1'");
+
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdFilter)
                     .HasForeignKey(d => d.MtdForm)

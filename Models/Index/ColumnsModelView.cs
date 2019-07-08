@@ -29,5 +29,7 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public IList<MtdFormPart> MtdFormParts { get; set; }
         public IList<MtdFilterColumn> MtdFilterColumns { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields { get; set; }
+        public bool ShowNumber { get; set; }
+        public bool ShowDate { get; set; }        
     }
 }

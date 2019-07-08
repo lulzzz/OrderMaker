@@ -233,6 +233,13 @@ const ListenerFilter = () => {
         document.getElementById("indexDataColumnList").value = result;
         const form = document.getElementById("indexFormColumn");
 
+        const checkBoxNumber = document.getElementById("show-number");
+        const checkBoxDate = document.getElementById("show-date");
+        const indexDataColumnNumber = document.getElementById("indexDataColumnNumber");
+        const indexDataColumnDate = document.getElementById("indexDataColumnDate");
+        indexDataColumnNumber.value = checkBoxNumber.checked;
+        indexDataColumnDate.value = checkBoxDate.checked;
+
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("POST", form.getAttribute("action"), true);
 

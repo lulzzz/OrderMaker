@@ -34,30 +34,30 @@ namespace Mtd.OrderMaker.Web.Components.Index
     public class Columns : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandler _userHandler;
+        private readonly UserHandlerTrial _userHandler;
 
-        public Columns(OrderMakerContext orderMakerContext, UserHandler userHandler)
+        public Columns(OrderMakerContext orderMakerContext, UserHandlerTrial userHandler)
         {
             _context = orderMakerContext;
             _userHandler = userHandler;
         }
-        
+
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-           
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
             IList<MtdFilterColumn> mtdFilterColumns = await _context.MtdFilterColumn
                 .Include(m => m.MtdFormPartFieldNavigation)
-                .Include(x=>x.MtdFilterNavigation)
+                .Include(x => x.MtdFilterNavigation)
                 .Where(x => x.MtdFilterNavigation.IdUser == user.Id && x.MtdFilterNavigation.MtdForm == idForm)
-                .OrderBy(x=>x.Sequence)
+                .OrderBy(x => x.Sequence)
                 .ToListAsync();
 
             List<MtdFormPartField> mtdFormPartFields = new List<MtdFormPartField>();
-            IList<MtdFormPartField> tempFields = await _context.MtdFormPartField             
+            IList<MtdFormPartField> tempFields = await _context.MtdFormPartField
                 .Include(x => x.MtdFormPartNavigation)
                 .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && partIds.Contains(x.MtdFormPart))
                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence)
@@ -66,7 +66,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
             int sequence = 0;
             foreach (var column in mtdFilterColumns)
             {
-                
+
                 var field = tempFields.Where(x => x.Id == column.MtdFormPartField).FirstOrDefault();
                 if (field != null)
                 {
@@ -74,12 +74,12 @@ namespace Mtd.OrderMaker.Web.Components.Index
                     field.Sequence = sequence;
                     mtdFormPartFields.Add(field);
                 }
-                
+
             }
-            
-            foreach(var field in tempFields)
+
+            foreach (var field in tempFields)
             {
-                if (!mtdFilterColumns.Where(x=>x.MtdFormPartField == field.Id).Any())
+                if (!mtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any())
                 {
                     sequence++;
                     field.Sequence = sequence;
@@ -88,18 +88,28 @@ namespace Mtd.OrderMaker.Web.Components.Index
             }
 
             IList<MtdFormPart> mtdFormParts = mtdFormPartFields.GroupBy(x => x.MtdFormPartNavigation.Id)
-                .Select(g => g.FirstOrDefault(x=>x.MtdFormPartNavigation.Id==g.Key).MtdFormPartNavigation)
-                .OrderBy(x=>x.Sequence)
+                .Select(g => g.FirstOrDefault(x => x.MtdFormPartNavigation.Id == g.Key).MtdFormPartNavigation)
+                .OrderBy(x => x.Sequence)
                 .ToList();
-                                              
+
+            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.MtdForm == idForm && x.IdUser == user.Id).FirstOrDefaultAsync();
+            bool showNumber = true;
+            bool showDate = true;
+            if (mtdFilter != null)
+            {
+                showNumber = mtdFilter.ShowNumber == 1 ? true : false;
+                showDate = mtdFilter.ShowDate == 1 ? true : false;
+            }
 
             ColumnsModelView fieldsModelView = new ColumnsModelView
             {
                 IdForm = idForm,
                 MtdFormParts = mtdFormParts,
                 MtdFilterColumns = mtdFilterColumns,
-                MtdFormPartFields = mtdFormPartFields
-            };            
+                MtdFormPartFields = mtdFormPartFields,
+                ShowNumber = showNumber,
+                ShowDate = showDate                
+            };
 
             return View(fieldsModelView);
         }

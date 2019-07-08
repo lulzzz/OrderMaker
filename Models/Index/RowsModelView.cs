@@ -25,11 +25,13 @@ namespace Mtd.OrderMaker.Web.Models.Index
     public class RowsModelView
     {
         public string IdForm { get; set; }
-        public string SearchNumber { get; set; }     
+        public string SearchNumber { get; set; }
         public int PageCount { get; set; }
         public IList<MtdStore> MtdStores { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields { get; set; }
         public IList<MtdStoreStack> MtdStoreStack { get; set; }
         public bool WaitList { get; set; }
+        public bool ShowNumber { get; set; }
+        public bool ShowDate { get; set; }
     }
 }
