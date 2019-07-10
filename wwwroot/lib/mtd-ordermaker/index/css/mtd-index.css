@@ -116,7 +116,7 @@ th:not(:first-child) {
   padding-left: 48px;
   padding-right: 148px;
 }
-#indexFormFilter {
+#indexFormSelector {
   animation-name: mtd-data-action-index;
   animation-duration: 0.2s;
   animation-delay: 0.1s;
@@ -294,4 +294,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item:hover::before {
   filter: opacity(100%);
+}
+.mdc-tab {
+  --mdc-theme-primary: white;
 }

@@ -54,7 +54,7 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
             {
                 List<MtdFilterField> mtdFilterFields = await _context.MtdFilterField
                     .Include(x => x.MtdTermNavigation)
-                    .Include(m => m.MtdFormPartFieldNavigation)                    
+                    .Include(m => m.MtdFormPartFieldNavigation)
                     .Where(x => x.MtdFilter == filter.Id)
                     .ToListAsync();
                 foreach (var field in mtdFilterFields)
@@ -78,14 +78,15 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                         if (mtdStore != null)
                         {
                             var fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1 )
+                                .Where(x => x.MtdFormPartNavigation.MtdForm == mtdStore.MtdForm & x.MtdSysType == 1)
                                 .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
-                            if (fieldForList != null) {
+                            if (fieldForList != null)
+                            {
                                 IList<long> ids = await _context.MtdStoreStack.Where(x => x.MtdStore == mtdStore.Id & x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
                                 MtdStoreStackText data = await _context.MtdStoreStackText.FirstOrDefaultAsync(x => ids.Contains(x.Id));
                                 displayData.Value = data.Register;
                             }
-                            
+
                         }
 
                     }
@@ -105,12 +106,30 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
                     };
                     displayDatas.Add(displayDate);
                 }
+
+                IList<MtdFilterScript> scripts = await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id & x.Apply == 1).ToListAsync();
+                if (scripts != null && scripts.Count > 0)
+                {
+                    foreach (var fs in scripts)
+                    {
+                        DisplayData displayDate = new DisplayData()
+                        {
+                            Id = fs.Id,
+                            Header = "Custom filter",
+                            Value = fs.Name,
+                            Type = "-script"
+                        };
+                        displayDatas.Add(displayDate);
+                    }
+
+                }
             }
 
-            DisplayModelView displayModelView = new DisplayModelView {
-                 IdForm = idForm,
-                 IdFilter = filter == null ? -1 : filter.Id,
-                 DisplayDatas = displayDatas
+            DisplayModelView displayModelView = new DisplayModelView
+            {
+                IdForm = idForm,
+                IdFilter = filter == null ? -1 : filter.Id,
+                DisplayDatas = displayDatas
             };
 
             return View("Default", displayModelView);

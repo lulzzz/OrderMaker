@@ -28,6 +28,7 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public string IdForm { get; set; }
         public IList<MtdSysTerm> MtdSysTerms { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields { get; set; }
-        public List<SelectorList> StoreList {get;set;}        
+        public List<SelectorList> StoreList {get;set;}       
+        public IList<MtdFilterScript> MtdFilterScripts { get; set; }
     }
 }

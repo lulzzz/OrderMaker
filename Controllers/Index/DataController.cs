@@ -299,6 +299,16 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
                 catch (Exception ex) { throw ex.InnerException; }
             }
 
+            if (strID.Contains("-script")) {
+                strID = strID.Replace("-script", "");
+                bool ok = int.TryParse(strID, out int idFilter);
+                if (!ok) return Ok();
+                MtdFilterScript mtdFilterScript = await _context.MtdFilterScript.FindAsync(idFilter);
+                mtdFilterScript.Apply = 0;
+                _context.MtdFilterScript.Update(mtdFilterScript);
+                await _context.SaveChangesAsync();
+            }
+
             return Ok();
 
         }
@@ -308,13 +318,21 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         public async Task<IActionResult> PostFilterRemoveAllAsync()
         {
             string strID = Request.Form["idFilter"];
-            int idFilter = int.Parse(strID);
+            bool isOk = int.TryParse(strID,out int idFilter);
+            if (!isOk) { return NotFound(); }
 
             IList<MtdFilterField> mtdFilterFields = await _context.MtdFilterField.Where(x => x.MtdFilter == idFilter).ToListAsync();
-
+            IList<MtdFilterScript> mtdFilterScripts = await _context.MtdFilterScript
+                .Where(x => x.MtdFilter == idFilter)
+                .Select(x => new MtdFilterScript { Id = x.Id, MtdFilter = x.MtdFilter, Name = x.Name, Description = x.Description, Script = x.Script, Apply = 0 })
+                .ToListAsync();           
+            MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == idFilter).FirstOrDefaultAsync();
+            
             try
             {
                 _context.MtdFilterField.RemoveRange(mtdFilterFields);
+                _context.MtdFilterScript.UpdateRange(mtdFilterScripts);
+                _context.MtdFilterDate.Remove(mtdFilterDate);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex) { throw ex.InnerException; }
@@ -418,6 +436,22 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             mtdFilter.WaitList = mtdFilter.WaitList == 0 ? 1 : 0;
             _context.MtdFilter.Update(mtdFilter);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
+        }
+
+        [HttpPost("filter/script")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostFilterScriptAsync()
+        {
+            var valueField = Request.Form["script-selector"];
+            bool isOk = int.TryParse(valueField, out int id);
+            if (!isOk) { return NotFound(); }
+            MtdFilterScript mtdFilterScript = await _context.MtdFilterScript.FindAsync(id);
+            mtdFilterScript.Apply = 1;
+            _context.MtdFilterScript.Update(mtdFilterScript);
             await _context.SaveChangesAsync();
 
             return Ok();

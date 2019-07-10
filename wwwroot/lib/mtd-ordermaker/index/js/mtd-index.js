@@ -73,7 +73,7 @@ const ListenerFilter = () => {
 
     const indexFormSelector = document.getElementById("indexFormSelector");
     const buttonApply = document.getElementById("indexButtonApply");
-    const buttonCancel = document.getElementById("indexButtonCancel");
+    const buttonsCancel = document.querySelectorAll("[mtd-index-cancel]");
     const buttonFilterAdd = document.getElementById("indexButtonFilterAdd");
     const selectLists = document.querySelectorAll(`[mtd-data-list]`);
 
@@ -146,10 +146,13 @@ const ListenerFilter = () => {
         selectTerm.valid = true;
     });
 
-    buttonCancel.addEventListener('click', () => {
-        indexFormSelector.style.display = "none";
-        IndexShowModal(false, false);
-    })
+    buttonsCancel.forEach((buttonCancel) => {
+        buttonCancel.addEventListener('click', () => {
+            indexFormSelector.style.display = "none";
+            IndexShowModal(false, false);
+        })
+    });
+
     buttonApply.addEventListener('click', () => {
 
         if (!selectField.value) { selectField.valid = false; return false; }
@@ -356,5 +359,24 @@ var cols = document.querySelectorAll('#indexListColumn .mdc-list-item');
 
     ListenerPageMenu();
     ListenerFilter();
+
+
+    const tabBar = document.querySelector('.mdc-tab-bar');
+    new mdc.tabBar.MDCTabBar(tabBar);
+    const tabFilterFields = document.getElementById("tab-filter-fields");
+    const formFilterFields = document.getElementById("indexFormFilter");
+    const tabFilterCustom = document.getElementById("tab-filter-custom");
+    const formFilterCustom = document.getElementById("indexFormCustom");
+
+    tabFilterFields.addEventListener('click', () => {        
+        formFilterFields.hidden = false;
+        formFilterCustom.hidden = true;
+        
+    });
+
+    tabFilterCustom.addEventListener('click', () => {        
+        formFilterFields.hidden = true;
+        formFilterCustom.hidden = false;       
+    });
 
 })();

@@ -94,12 +94,15 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
 
             }
 
+            IList<MtdFilterScript> scripts =  await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id && x.Apply == 0).ToListAsync();
+
             SelectorModelView selector = new SelectorModelView()
             {
                 IdForm = idForm,
                 MtdFormPartFields = mtdFields,
                 MtdSysTerms = mtdSysTerms,
                 StoreList = storeList,
+                MtdFilterScripts = scripts
             };
             return View("Default", selector);
         }

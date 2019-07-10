@@ -39,6 +39,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual DbSet<MtdFilterDate> MtdFilterDate { get; set; }
         public virtual DbSet<MtdFilterField> MtdFilterField { get; set; }
+        public virtual DbSet<MtdFilterScript> MtdFilterScript { get; set; }
         public virtual DbSet<MtdForm> MtdForm { get; set; }
         public virtual DbSet<MtdFormDesk> MtdFormDesk { get; set; }
         public virtual DbSet<MtdFormHeader> MtdFormHeader { get; set; }
@@ -384,6 +385,51 @@ namespace Mtd.OrderMaker.Web.Data
                     .WithMany(p => p.MtdFilterField)
                     .HasForeignKey(d => d.MtdTerm)
                     .HasConstraintName("mtd_filter_field_mtd_term");
+            });
+
+            modelBuilder.Entity<MtdFilterScript>(entity =>
+            {
+                entity.ToTable("mtd_filter_script");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdFilter)
+                    .HasName("fk_script_filter_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.MtdFilter)
+                    .HasColumnName("mtd_filter")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(256)");
+
+                entity.Property(e => e.Script)
+                    .IsRequired()
+                    .HasColumnName("script")
+                    .HasColumnType("longtext");
+
+                entity.Property(e => e.Apply)
+                    .HasColumnName("apply")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.HasOne(d => d.MtdFilterNavigation)
+                    .WithMany(p => p.MtdFilterScript)
+                    .HasForeignKey(d => d.MtdFilter)
+                    .HasConstraintName("fk_script_filter");
             });
 
             modelBuilder.Entity<MtdForm>(entity =>

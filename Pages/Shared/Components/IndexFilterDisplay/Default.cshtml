@@ -25,33 +25,35 @@
 @if (Model.DisplayDatas.Count > 0)
 {
     <div style="display: flex; border-bottom: 1px solid gray;">
-        <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off" enctype="multipart/form-data">
-            @Html.AntiForgeryToken()
-            <input mtd-data-result type="hidden" name="idField" />
-            <div style="display: flex; background-color:gainsboro;  float: left; width: 100%; padding:  4px; display: flex; align-items:center; overflow:hidden; overflow-x:auto;">
-
-                @foreach (var item in Model.DisplayDatas)
-                {
-                    <div id="@item.Id-display" style="display: flex; font-size: 12px; background-color: gray; color: white; padding: 1px 8px 1px 8px; border-radius: 8px; margin-left:2px; margin-right:2px;">
-                        <input id="@item.Id-inputdisplay" value="" hidden />
-                        <div>
-                            <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
-                                @Localizer[@item.Header]
+        <div style="background-color:gainsboro;   width: 100%; padding:  4px; align-items:center; overflow:hidden; overflow-x:auto;">
+            <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input mtd-data-result type="hidden" name="idField" />
+                <div style="background-color:gainsboro; display: flex; align-items:center; ">
+                    @foreach (var item in Model.DisplayDatas)
+                    {
+                        <div id="@item.Id-display" style="display: flex; font-size: 12px; background-color: gray; color: white; padding: 1px 8px 1px 8px; border-radius: 8px; margin-left:2px; margin-right:2px;">
+                            <input id="@item.Id-inputdisplay" value="" hidden />
+                            <div>
+                                <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
+                                    @Localizer[@item.Header]
+                                </div>
+                                <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
+                                    @item.Value
+                                </div>
                             </div>
-                            <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
-                                @item.Value
+                            <div style="align-self: center">
+                                <a mtd-data-clicker="@item.Id@item.Type" href="#">
+                                    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
+                                </a>
                             </div>
                         </div>
-                        <div style="align-self: center">
-                            <a mtd-data-clicker="@item.Id@item.Type" href="#">
-                                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-                            </a>
-                        </div>
+                    }
                     </div>
-                }
-            </div>
-        </form>
-        <div style="width: 104px; background-color: white;padding: 2px; align-self: center">
+            </form>
+        </div>
+
+        <div style="width: 104px; background-color: white;padding: 2px; align-self: center;">
             <form mtd-data-form method="post" action="/api/index/filter/removeall" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="idFilter" value="@Model.IdFilter" />

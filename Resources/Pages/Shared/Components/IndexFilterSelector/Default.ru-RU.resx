@@ -159,4 +159,13 @@
   <data name="no equal" xml:space="preserve">
     <value>не равно</value>
   </data>
+  <data name="Fields" xml:space="preserve">
+    <value>Поля</value>
+  </data>
+  <data name="There are no filters to select." xml:space="preserve">
+    <value>Нет дполнительных фильтров для выбора.</value>
+  </data>
+  <data name="Сustom" xml:space="preserve">
+    <value>Доп. фильтр</value>
+  </data>
 </root>

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.OrderMaker.Web.Data;
 
 namespace Mtd.OrderMaker.Web.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    partial class OrderMakerContextModelSnapshot : ModelSnapshot
+    [Migration("20190709083502_NewFilterScript")]
+    partial class NewFilterScript
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,12 +356,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
                         .HasColumnType("int(11)");
-
-                    b.Property<sbyte>("Apply")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("apply")
-                        .HasColumnType("tinyint(4)")
-                        .HasDefaultValueSql("'0'");
 
                     b.Property<string>("Description")
                         .IsRequired()

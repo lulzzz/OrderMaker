@@ -29,6 +29,13 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
     public partial class FilterHandler
     {
        
+        public async Task<IList<MtdFilterScript>> GetScriptsAsync()
+        {
+            MtdFilter mtdFilter = await GetFilterAsync();
+            return await _context.MtdFilterScript.Where(x => x.MtdFilter == mtdFilter.Id).ToListAsync();
+
+        } 
+
         public async Task<OutFlow> GetDataForEmptyAsync(Incomer incomer)
         {            
 

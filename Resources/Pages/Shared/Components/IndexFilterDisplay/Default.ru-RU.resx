@@ -120,6 +120,9 @@
   <data name="Clear" xml:space="preserve">
     <value>Очистить</value>
   </data>
+  <data name="Custom filter" xml:space="preserve">
+    <value>Доп. фильтр</value>
+  </data>
   <data name="Period" xml:space="preserve">
     <value>Период</value>
   </data>

@@ -18,6 +18,7 @@
 */
 
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Approval;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,16 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 
             OutFlow outFlow = new OutFlow();
 
+            IList<MtdFilterScript> scripts = await GetScriptsAsync();
+            if (scripts != null && scripts.Count > 0)
+            {
+                foreach (var fs in scripts)
+                {
+                    if (fs.Apply == 1)
+                    queryMtdStore = queryMtdStore.FromSql(fs.Script);
+                }
+            }
+
             if (incomer.WaitList == 1)
             {
                 List<string> storesForUser = await ApprovalHandler.GetWaitStoreIds(_context, _user);
@@ -43,7 +54,6 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
                 queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
             }
-
 
 
             switch (typeQuery)
