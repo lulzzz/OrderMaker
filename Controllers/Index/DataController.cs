@@ -332,7 +332,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             {
                 _context.MtdFilterField.RemoveRange(mtdFilterFields);
                 _context.MtdFilterScript.UpdateRange(mtdFilterScripts);
-                _context.MtdFilterDate.Remove(mtdFilterDate);
+                if (mtdFilterDate != null)
+                {
+                    _context.MtdFilterDate.Remove(mtdFilterDate);
+                }                
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex) { throw ex.InnerException; }
