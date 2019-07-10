@@ -32,9 +32,9 @@ namespace Mtd.OrderMaker.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandler _userHandler;
+        private readonly UserHandlerTrial _userHandler;
 
-        public IndexModel(OrderMakerContext context, UserHandler userHandler)
+        public IndexModel(OrderMakerContext context, UserHandlerTrial userHandler)
         {
             _context = context;
             _userHandler = userHandler;
@@ -45,21 +45,45 @@ namespace Mtd.OrderMaker.Web.Pages
 
         public async Task<IActionResult> OnGetAsync(string searchText)
         {
-            WebAppUser user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
-            
-            List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewOwn); 
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
+
+            List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewOwn);
+
+            foreach (var formId in formIds)
+            {
+                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == formId).AnyAsync();
+                if (!isExists)
+                {
+                    MtdFilter mtdFilter = new MtdFilter
+                    {
+                        MtdForm = formId,
+                        IdUser = user.Id,
+                        Page = 1,
+                        PageSize = 10,
+                        SearchText = "",
+                        ShowDate = 1,
+                        WaitList = 0,
+                        SearchNumber = "",
+                        ShowNumber = 1
+                    };
+
+                    await _context.MtdFilter.AddAsync(mtdFilter);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             IQueryable<MtdForm> query = _context.MtdForm
                     .Include(x => x.MtdCategoryNavigation)
-                    .Include(x=>x.MtdFormHeader)
+                    .Include(x => x.MtdFormHeader)
                     .Include(x => x.MtdFormDesk)
-                    .Where(x=> formIds.Contains(x.Id));
+                    .Where(x => formIds.Contains(x.Id));
 
-            if (searchText != null) {
+            if (searchText != null)
+            {
                 query = query.Where(x => x.Name.Contains(searchText));
                 SearchText = searchText;
             }
-                         
+
 
             Forms = await query.ToListAsync();
             return Page();
