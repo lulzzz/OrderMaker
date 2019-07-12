@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.Services;
 
 namespace Mtd.OrderMaker.Web.Controllers.Config.Form
 {
@@ -35,7 +36,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
     public class DataController : ControllerBase
     {
 
-        private readonly OrderMakerContext _context;
+        private readonly OrderMakerContext _context;        
 
 
         public DataController(OrderMakerContext context)
@@ -53,8 +54,19 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 return NotFound();
             }
 
+            IList<MtdFormPartField> fields = await _context.MtdFormList
+                .Include(x => x.IdNavigation)
+                .Where(x => x.MtdForm == formId)
+                .Select(x => x.IdNavigation).ToListAsync();
+
             MtdForm mtdForm = new MtdForm { Id = formId };
+            
             _context.MtdForm.Remove(mtdForm);
+            if (fields != null)
+            {
+                _context.MtdFormPartField.RemoveRange(fields);
+            }
+            
             await _context.SaveChangesAsync();
             return Ok();
         }

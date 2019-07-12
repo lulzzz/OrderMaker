@@ -48,15 +48,16 @@ namespace Mtd.OrderMaker.Web.Pages
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
 
             List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewOwn);
+            List<MtdForm> forms = await _context.MtdForm.Where(x => formIds.Contains(x.Id)).ToListAsync();
 
-            foreach (var formId in formIds)
+            foreach (var form in forms)
             {
-                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == formId).AnyAsync();
+                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == form.Id).AnyAsync();
                 if (!isExists)
                 {
                     MtdFilter mtdFilter = new MtdFilter
                     {
-                        MtdForm = formId,
+                        MtdForm = form.Id,
                         IdUser = user.Id,
                         Page = 1,
                         PageSize = 10,
