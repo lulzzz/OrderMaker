@@ -52,7 +52,7 @@ namespace Mtd.OrderMaker.Web.Pages
 
             foreach (var form in forms)
             {
-                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == form.Id).AnyAsync();
+                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == form.Id && x.IdUser==user.Id).AnyAsync();
                 if (!isExists)
                 {
                     MtdFilter mtdFilter = new MtdFilter
