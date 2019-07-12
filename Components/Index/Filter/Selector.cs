@@ -30,7 +30,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.Components.Index.Filter
-{    
+{
 
     [ViewComponent(Name = "IndexFilterSelector")]
     public class Selector : ViewComponent
@@ -67,34 +67,38 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
             {
                 mtdFields = await query.ToListAsync();
             }
-            
+
             IList<MtdSysTerm> mtdSysTerms = await _context.MtdSysTerm.ToListAsync();
             List<SelectorList> storeList = new List<SelectorList>();
             foreach (var field in mtdFields.Where(x => x.MtdSysType == 11).ToList())
             {
-                string idFormForList = await _context.MtdFormList.Where(x => x.Id == field.Id).Select(x=>x.MtdForm).FirstOrDefaultAsync();
+                string idFormForList = await _context.MtdFormList.Where(x => x.Id == field.Id).Select(x => x.MtdForm).FirstOrDefaultAsync();
                 MtdFormPartField fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                        .Where(x => x.MtdFormPartNavigation.MtdForm == idFormForList & x.MtdSysType==1)
-                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o=>o.Sequence).FirstOrDefaultAsync();
-                               
-                List<SelecorStore> selecorStores = await _context.MtdStoreStack
-                                .Include(x => x.MtdStoreStackText).Where(x => x.MtdFormPartField == fieldForList.Id)
-                                .Select(x => new SelecorStore { IdStore = x.MtdStore, Result = x.MtdStoreStackText.Register })
-                                .OrderBy(x => x.Result)
-                                .ToListAsync();
+                        .Where(x => x.MtdFormPartNavigation.MtdForm == idFormForList & x.MtdSysType == 1)
+                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
 
-                SelectorList selectorList = new SelectorList
+                if (idFormForList != null)
                 {
-                     FieldAim = field,
-                     FieldOut = fieldForList,
-                     Store = selecorStores
-                };
+                    List<SelecorStore> selecorStores = await _context.MtdStoreStack
+                .Include(x => x.MtdStoreStackText).Where(x => x.MtdFormPartField == fieldForList.Id)
+                .Select(x => new SelecorStore { IdStore = x.MtdStore, Result = x.MtdStoreStackText.Register })
+                .OrderBy(x => x.Result)
+                .ToListAsync();
 
-                storeList.Add(selectorList);
+                    SelectorList selectorList = new SelectorList
+                    {
+                        FieldAim = field,
+                        FieldOut = fieldForList,
+                        Store = selecorStores
+                    };
+
+                    storeList.Add(selectorList);
+                }
+
 
             }
 
-            IList<MtdFilterScript> scripts =  await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id && x.Apply == 0).ToListAsync();
+            IList<MtdFilterScript> scripts = await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id && x.Apply == 0).ToListAsync();
 
             SelectorModelView selector = new SelectorModelView()
             {
