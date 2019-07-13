@@ -64,10 +64,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
     {
 
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ActionController(OrderMakerContext context, UserHandlerTrial userHandler, IHostingEnvironment hostingEnvironment)
+        public ActionController(OrderMakerContext context, UserHandler userHandler, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _userHandler = userHandler;

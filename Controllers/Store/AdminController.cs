@@ -53,7 +53,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             string idStore = Request.Form["setowner-id-store"];
             string idUser = Request.Form["setowner-id-user"];
              
-            WebAppUser webAppUser = await _userHandler._userManager.FindByIdAsync(idUser);
+            WebAppUser webAppUser = await _userHandler.FindByIdAsync(idUser);
 
             if (webAppUser != null)
             {

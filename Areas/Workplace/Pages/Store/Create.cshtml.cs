@@ -49,7 +49,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(user, idForm);
 
             if (!isCreator)

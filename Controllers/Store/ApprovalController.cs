@@ -41,11 +41,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
     public class ApprovalController : ControllerBase
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
         private readonly IEmailSenderBlank _emailSender;
         private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ApprovalController(OrderMakerContext context, UserHandlerTrial userHandler, IEmailSenderBlank emailSender, IStringLocalizer<SharedResource> sharedLocalizer)
+        public ApprovalController(OrderMakerContext context, UserHandler userHandler, IEmailSenderBlank emailSender, IStringLocalizer<SharedResource> sharedLocalizer)
         {
             _context = context;
             _userHandler = userHandler;

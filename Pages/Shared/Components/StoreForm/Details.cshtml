@@ -23,7 +23,7 @@
 @inject IViewLocalizer Localizer
 @inject Services.UserHandler userHandler
 @{
-    var user = await userHandler._userManager.GetUserAsync(User);
+    var user = await userHandler.GetUserAsync(User);
 }
 
 <div class="mtd-store-style-blank">

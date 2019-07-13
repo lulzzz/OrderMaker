@@ -25,7 +25,7 @@
 @{
     string action = $"/api/store/create";
     string idStore = Model.Store.Id == null ? Model.Store.MtdForm : Model.Store.Id;
-    var user = await userHandler._userManager.GetUserAsync(User);
+    var user = await userHandler.GetUserAsync(User);
 }
 
 

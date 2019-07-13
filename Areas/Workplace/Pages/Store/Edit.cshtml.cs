@@ -57,7 +57,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);            
+            var user = await _userHandler.GetUserAsync(HttpContext.User);            
             bool isEditor = await _userHandler.IsEditor(user,MtdStore.MtdForm,MtdStore.Id);
             
             if (!isEditor) {

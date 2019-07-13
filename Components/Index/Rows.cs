@@ -51,10 +51,10 @@ namespace Mtd.OrderMaker.Web.Components.Index
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
                     
-            IList<Claim> userRights = await _userHandler._userManager.GetClaimsAsync(user);
+            IList<Claim> userRights = await _userHandler.GetClaimsAsync(user);
             FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync();

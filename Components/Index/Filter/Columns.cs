@@ -34,9 +34,9 @@ namespace Mtd.OrderMaker.Web.Components.Index
     public class Columns : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
 
-        public Columns(OrderMakerContext orderMakerContext, UserHandlerTrial userHandler)
+        public Columns(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
             _userHandler = userHandler;

@@ -36,9 +36,9 @@ namespace Mtd.OrderMaker.Web.Components.Store
     public class Form : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
 
-        public Form(OrderMakerContext orderMakerContext, UserHandlerTrial userHandler)
+        public Form(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
             _context = orderMakerContext;
             _userHandler = userHandler;

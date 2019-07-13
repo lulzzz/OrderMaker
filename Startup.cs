@@ -100,9 +100,8 @@ namespace Mtd.OrderMaker.Web
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Users", "RoleAdmin");
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
-
+   
             services.AddScoped<UserHandler>();
-            services.AddScoped<UserHandlerTrial>();
             services.AddTransient<ConfigHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailSenderBlank, EmailSenderBlank>();

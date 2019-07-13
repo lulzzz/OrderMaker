@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 return NotFound();
             }
 
-            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isEditor = await _userHandler.IsEditor(webAppUser, mtdStore.MtdForm, mtdStore.Id);
 
             if (!isEditor)
@@ -155,7 +155,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             string idForm = Request.Form["idForm"];
             string idFormParent = Request.Form["store-parent-id"];
 
-            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(webAppUser, idForm);
             if (!isCreator)
             {
@@ -213,7 +213,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 return NotFound();
             }
 
-            WebAppUser webAppUser = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isEraser = await _userHandler.IsEraser(webAppUser, mtdStore.MtdForm, mtdStore.Id);
 
             if (!isEraser)

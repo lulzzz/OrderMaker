@@ -35,9 +35,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
     public class DetailsModel : PageModel
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
 
-        public DetailsModel(OrderMakerContext context, UserHandlerTrial userHandler)
+        public DetailsModel(OrderMakerContext context, UserHandler userHandler)
         {
             _context = context;
             _userHandler = userHandler;

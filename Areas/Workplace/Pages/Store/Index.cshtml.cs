@@ -46,7 +46,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public async Task<IActionResult> OnGetAsync(string indexForm)
         {
 
-            WebAppUser user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
             bool isViewer = await _userHandler.IsViewer(user, indexForm);
             bool OwnerRight = await _userHandler.IsRightAsync(user, RightsType.ViewOwn, indexForm);
             

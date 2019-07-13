@@ -46,7 +46,7 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-            var user = await _userHandler._userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);

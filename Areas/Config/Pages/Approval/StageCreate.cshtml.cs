@@ -34,9 +34,9 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
     public class StageCreateModel : PageModel
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
 
-        public StageCreateModel(OrderMakerContext context, UserHandlerTrial userHandler)
+        public StageCreateModel(OrderMakerContext context, UserHandler userHandler)
         {
             _context = context;
             _userHandler = userHandler;

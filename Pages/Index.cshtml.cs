@@ -32,9 +32,9 @@ namespace Mtd.OrderMaker.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandlerTrial _userHandler;
+        private readonly UserHandler _userHandler;
 
-        public IndexModel(OrderMakerContext context, UserHandlerTrial userHandler)
+        public IndexModel(OrderMakerContext context, UserHandler userHandler)
         {
             _context = context;
             _userHandler = userHandler;

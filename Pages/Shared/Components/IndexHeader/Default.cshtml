@@ -24,7 +24,7 @@
 @inject IViewLocalizer Localizer
 
 @{
-    var user = await userHandler._userManager.GetUserAsync(User);
+    var user = await userHandler.GetUserAsync(User);
     bool isCreate = await userHandler.IsCreator(user, Model.IdForm);
 }
 <div class="mtd-index-header">
