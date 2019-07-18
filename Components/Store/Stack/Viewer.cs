@@ -39,6 +39,7 @@ namespace Mtd.OrderMaker.Web.Components.Store.Stack
         {
 
             MtdStoreStack mtdStoreStack = await GetMtdStoreStackAsync(field, dataSet);
+            if (mtdStoreStack == null) { mtdStoreStack = new MtdStoreStack(); }
             string viewName = await GetViewNameAsync(field.MtdSysType,dataSet.Parts.FirstOrDefault().MtdSysStyle);
 
             ViewData["typeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows" ;

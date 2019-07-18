@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Web-37BF32C5-192C-49FD-9796-64BBBCB87F6A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.0.3.4</AssemblyVersion>
-    <FileVersion>1.0.3.4</FileVersion>
+    <AssemblyVersion>1.0.3.6</AssemblyVersion>
+    <FileVersion>1.0.3.6</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -21,7 +21,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <PackageReleaseNotes>UserHandlerTrial is implemented</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
-    <Version>1.0.4</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

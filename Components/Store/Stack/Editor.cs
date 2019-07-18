@@ -67,7 +67,11 @@ namespace Mtd.OrderMaker.Web.Components.Store.Stack
                 IList<long> stackIds = await _context.MtdStoreStack.Where(x => x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
 
                 var dataList = await _context.MtdStoreStack
-                    .Include(m => m.MtdStoreStackText).Where(x => stackIds.Contains(x.Id)).Select(x => new { Id = x.MtdStore, Name = x.MtdStoreStackText.Register }).ToListAsync();
+                    .Include(m => m.MtdStoreStackText)                    
+                    .Where(x => stackIds.Contains(x.Id))
+                    .Select(x => new { Id = x.MtdStore, Name = x.MtdStoreStackText.Register })
+                    .OrderBy(x=>x.Name)
+                    .ToListAsync();
 
                 string idSelected = null;
                 if (mtdStoreStack.MtdStoreLink != null) { idSelected = mtdStoreStack.MtdStoreLink.MtdStore; }
