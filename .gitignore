@@ -12,6 +12,7 @@ appsettings.Prodaction.json
 
 package-lock.json
 
+/keys
 /node_modules
 /build
 /obj
