@@ -45,6 +45,10 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Interface
         {
             ViewData["ImgMenu"] = await GetImageFromConfig(1);
             ViewData["ImgAppBar"] = await GetImageFromConfig(2);
+            var barColor = await _context.MtdConfigParam.Where(x => x.Id == 1).Select(x => x.Value).FirstOrDefaultAsync();
+            var iconColor = await _context.MtdConfigParam.Where(x => x.Id == 2).Select(x => x.Value).FirstOrDefaultAsync();
+            ViewData["BarColor"] = barColor ?? "#00008a";
+            ViewData["IconColor"] = iconColor ?? "#ffffff";
             return Page();
         }
 
@@ -54,7 +58,16 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Interface
 
             await SaveImg(1);
             await SaveImg(2);
+
+            string colorBar = Request.Form["color-bar"];
+            string colorIcon = Request.Form["color-icon"];
+
+            await SaveBarColor(colorBar);
+            await SaveIconColor(colorIcon);
+
             await _context.SaveChangesAsync();
+
+
 
             return Page();
         }
@@ -95,6 +108,49 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Interface
 
         }
 
+        private async Task SaveBarColor(string color)
+        {
+
+            MtdConfigParam mtdConfigParam = await _context.MtdConfigParam.FindAsync(1);
+            if (mtdConfigParam == null)
+            {
+                mtdConfigParam = new MtdConfigParam
+                {
+                    Id = 1,
+                    Name = "Bar Color",
+                    Value = color
+                };
+
+                await _context.MtdConfigParam.AddAsync(mtdConfigParam);
+                return;
+            }
+
+            mtdConfigParam.Value = color;
+            _context.MtdConfigParam.Update(mtdConfigParam);
+            return;
+        }
+
+        private async Task SaveIconColor(string color)
+        {
+
+            MtdConfigParam mtdConfigParam = await _context.MtdConfigParam.FindAsync(2);
+            if (mtdConfigParam == null)
+            {
+                mtdConfigParam = new MtdConfigParam
+                {
+                    Id = 2,
+                    Name = "Icon Color",
+                    Value = color
+                };
+
+                await _context.MtdConfigParam.AddAsync(mtdConfigParam);
+                return;
+            }
+
+            mtdConfigParam.Value = color;
+            _context.MtdConfigParam.Update(mtdConfigParam);
+            return;
+        }
 
         private async Task<string> GetImageFromConfig(int code)
         {

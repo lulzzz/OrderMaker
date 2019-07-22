@@ -35,6 +35,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdApproval> MtdApproval { get; set; }
         public virtual DbSet<MtdApprovalStage> MtdApprovalStage { get; set; }
         public virtual DbSet<MtdConfigFile> MtdConfigFiles { get; set; }
+        public virtual DbSet<MtdConfigParam> MtdConfigParam { get; set; }
         public virtual DbSet<MtdFilter> MtdFilter { get; set; }        
         public virtual DbSet<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual DbSet<MtdFilterDate> MtdFilterDate { get; set; }
@@ -192,6 +193,27 @@ namespace Mtd.OrderMaker.Web.Data
                     .IsRequired()
                     .HasColumnName("name")
                     .HasColumnType("varchar(45)");
+            });
+
+            modelBuilder.Entity<MtdConfigParam>(entity =>
+            {
+                entity.ToTable("mtd_config_param");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(45)");
+
+                entity.Property(e => e.Value)
+                    .HasColumnName("value")
+                    .HasColumnType("longtext");
             });
 
             modelBuilder.Entity<MtdFilter>(entity =>

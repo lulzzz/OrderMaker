@@ -40,6 +40,9 @@
         userCheck = user.EmailConfirmed ? "green" : "red";
     }
 
+    ViewData["ColorBar"] = await configHandler.GetColorBar();
+    ViewData["ColorIcon"] = await configHandler.GetColorIcon();
+
 }
 
 <!DOCTYPE html>
@@ -111,12 +114,12 @@
     </aside>
     <div class="mdc-drawer-scrim"></div>
     <div class="mdc-drawer-app-content">
-        <header class="mdc-top-app-bar app-bar mdc-elevation--z4 mdc-top-app-bar--fixed" id="app-bar">
+        <header class="mdc-top-app-bar app-bar mdc-elevation--z4 mdc-top-app-bar--fixed" id="app-bar" style="background-color: @ViewBag.ColorBar">
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+                        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon" style="color: @ViewBag.ColorIcon">menu</a>
                     }
                     <span style="padding-left: 8px">
                         @{
@@ -131,7 +134,7 @@
                 {
                     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                         <div class="toolbar mdc-menu-surface--anchor">
-                            <button id="main-user-button" href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person">person</button>
+                            <button id="main-user-button" href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person" style="color: @ViewBag.ColorIcon">person</button>
                             <div id="main-user-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
                                 <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
                                     <li mtd-data-href="/Identity/Account/Manage" class="mdc-list-item" role="menuitem">

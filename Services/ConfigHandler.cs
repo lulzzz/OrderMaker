@@ -30,5 +30,27 @@ namespace Mtd.OrderMaker.Web.Services
 
             return result;
         }
+
+        public async Task<string> GetColorBar()
+        {
+            string color = "#00008a";
+            MtdConfigParam mtdConfigParam = await _context.MtdConfigParam.FindAsync(1);
+            if (mtdConfigParam != null)
+            {
+                color = mtdConfigParam.Value;
+            }
+            return color;
+        }
+
+        public async Task<string> GetColorIcon()
+        {
+            string color = "#ffffff";
+            MtdConfigParam mtdConfigParam = await _context.MtdConfigParam.FindAsync(2);
+            if (mtdConfigParam != null)
+            {
+                color = mtdConfigParam.Value;
+            }
+            return color;
+        }
     }
 }
