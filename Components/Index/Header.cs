@@ -44,7 +44,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
         public async Task<IViewComponentResult> InvokeAsync(string idForm) {
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var mtdFormList =  await ApprovalHandler.GetWaitStoreIds(_context, user);
+            var mtdFormList =  await ApprovalHandler.GetWaitStoreIds(_context, user, idForm);
             int pending = mtdFormList.Count();
 
             string searchText = "";
@@ -55,7 +55,17 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 whiteList = filter.WaitList == 0 ? false : true;
             }
 
-            return View("Default", new HeaderModelView { IdForm = idForm, SearchText = searchText, WaitList = whiteList, Pending = pending });
+            HeaderModelView headerModelView = new HeaderModelView
+            {
+                IdForm = idForm,
+                SearchText = searchText,
+                WaitList = whiteList,
+                Pending = pending,
+                IsApprovalForm = await ApprovalHandler.IsApprovalFormAsync(_context, idForm)
+
+            };
+
+            return View("Default", headerModelView);
         }
     }
 }

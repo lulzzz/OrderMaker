@@ -20,6 +20,7 @@
 @model Models.Index.RowsModelView
 @inject Web.Services.UserHandler userHandler;
 
+@using Mtd.OrderMaker.Web.DataHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
@@ -34,7 +35,7 @@
         <table>
             <thead>
                 <tr>
-                    <th  @if (!Model.ShowNumber) {<text>hidden</text>}>
+                    <th @if (!Model.ShowNumber) { <text> hidden</text>}>
                         <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                             @Html.AntiForgeryToken()
                             <input name="formId" asp-for="@Model.IdForm" type="hidden" />
@@ -50,38 +51,96 @@
                             </div>
                         </form>
                     </th>
-                    <th @if (!Model.ShowDate) {<text>hidden</text>}>
+                    <th @if (!Model.ShowDate) { <text> hidden</text>}>
                         @Localizer["Date of creation"]
                     </th>
+
+                    @if (Model.IsAppromalForm)
+                    {
+                        <th>
+                            <div style="text-align: center">
+                                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">timeline</i>
+                            </div>
+                        </th>
+                    }
+
+
                     @foreach (var item in Model.MtdFormPartFields)
                     {
-                    <th>
-                        <span>@item.Name</span>
-                    </th>
+                        <th>
+                            <span>@item.Name</span>
+                        </th>
                     }
                 </tr>
             </thead>
             <tbody>
                 @foreach (var store in Model.MtdStores)
                 {
-                    <tr mtd-data-href="/workplace/store/details?id=@store.Id">
-                        <td @if (!Model.ShowNumber) {<text>hidden</text>}>
-                            <div style="align-self: center">
-                                @store.Sequence.ToString("D9")                                                                
+                <tr mtd-data-href="/workplace/store/details?id=@store.Id">
+
+                    <td @if (!Model.ShowNumber) { <text> hidden</text>}>
+                        <div style="align-self: center">
+                            @store.Sequence.ToString("D9")
+                        </div>
+                    </td>
+                    <td @if (!Model.ShowDate) { <text> hidden</text>}>
+                        <span>@store.Timecr.ToShortDateString()</span>
+                    </td>
+                    @if (Model.IsAppromalForm)
+                    {
+                        <td>
+                            @{
+                                ApprovalStatus status = Model.ApprovalStores.Where(x => x.StoreId == store.Id).Select(x => x.Status).FirstOrDefault();
+                            }
+                            @switch (status)
+                            {
+                                case ApprovalStatus.Approved:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: green;">thumb_up</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Iteraction:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: darkred">new_releases</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Rejected:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle">thumb_down</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Required:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: red">assignment_turned_in</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Start:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">new_releases</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Waiting:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
+                                        break;
+                                    }
+                            }
+
+
+                        </td>
+                    }
+
+
+                    @foreach (var field in Model.MtdFormPartFields)
+                    {
+                        <td>
+                            <div style="max-height: 2.8em; overflow:hidden; padding: 2px; text-overflow: ellipsis">
+                                @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
                             </div>
                         </td>
-                        <td @if (!Model.ShowDate) {<text>hidden</text>}>
-                            <span>@store.Timecr.ToShortDateString()</span>
-                        </td>
-                        @foreach (var field in Model.MtdFormPartFields)
-                        {
-                            <td>
-                                <div style="max-height: 2.8em; overflow:hidden; padding: 2px; text-overflow: ellipsis">
-                                    @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
-                                </div>
-                            </td>
-                        }
-                    </tr>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table>

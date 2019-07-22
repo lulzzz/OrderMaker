@@ -143,7 +143,6 @@
 .mtd-store-view-row-name {
   color: gray;
   display: table-cell;
-  text-transform: lowercase;
   vertical-align: middle;
   max-width: 270px;
   overflow: hidden;
@@ -203,7 +202,6 @@
 .mtd-store-view-col-name {
   color: gray;
   align-self: center;
-  text-transform: lowercase;
   padding: 0px 4px 0px 4px;
   white-space: nowrap;
   overflow: hidden;

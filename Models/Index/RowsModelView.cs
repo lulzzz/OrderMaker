@@ -18,6 +18,7 @@
 */
 
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Models.Index
@@ -33,5 +34,7 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public bool WaitList { get; set; }
         public bool ShowNumber { get; set; }
         public bool ShowDate { get; set; }
+        public List<ApprovalStore> ApprovalStores { get; set; }
+        public bool IsAppromalForm { get; set; }
     }
 }

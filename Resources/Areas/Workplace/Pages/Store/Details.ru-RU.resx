@@ -204,14 +204,17 @@
   <data name="Rejected" xml:space="preserve">
     <value>Отказано</value>
   </data>
+  <data name="Returned" xml:space="preserve">
+    <value>Возвращен</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="Select the stage to which the approval process will be returned." xml:space="preserve">
-    <value>Выберете этап согласования на который будет возвращен процесс согласования.</value>
+    <value>Выберите этап согласования на который будет возвращен процесс согласования.</value>
   </data>
   <data name="Select user and click 'Save' button" xml:space="preserve">
-    <value>Выберете пользователя и нажмите кнопку "Сохранить"</value>
+    <value>Выберите пользователя и нажмите кнопку "Сохранить"</value>
   </data>
   <data name="Set owner" xml:space="preserve">
     <value>Изменить владельца</value>

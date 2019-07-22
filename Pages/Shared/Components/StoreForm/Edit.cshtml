@@ -30,11 +30,18 @@
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
     <div class="mtd-store-style-blank mdc-elevation--z2">
-        <div class="mtd-store-edit-bar">
-            <div class="mtd-store-edit-control">
-                <div class="mtd-ui-material-submit">
-                    <button mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Owner.Store.MtdForm" type="button">@Localizer["Save"]</button>
-                </div>
+        <div class="mtd-store-edit-bar" style="text-align: right">
+            <div class="mtd-store-edit-control" style="position:absolute">
+                <a mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-fab mdc-fab--extended" aria-label="Save">
+                    <span class="material-icons mdc-fab__icon">save</span>
+                    <span class="mdc-fab__label">@Localizer["Save"]</span>
+                </a>
+            </div>
+            <div>
+                <button mtd-data-href="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-button" type="button">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
+                </button>
             </div>
         </div>
 

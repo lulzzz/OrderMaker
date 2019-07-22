@@ -27,7 +27,8 @@ namespace Mtd.OrderMaker.Web.Data
         public string Id { get; set; }
         public int MtdApproveStage { get; set; }
         public string PartsApproved { get; set; }
-        public sbyte Approved { get; set; }
+        public sbyte Complete { get; set; }
+        public int Result { get; set; }
 
         public virtual MtdStore IdNavigation { get; set; }
         public virtual MtdApprovalStage MdApproveStageNavigation { get; set; }

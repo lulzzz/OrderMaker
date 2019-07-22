@@ -30,13 +30,28 @@
 
 
 <div class="mtd-store-style-blank mdc-elevation--z2">
-    <div class="mtd-store-edit-bar">
+    <div class="mtd-store-edit-bar" style="text-align: right">
+        <div class="mtd-store-edit-control" style="position:absolute">
+            <a id="store-create-button" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </a>
+        </div>
+        <div>
+            <button mtd-data-href="/workplace/store/index?indexForm=@Model.Store.MtdFormNavigation.Id" class="mdc-button" type="button">
+                <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
+            </button>
+        </div>
+    </div>
+
+    @*<div class="mtd-store-edit-bar">
         <div class="mtd-store-edit-control">
             <div class="mtd-ui-material-submit">
                 <button id="store-create-button" type="button">@Localizer["Save"]</button>
             </div>
         </div>
-    </div>
+    </div>*@
 
     <div id="@idStore-modal" class="mtd-store-style-modal"></div>
 

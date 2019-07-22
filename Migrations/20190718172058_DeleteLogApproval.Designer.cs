@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.OrderMaker.Web.Data;
 
 namespace Mtd.OrderMaker.Web.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    partial class OrderMakerContextModelSnapshot : ModelSnapshot
+    [Migration("20190718172058_DeleteLogApproval")]
+    partial class DeleteLogApproval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -702,50 +704,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_part_header");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogApproval", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
-
-                    b.Property<string>("MtdStore")
-                        .IsRequired()
-                        .HasColumnName("mtd_store")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<int>("Result")
-                        .HasColumnName("result")
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("Stage")
-                        .HasColumnName("stage")
-                        .HasColumnType("int(11)");
-
-                    b.Property<DateTime>("Timecr")
-                        .HasColumnName("timecr")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasName("id_UNIQUE");
-
-                    b.HasIndex("MtdStore")
-                        .HasName("fk_log_approval_store_idx");
-
-                    b.HasIndex("Stage")
-                        .HasName("fk_log_approval_stage_idx");
-
-                    b.ToTable("mtd_log_approval");
-                });
-
             modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogDocument", b =>
                 {
                     b.Property<int>("Id")
@@ -1355,21 +1313,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .WithOne("MtdFormPartHeader")
                         .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFormPartHeader", "Id")
                         .HasConstraintName("fk_image_form_part")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogApproval", b =>
-                {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "MtdStoreNavigation")
-                        .WithMany("MtdLogApproval")
-                        .HasForeignKey("MtdStore")
-                        .HasConstraintName("fk_log_approval_store")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "StageNavigation")
-                        .WithMany("MtdLogApproval")
-                        .HasForeignKey("Stage")
-                        .HasConstraintName("fk_log_approval_stage")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

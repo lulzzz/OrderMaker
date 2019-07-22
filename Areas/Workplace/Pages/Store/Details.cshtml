@@ -20,6 +20,7 @@
 @page
 @model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.DetailsModel
 @namespace Mtd.OrderMaker.Web.Components.Store
+@using Mtd.OrderMaker.Web.DataHandler.Approval
 
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -193,11 +194,11 @@
                         <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
                         <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
 
-                        @if (Model.ApprovalStatus > 0 && Model.IsFormApproval)
+                        @if (Model.IsFormApproval)
                         {
                             switch (Model.ApprovalStatus)
                             {
-                                case 2:
+                                case ApprovalStatus.Rejected:
                                     {
                                         <tr>
                                             <td>@Localizer["Approval status"]</td>
@@ -210,7 +211,7 @@
                                         </tr>
                                         break;
                                     }
-                                case 3:
+                                case ApprovalStatus.Approved:
                                     {
                                         <tr>
                                             <td>@Localizer["Approval status"]</td>
@@ -223,7 +224,7 @@
                                         </tr>
                                         break;
                                     }
-                                default:
+                                case ApprovalStatus.Waiting:
                                     {
                                         <tr>
                                             <td>@Localizer["Approval status"]</td>
@@ -236,22 +237,46 @@
                                         </tr>
                                         break;
                                     }
-                            }
+                                case ApprovalStatus.Start:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
+                                                    @Localizer["Not started"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                                case ApprovalStatus.Iteraction:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: darkred; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
+                                                    @Localizer["Returned"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
 
-                        }
-                        else
-                        {
-                            @if (Model.IsFormApproval)
-                            {
-                                <tr>
-                                    <td>@Localizer["Approval status"]</td>
-                                    <td>
-                                        <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
-                                            <i style="vertical-align:middle" class="material-icons">new_releases</i>
-                                            @Localizer["Not started"]
-                                        </span>
-                                    </td>
-                                </tr>
+                                case ApprovalStatus.Required:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: red; text-transform:uppercase; font-weight: bold;">
+                                                    <i style="vertical-align:middle" class="material-icons">assignment_turned_in</i>
+                                                    @Localizer["Approval is required"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
                             }
                         }
 

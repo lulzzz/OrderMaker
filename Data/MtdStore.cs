@@ -28,6 +28,7 @@ namespace Mtd.OrderMaker.Web.Data
         {
             InverseParentNavigation = new HashSet<MtdStore>();
             MtdLogDocument = new HashSet<MtdLogDocument>();
+            MtdLogApproval = new HashSet<MtdLogApproval>();
             MtdStoreLink = new HashSet<MtdStoreLink>();
             MtdStoreStack = new HashSet<MtdStoreStack>();
         }
@@ -45,6 +46,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual MtdStoreOwner MtdStoreOwner { get; set; }
         public virtual ICollection<MtdStore> InverseParentNavigation { get; set; }
         public virtual ICollection<MtdLogDocument> MtdLogDocument { get; set; }
+        public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual ICollection<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual ICollection<MtdStoreStack> MtdStoreStack { get; set; }
     }

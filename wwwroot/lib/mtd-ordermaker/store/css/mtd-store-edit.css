@@ -210,8 +210,6 @@
   text-align: center;
 }
 .mtd-store-edit-bar {
-  display: flex;
-  float: right;
   position: sticky;
   position: -webkit-sticky;
   position: -moz-sticky;
@@ -230,14 +228,15 @@
   -ms-transition: all 0.25s ease-in-out;
   -o-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
+  /*border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;*/
   background-color: white;
   background: #ffffff;
   background: -moz-radial-gradient(center, ellipse cover, #ffffff 0%, #e5e5e5 100%);
   background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%, #e5e5e5 100%);
   background: radial-gradient(ellipse at center, #ffffff 0%, #e5e5e5 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e5e5e5', GradientType=1);
+  margin-bottom: 12px;
 }
 .mtd-store-edit-bar:after {
   /*content: '';
@@ -251,6 +250,6 @@
     transform: skewX(49deg);*/
 }
 .mtd-store-edit-control {
-  width: 100%;
-  text-align: center;
+  /*width: 100%;
+    text-align: center;*/
 }

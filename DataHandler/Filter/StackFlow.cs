@@ -44,7 +44,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 
             if (incomer.WaitList == 1)
             {
-                List<string> storesForUser = await ApprovalHandler.GetWaitStoreIds(_context, _user);
+                List<string> storesForUser = await ApprovalHandler.GetWaitStoreIds(_context, _user, incomer.IdForm);
                 queryMtdStore = queryMtdStore.Where(x => storesForUser.Contains(x.Id));
             }
             

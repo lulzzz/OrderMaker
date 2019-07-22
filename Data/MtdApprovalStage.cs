@@ -25,9 +25,9 @@ namespace Mtd.OrderMaker.Web.Data
     public partial class MtdApprovalStage
     {
         public MtdApprovalStage()
-        {
-            MtdLogApproval = new HashSet<MtdLogApproval>();
+        {            
             MtdStoreApproval = new HashSet<MtdStoreApproval>();
+            MtdLogApproval = new HashSet<MtdLogApproval>();
         }
 
         public int Id { get; set; }
