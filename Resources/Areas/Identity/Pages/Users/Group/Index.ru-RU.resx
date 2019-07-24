@@ -117,43 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+  <data name="Groups" xml:space="preserve">
+    <value>Группы</value>
   </data>
-  <data name="Delete user" xml:space="preserve">
-    <value>Удалить пользователя</value>
-  </data>
-  <data name="Edit groups" xml:space="preserve">
-    <value>Редактировать группы</value>
-  </data>
-  <data name="Login name" xml:space="preserve">
-    <value>Логин</value>
-  </data>
-  <data name="Role" xml:space="preserve">
-    <value>Роль</value>
+  <data name="List groups" xml:space="preserve">
+    <value>Список групп </value>
   </data>
   <data name="Search for text" xml:space="preserve">
     <value>Поиск по тексту</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Статус</value>
-  </data>
-  <data name="The user will be permanently deleted" xml:space="preserve">
-    <value>Пользователь будет удален без возможности восстановления</value>
-  </data>
-  <data name="Title name" xml:space="preserve">
-    <value>Отображаемое имя</value>
-  </data>
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
-  </data>
-  <data name="Users management" xml:space="preserve">
-    <value>Управление пользователями</value>
   </data>
 </root>

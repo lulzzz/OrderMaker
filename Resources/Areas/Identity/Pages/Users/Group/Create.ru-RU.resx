@@ -117,43 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+  <data name="Creating a new group" xml:space="preserve">
+    <value>Создание новой группы</value>
   </data>
-  <data name="Delete user" xml:space="preserve">
-    <value>Удалить пользователя</value>
+  <data name="Croups" xml:space="preserve">
+    <value>Группы</value>
   </data>
-  <data name="Edit groups" xml:space="preserve">
-    <value>Редактировать группы</value>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
   </data>
-  <data name="Login name" xml:space="preserve">
-    <value>Логин</value>
+  <data name="Name" xml:space="preserve">
+    <value>Наименование</value>
   </data>
-  <data name="Role" xml:space="preserve">
-    <value>Роль</value>
+  <data name="New group" xml:space="preserve">
+    <value>Новая группа</value>
   </data>
-  <data name="Search for text" xml:space="preserve">
-    <value>Поиск по тексту</value>
+  <data name="New group was created" xml:space="preserve">
+    <value>Новая группа была создана</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Статус</value>
-  </data>
-  <data name="The user will be permanently deleted" xml:space="preserve">
-    <value>Пользователь будет удален без возможности восстановления</value>
-  </data>
-  <data name="Title name" xml:space="preserve">
-    <value>Отображаемое имя</value>
+  <data name="Required field" xml:space="preserve">
+    <value>Обязательное поле</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
-  </data>
-  <data name="Users management" xml:space="preserve">
-    <value>Управление пользователями</value>
   </data>
 </root>

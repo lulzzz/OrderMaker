@@ -120,40 +120,43 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Создать</value>
+  <data name="Croups" xml:space="preserve">
+    <value>Группы</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
-  <data name="Delete user" xml:space="preserve">
-    <value>Удалить пользователя</value>
+  <data name="Delete group" xml:space="preserve">
+    <value>Удалить группу</value>
   </data>
-  <data name="Edit groups" xml:space="preserve">
-    <value>Редактировать группы</value>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
   </data>
-  <data name="Login name" xml:space="preserve">
-    <value>Логин</value>
+  <data name="Editing group" xml:space="preserve">
+    <value>Редактирование группы</value>
   </data>
-  <data name="Role" xml:space="preserve">
-    <value>Роль</value>
+  <data name="Editor" xml:space="preserve">
+    <value>Редактор</value>
   </data>
-  <data name="Search for text" xml:space="preserve">
-    <value>Поиск по тексту</value>
+  <data name="Name" xml:space="preserve">
+    <value>Наименование</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Статус</value>
+  <data name="Required field" xml:space="preserve">
+    <value>Обязательное поле</value>
   </data>
-  <data name="The user will be permanently deleted" xml:space="preserve">
-    <value>Пользователь будет удален без возможности восстановления</value>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
   </data>
-  <data name="Title name" xml:space="preserve">
-    <value>Отображаемое имя</value>
+  <data name="The group" xml:space="preserve">
+    <value>Группа</value>
+  </data>
+  <data name="The group and all data associated with it will be permanently deleted." xml:space="preserve">
+    <value>Группа и все связанные с ней данные будут удалены.</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
   </data>
-  <data name="Users management" xml:space="preserve">
-    <value>Управление пользователями</value>
+  <data name="was deleted" xml:space="preserve">
+    <value>была удалена</value>
   </data>
 </root>

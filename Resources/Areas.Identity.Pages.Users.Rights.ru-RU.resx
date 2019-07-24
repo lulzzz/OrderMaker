@@ -135,8 +135,14 @@
   <data name="Form name" xml:space="preserve">
     <value>Наименование формы</value>
   </data>
+  <data name="Groups user" xml:space="preserve">
+    <value>Пользователь групп</value>
+  </data>
   <data name="Only own" xml:space="preserve">
     <value>Только свои</value>
+  </data>
+  <data name="Reviewer" xml:space="preserve">
+    <value>Рецензент</value>
   </data>
   <data name="Rights" xml:space="preserve">
     <value>Права</value>
@@ -146,6 +152,9 @@
   </data>
   <data name="Select all" xml:space="preserve">
     <value>Выделить все</value>
+  </data>
+  <data name="Set Owner" xml:space="preserve">
+    <value>Смена владельца</value>
   </data>
   <data name="Unselect all" xml:space="preserve">
     <value>Убрать все</value>
