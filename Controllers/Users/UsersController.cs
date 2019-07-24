@@ -51,7 +51,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
         private readonly List<string> claimValues = new List<string>() {
             "-create","-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own",
-            "-set-owner", "-set-group", "-review"
+            "-set-own", "-reviewer", "-view-group", "-edit-group", "-delete-group"
         };
 
         private readonly List<string> claimParts = new List<string>() {

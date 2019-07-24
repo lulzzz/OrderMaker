@@ -53,8 +53,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
-        public virtual DbSet<MtdStoreApproval> MtdStoreApproval { get; set; }
-        public virtual DbSet<MtdStoreGroup> MtdStoreGroup { get; set; }
+        public virtual DbSet<MtdStoreApproval> MtdStoreApproval { get; set; }        
         public virtual DbSet<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual DbSet<MtdStoreOwner> MtdStoreOwner { get; set; }
         public virtual DbSet<MtdStoreStack> MtdStoreStack { get; set; }
@@ -1040,37 +1039,7 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey(d => d.MtdApproveStage)
                     .HasConstraintName("fk_store_approve_stage");
             });
-
-            modelBuilder.Entity<MtdStoreGroup>(entity =>
-            {
-                entity.ToTable("mtd_store_group");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.MtdGroup)
-                    .HasName("fk_store_group_mtd_group_idx");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e => e.MtdGroup)
-                    .IsRequired()
-                    .HasColumnName("mtd_group")
-                    .HasColumnType("varchar(36)");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.MtdStoreGroup)
-                    .HasForeignKey<MtdStoreGroup>(d => d.Id)
-                    .HasConstraintName("fk_group_store");
-
-                entity.HasOne(d => d.MtdGroupNavigation)
-                    .WithMany(p => p.MtdStoreGroup)
-                    .HasForeignKey(d => d.MtdGroup)
-                    .HasConstraintName("fk_store_group_mtd_group");
-            });
+          
 
             modelBuilder.Entity<MtdStoreLink>(entity =>
             {

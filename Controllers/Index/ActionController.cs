@@ -84,9 +84,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             var user = await _userHandler.GetUserAsync(User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
-
-            IList<Claim> userRights = await _userHandler.GetClaimsAsync(user);
-            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
+            
+            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, _userHandler);
             MtdFilter mtdFilter = await handlerFilter.GetFilterAsync();
             if (mtdFilter == null) return NotFound();
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();

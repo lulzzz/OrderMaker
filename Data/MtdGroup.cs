@@ -24,15 +24,9 @@ namespace Mtd.OrderMaker.Web.Data
 {
     public partial class MtdGroup
     {
-        public MtdGroup()
-        {
-            MtdStoreGroup = new HashSet<MtdStoreGroup>();
-        }
 
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public virtual ICollection<MtdStoreGroup> MtdStoreGroup { get; set; }
     }
 }

@@ -135,7 +135,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             foreach (MtdForm form in mtdForms)
             {
-                string[] noSelect = { "-view", "-edit", "-delete" };
+                string[] noSelect = { "-view-own", "-view-group", "-edit-own", "-edit-group", "-delete-own", "-delete-group" };
                 foreach (string claimValue in claimValues)
                 {
                     Claim claim = new Claim(form.Id, claimValue);
@@ -152,6 +152,14 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                     };
 
                 }
+            }
+
+            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
+
+            foreach (MtdGroup group in groups)
+            {
+                Claim claim = new Claim(group.Id, "-group");
+                newClaims.Add(claim);
             }
 
             try

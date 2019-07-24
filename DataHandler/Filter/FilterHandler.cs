@@ -34,16 +34,16 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
         private readonly OrderMakerContext _context;
         private MtdFilter register;
         private WebAppUser _user;
-        private IQueryable<MtdStore> queryMtdStore;
-        private IList<Claim> _userRights;
+        private IQueryable<MtdStore> queryMtdStore;        
+        private UserHandler _userHandler;
 
         public string IdForm { get; private set; }
 
-        public FilterHandler(OrderMakerContext orderMakerContext, string idForm, WebAppUser user, IList<Claim> userRights)
+        public FilterHandler(OrderMakerContext orderMakerContext, string idForm, WebAppUser user, UserHandler userHandler)
         {
             _context = orderMakerContext;
             _user = user;
-            _userRights = userRights.Where(x => x.Type == idForm).ToList();
+            _userHandler = userHandler;
             IdForm = idForm;
             queryMtdStore = _context.MtdStore;
         }

@@ -79,12 +79,15 @@ const handlerEventChecked = () => {
 
             const idAll = `${id}-${right}`;
             const idOwn = `${id}-${right}-own`;          
+            const idGroup = `${id}-${right}-group`;
             const inputAll = document.getElementById(idAll);
             const inputOwn = document.getElementById(idOwn);
+            const inputGroup = document.getElementById(idGroup);
 
             inputOwn.addEventListener('change', () => {
                 if (inputOwn.checked) {
                     inputAll.checked = false;
+                    inputGroup.checked = false;
                 }
 
                 if (right !== "delete") {
@@ -96,9 +99,21 @@ const handlerEventChecked = () => {
             inputAll.addEventListener('change', () => {
                 if (inputAll.checked) {
                     inputOwn.checked = false;
+                    inputGroup.checked = false;
                 }
                 if (right !== "delete") {
                     selectPartsAll(id, `-part-${right}`, inputAll.checked);
+                }
+
+            });
+
+            inputGroup.addEventListener('change', () => {
+                if (inputGroup.checked) {
+                    inputOwn.checked = false;
+                    inputAll.checked = false;
+                }
+                if (right !== "delete") {
+                    selectPartsAll(id, `-part-${right}`, inputGroup.checked);
                 }
 
             });

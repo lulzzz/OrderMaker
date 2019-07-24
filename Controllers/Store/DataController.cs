@@ -253,6 +253,55 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             return Ok(result);
         }
 
+        [HttpPost("setowner")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostSetOwnerAsync()
+        {
+
+            string idStore = Request.Form["setowner-id-store"];
+            string idUser = Request.Form["setowner-id-user"];
+
+            WebAppUser webAppUser = await _userHandler.FindByIdAsync(idUser);
+            
+            if (webAppUser != null)
+            {
+
+                MtdStoreOwner mtdStoreOwner = await _context.MtdStoreOwner.Include(x=>x.IdNavigation).FirstOrDefaultAsync(x=>x.Id==idStore);                               
+
+                if (mtdStoreOwner == null)
+                {
+
+                    string idForm = mtdStoreOwner.IdNavigation.MtdForm;
+                    bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser,idForm,mtdStoreOwner.Id);
+                    if (!IsInstllerOwner)
+                    {
+                        return Forbid();
+                    }
+
+                    mtdStoreOwner = new MtdStoreOwner
+                    {
+                        Id = idStore,
+                        UserId = webAppUser.Id,
+                        UserName = webAppUser.Title
+                    };
+
+                    await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+
+                }
+
+                mtdStoreOwner.UserId = webAppUser.Id;
+                mtdStoreOwner.UserName = webAppUser.Title;
+                _context.Entry(mtdStoreOwner).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+            }
+
+            return Ok();
+        }
+
         private async Task<OutData> CreateDataAsync(string Id, WebAppUser user, TypeAction typeAction)
         {
 

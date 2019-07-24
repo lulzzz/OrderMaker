@@ -53,15 +53,14 @@ namespace Mtd.OrderMaker.Web.Components.Index
         {
             var user = await _userHandler.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
-                    
-            IList<Claim> userRights = await _userHandler.GetClaimsAsync(user);
-            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, userRights);
+                                
+            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, _userHandler);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync();
             OutFlow outFlow = await handlerFilter.GetStackFlowAsync(incomer, typeQuery);
             IList<MtdStore> mtdStore = outFlow.MtdStores;
 
-            decimal count = outFlow.Count / incomer.PageSize;
+            decimal count = (decimal) outFlow.Count / incomer.PageSize;
             pageCount = Convert.ToInt32(Math.Round(count, MidpointRounding.AwayFromZero));
             pageCount = pageCount == 0 ? 1 : pageCount;
 

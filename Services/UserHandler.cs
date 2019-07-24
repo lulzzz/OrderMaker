@@ -15,26 +15,14 @@ namespace Mtd.OrderMaker.Web.Services
 {
     public enum RightsType
     {
-        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn
+        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer
     };
 
     public class UserHandler : UserManager<WebAppUser>
     {
-        public string RightCreate => "-create";
-        public string RightView => "-view";
-        public string RightEdit => "-edit";
-        public string RightDelete => "-delete";
-        public string RightViewOwn => "-view-own";
-        public string RightEditOwn => "-edit-own";
-        public string RightDeleteOwn => "-delete-own";
 
-
-        private List<string> rights;
         private readonly OrderMakerContext _context;
-        private readonly SignInManager<WebAppUser> _signInManager;
-
-
-        public ReadOnlyCollection<string> Rights => rights.AsReadOnly();
+        private readonly SignInManager<WebAppUser> _signInManager;        
 
         public UserHandler(OrderMakerContext context,
             IUserStore<WebAppUser> store,
@@ -48,14 +36,13 @@ namespace Mtd.OrderMaker.Web.Services
         {
             _context = context;
             _signInManager = signInManager;
-            rights = new List<string>()
-            {RightView,RightCreate,RightDelete,RightEdit };
         }
 
         private string RightTypeToString(RightsType rightsType)
         {
             string value = $"-{rightsType.ToString().ToLower()}";
             value = value.Replace("own", "-own");
+            value = value.Replace("group", "-group");
             return value;
         }
 
@@ -101,18 +88,30 @@ namespace Mtd.OrderMaker.Web.Services
         {
 
             IList<Claim> claims = await GetClaimsAsync(user);
-            bool isOk = claims.Where(x => x.Type == idForm && x.Value == right).Any();
-            if (isOk) return true;
 
             bool ownRight = claims.Where(x => x.Type == idForm && x.Value == $"{right}-own").Any();
             if (ownRight && idStore != null)
             {
                 bool isOkOwner = await _context.MtdStoreOwner.Where(x => x.Id == idStore & x.UserId == user.Id).AnyAsync();
-                if (isOkOwner) return true;
+                return isOkOwner;
             }
+
+            bool groupRight = claims.Where(x => x.Type == idForm && x.Value == $"{right}-group").Any();
+            if (groupRight && idStore != null)
+            {
+                List<WebAppUser> users = await GetUsersInGroupsAsync(user);
+                List<string> userIds = users.Select(x => x.Id).ToList();
+                bool isOkGroup = await _context.MtdStoreOwner.Where(x => x.Id == idStore & userIds.Contains(x.UserId)).AnyAsync();
+                return isOkGroup;
+            }
+
+            
+            bool isOk = claims.Where(x => x.Type == idForm && x.Value == right).Any();
+            if (isOk) return true;
 
             return false;
         }
+
 
         public async Task<bool> IsCreator(WebAppUser user, string idForm, string idStore = null)
         {
@@ -120,9 +119,10 @@ namespace Mtd.OrderMaker.Web.Services
         }
 
         public async Task<bool> IsViewer(WebAppUser user, string idForm, string idStore = null)
-        {
+        {            
             return await IsRights("-view", user, idForm, idStore);
         }
+
 
         public async Task<bool> IsEditor(WebAppUser user, string idForm, string idStore = null)
         {
@@ -131,7 +131,26 @@ namespace Mtd.OrderMaker.Web.Services
 
         public async Task<bool> IsEraser(WebAppUser user, string idForm, string idStore = null)
         {
-            return await IsRights("-delete", user, idForm, idStore);
+            return  await IsRights("-delete", user, idForm, idStore);
+        }
+
+        public async Task<bool> IsInstallerOwner(WebAppUser user, string idForm, string idStore)
+        {
+            bool result = await IsRights("-set-own", user, idForm);
+            if (!result) return result;
+
+            MtdStoreOwner mtdStoreOwner =  await _context.MtdStoreOwner.FindAsync(idStore);
+            if (mtdStoreOwner == null) { return await IsAdmin(user); }
+
+            List<WebAppUser> webAppUsers = await GetUsersInGroupsAsync(user);
+            List<string> userIds = webAppUsers.Select(x => x.Id).ToList();
+            return webAppUsers.Where(x => userIds.Contains(mtdStoreOwner.UserId)).Any();
+            
+        }
+
+        public async Task<bool> IsReviewer(WebAppUser user, string idForm, string idStore = null)
+        {
+            return await IsRights("-reviewer", user, idForm, idStore);
         }
 
         public async Task<bool> IsCreatorPartAsync(WebAppUser user, string idPart)
@@ -157,9 +176,29 @@ namespace Mtd.OrderMaker.Web.Services
             List<string> idsAll = await _context.MtdFormPart.Where(x => x.MtdForm == idForm).Select(x => x.Id).ToListAsync();
             IList<Claim> claims = await GetClaimsAsync(user);
             return claims.Where(x => idsAll.Contains(x.Type) && x.Value == "-part-view").Select(x => x.Type).ToList();
-
         }
+        
+        public async Task<List<WebAppUser>> GetUsersInGroupsAsync(WebAppUser webAppUser)
+        {
+            List<WebAppUser> webAppUsers = new List<WebAppUser>();
+            IList<Claim> claims = await GetClaimsAsync(webAppUser);
+            IList<Claim> groups = claims.Where(c => c.Value == "-group").ToList();
 
+            foreach (var claim in groups)
+            {
+                IList<WebAppUser> users = await GetUsersForClaimAsync(claim);
+                if (users != null)
+                {
+                    var temp = users.Where(x => !webAppUsers.Select(w => w.Id).Contains(x.Id)).ToList();
+                    if (temp != null)
+                    {
+                        webAppUsers.AddRange(temp);
+                    }
+                }
+            }
+
+            return webAppUsers;
+        }
 
         public override async Task<WebAppUser> GetUserAsync(ClaimsPrincipal principal)
         {
@@ -177,7 +216,7 @@ namespace Mtd.OrderMaker.Web.Services
             }
 
             return user;
-        }
+        }        
 
     }
 }
