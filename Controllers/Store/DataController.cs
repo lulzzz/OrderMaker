@@ -311,9 +311,14 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                .FirstOrDefaultAsync(m => m.Id == Id);
             
             List<string> partsIds = new List<string>();
+            bool isReviewer = await _userHandler.IsReviewer(user, store.MtdForm);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
-            List<string> blockedParts = await approvalHandler.GetBlockedPartsIds();
-
+            List<string> blockedParts = new List<string>();
+            if (!isReviewer)
+            {
+                blockedParts = await approvalHandler.GetBlockedPartsIds();
+            }
+            
             foreach (var part in store.MtdFormNavigation.MtdFormPart)
             {
                 switch (typeAction)

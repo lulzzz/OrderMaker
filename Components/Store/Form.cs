@@ -72,10 +72,14 @@ namespace Mtd.OrderMaker.Web.Components.Store
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);            
             List<MtdFormPart> mtdFormParts = new List<MtdFormPart>();
             IList<MtdFormPart> parts = await GetPartsAsync(store.MtdForm);
-
+            bool isReviewer = await _userHandler.IsReviewer(webAppUser, store.MtdForm);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
-            List<string> blockedParts = await approvalHandler.GetBlockedPartsIds();
-
+            List<string> blockedParts = new List<string>();
+            if (!isReviewer)
+            {
+                blockedParts = await approvalHandler.GetBlockedPartsIds();
+            }
+            
             foreach (MtdFormPart formPart in parts)
             {
                 if (type == FormType.Edit)
