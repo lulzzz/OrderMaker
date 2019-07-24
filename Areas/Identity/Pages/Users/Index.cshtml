@@ -32,10 +32,17 @@
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/users/css/mtd-users.css" />
 }
 
+@section Action  {
+    <li mtd-data-href="/identity/users/group" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">groups</span>
+        <span class="mdc-list-item__text">@Localizer["Edit groups"]</span>
+    </li>
+}
+
 <div class="mdc-elevation--z1 mtd-users-place">
     <div id="usersCreator" class="mtd-users-creator">
         <a mtd-data-href="/identity/users/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="material-icons mdc-fab__icon">person_add</span>
             <span class="mdc-fab__label">@Localizer["Create"]</span>
         </a>
     </div>

@@ -17,55 +17,43 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
+namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Group
 {
-    public class RightsModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
 
-
-        public RightsModel(OrderMakerContext context, UserManager<WebAppUser> userManager)
+        public IndexModel(OrderMakerContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
-        public string UserName { get; set; }
-        public string UserTitle { get; set; }
-        public string UserId { get; set; }
-        public IList<Claim> Claims { get; set; }
-        public IList<MtdForm> MtdForms { get; set; }
         public IList<MtdGroup> MtdGroups { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(string userId)
+        public string SearchText { get; set; }
+        public async  Task<IActionResult> OnGetAsync(string searchText)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var query = _context.MtdGroup.AsQueryable();
 
-            if (user == null)
+            if (searchText != null)
             {
-                return NotFound();
+                string normText = searchText.ToUpper();
+                query = query.Where(x => x.Name.ToUpper().Contains(normText) ||
+                                        x.Description.ToUpper().Contains(normText)
+                                        );
+                SearchText = searchText;
             }
 
-            Claims = await _userManager.GetClaimsAsync(user);
-            MtdGroups = await _context.MtdGroup.OrderBy(x=>x.Name).ToListAsync();
 
-            UserId = user.Id;
-            UserName = user.UserName;
-            UserTitle = user.Title;
-
-            MtdForms = await _context.MtdForm.Include(x=>x.MtdFormPart).ToListAsync();
+            MtdGroups = await query.ToListAsync();
             return Page();
         }
     }

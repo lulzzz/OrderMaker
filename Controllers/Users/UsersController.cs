@@ -50,7 +50,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         private readonly IOptions<ConfigSettings> _options;
 
         private readonly List<string> claimValues = new List<string>() {
-            "-create","-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own"          
+            "-create","-view","-edit", "-delete", "-view-own", "-edit-own", "-delete-own",
+            "-set-owner", "-set-group", "-review"
         };
 
         private readonly List<string> claimParts = new List<string>() {
@@ -167,7 +168,17 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             await _userManager.RemoveClaimsAsync(user,claims);
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x=>x.MtdFormPart).ToListAsync();
-            
+            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
+
+            foreach (MtdGroup group in groups)
+            {
+                string value = Request.Form[$"{group.Id}-group"];
+                if (value == "true")
+                {
+                    Claim claim = new Claim(group.Id, "-group");
+                    newClaims.Add(claim);
+                }
+            }
 
             foreach (MtdForm form in forms)
             {

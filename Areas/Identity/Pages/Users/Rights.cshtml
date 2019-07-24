@@ -89,15 +89,44 @@
                 </div>
             </div>
         </div>
+
+        <div style="border: 1px solid lightgray; padding: 8px;">
+            <div><h4>@Localizer["Groups"]</h4></div>
+            <div style="display: flex; flex-wrap:wrap">
+                @foreach (var group in Model.MtdGroups)
+                {
+
+                    bool checkGroup = Model.Claims.Where(x => x.Type == group.Id && x.Value == "-group").Any();
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="@group.Id-group" name="@group.Id-group" @if (checkGroup) { <text> checked</text>} />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                        </div>
+                        <label for="@group.Id-group">@group.Name</label>
+                    </div>
+                }
+
+            </div>
+        </div>
+
         <div class="mtd-users-rights-wrapper">
             <table>
                 <thead>
-
                     <tr>
                         <th rowspan="2">
                             @Localizer["Form name"]
                         </th>
-                        <th colspan="4">@Localizer["Rights"]</th>
+                        <th colspan="7">@Localizer["Rights"]</th>
                     </tr>
                     <tr>
                         <th>
@@ -112,12 +141,20 @@
                         <th>
                             @Localizer["Delete"]
                         </th>
+                        <th>
+                            @Localizer["Set Group"]
+                        </th>
+                        <th>
+                            @Localizer["Set Owner"]
+                        </th>
+                        <th>
+                            @Localizer["Review editor"]
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var form in Model.MtdForms)
-                    {
-                        /*indeterminate_check_box*/
+                    {                        
                         <tr>
                             <td mtd-rights="@form.Id" style="cursor: pointer">
                                 <i id="@form.Id-icon" class="material-icons">
@@ -167,7 +204,7 @@
                                         </div>
                                     </div>
                                     <label for="@form.Id-view">@Localizer["All"]</label>
-                                </div>
+                                </div>                               
                                 @{
                                     bool checkViewOwn = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-view-own").Any();
                                 }
@@ -278,9 +315,73 @@
                                     <label for="@form.Id-delete-own">@Localizer["Only own"]</label>
                                 </div>
                             </td>
+                            <td>
+                                @{
+                                    bool setGroup = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-set-group").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-set-group" name="@form.Id-set-group" @if (setGroup) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    bool setOwner = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-set-owner").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-set-owner" name="@form.Id-set-owner" @if (setOwner) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    bool review = Model.Claims.Where(x => x.Type == form.Id && x.Value == "-review").Any();
+                                }
+                                <div class="mdc-form-field">
+                                    <div class="mdc-checkbox">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@form.Id-review" name="@form.Id-review" @if (review) { <text> checked</text>} />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
                         </tr>
 
-                        foreach (var part in form.MtdFormPart.OrderBy(x=>x.Sequence))
+                        foreach (var part in form.MtdFormPart.OrderBy(x => x.Sequence))
                         {
                             <tr mtd-rights-parts="@part.Id" mtd-rights-parent="@form.Id" style="display: none">
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;@part.Name</td>
@@ -353,14 +454,15 @@
                                     </div>
                                 </td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         }
-
                     }
                 </tbody>
             </table>
         </div>
-
     </div>
 </form>
 

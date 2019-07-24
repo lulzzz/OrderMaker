@@ -1,4 +1,4 @@
-﻿/*
+/*
     MTD OrderMaker - http://ordermaker.org
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
@@ -19,13 +19,37 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Mtd.OrderMaker.Web.Data;
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Group
 {
-    public partial class MtdConfigParam
+    public class CreateModel : PageModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        private readonly OrderMakerContext _context;
+
+        public CreateModel(OrderMakerContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public MtdGroup MtdGroup { get; set; }
+
+        public void OnGet()
+        {
+            MtdGroup = new MtdGroup();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            await _context.MtdGroup.AddAsync(MtdGroup);
+            await _context.SaveChangesAsync();
+            return Page();
+        }
+
     }
 }

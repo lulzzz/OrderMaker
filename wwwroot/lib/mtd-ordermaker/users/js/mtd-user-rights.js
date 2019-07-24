@@ -78,7 +78,7 @@ const handlerEventChecked = () => {
         rights.forEach((right) => {
 
             const idAll = `${id}-${right}`;
-            const idOwn = `${id}-${right}-own`;
+            const idOwn = `${id}-${right}-own`;          
             const inputAll = document.getElementById(idAll);
             const inputOwn = document.getElementById(idOwn);
 

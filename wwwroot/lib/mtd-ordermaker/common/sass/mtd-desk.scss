@@ -96,8 +96,15 @@
     padding-right: 8px;
 }
 
+.mtd-desk-bedit {
+    position: absolute;
+    right: 8px;
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
 .mtd-desk-hint-ibutton {
-    position: relative;    
+    position: relative;
 }
 
 .mtd-desk-hint-ibutton .mtd-desk-hint-ibutton_info {

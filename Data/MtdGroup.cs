@@ -22,10 +22,17 @@ using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
 {
-    public partial class MtdConfigParam
+    public partial class MtdGroup
     {
-        public int Id { get; set; }
+        public MtdGroup()
+        {
+            MtdStoreGroup = new HashSet<MtdStoreGroup>();
+        }
+
+        public string Id { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
+        public string Description { get; set; }
+
+        public virtual ICollection<MtdStoreGroup> MtdStoreGroup { get; set; }
     }
 }

@@ -22,10 +22,12 @@ using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
 {
-    public partial class MtdConfigParam
+    public partial class MtdStoreGroup
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public string Id { get; set; }
+        public string MtdGroup { get; set; }
+
+        public virtual MtdStore IdNavigation { get; set; }
+        public virtual MtdGroup MtdGroupNavigation { get; set; }
     }
 }
