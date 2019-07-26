@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMaker</RepositoryUrl>
-    <PackageReleaseNotes>Pre-release</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.0.4</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.0.4</Version>

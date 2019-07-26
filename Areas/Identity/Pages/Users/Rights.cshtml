@@ -91,8 +91,16 @@
         </div>
 
         <div style="border: 1px solid lightgray; padding: 8px;">
-            <div><h4>@Localizer["Groups user"]</h4></div>
+            <div><span style="font-weight: bold; padding: 4px;">@Localizer["Groups user"]</span></div>
             <div style="display: flex; flex-wrap:wrap">
+
+                @if (!Model.MtdGroups.Any())
+                {
+                <span style="padding: 4px;">
+                    @Localizer["No groups to select"]
+                </span>
+                }
+
                 @foreach (var group in Model.MtdGroups)
                 {
 

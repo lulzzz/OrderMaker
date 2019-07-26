@@ -135,8 +135,14 @@
   <data name="Form name" xml:space="preserve">
     <value>Наименование формы</value>
   </data>
+  <data name="Group" xml:space="preserve">
+    <value>Группа</value>
+  </data>
   <data name="Groups user" xml:space="preserve">
     <value>Пользователь групп</value>
+  </data>
+  <data name="No groups to select" xml:space="preserve">
+    <value>Нет групп для выбора</value>
   </data>
   <data name="Only own" xml:space="preserve">
     <value>Только свои</value>
