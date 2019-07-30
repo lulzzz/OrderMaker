@@ -279,7 +279,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             {
                 MtdStore = mtdStore.Id,
                 Result = 1,
-                Stage = currentStage.Stage,
+                Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id
             };
@@ -290,9 +290,9 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             {
                 await _context.SaveChangesAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw ex.InnerException;                
             }
 
             return true;
