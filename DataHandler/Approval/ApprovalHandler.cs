@@ -158,10 +158,13 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             if (store.MtdStoreOwner != null)
             {
                 MtdApprovalStage firstStage = await GetFirstStageAsync();
-                forOwner = (store.MtdStoreOwner.UserId.Equals(user.Id) && mtdApprovalStage.Id.Equals(firstStage.Id));
+                if (firstStage != null)
+                {
+                    forOwner = (store.MtdStoreOwner.UserId.Equals(user.Id) && mtdApprovalStage.Id.Equals(firstStage.Id));
+                }                
             }
 
-            if (mtdApprovalStage.UserId.Equals(user.Id) || forOwner) { return true; }
+            if (mtdApprovalStage != null && (mtdApprovalStage.UserId.Equals(user.Id) || forOwner)) { return true; }
 
             return false;
 
