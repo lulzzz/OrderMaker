@@ -233,7 +233,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             return prevStage;
         }
 
-        public async Task<MtdApprovalStage> GetNextStage()
+        public async Task<MtdApprovalStage> GetNextStageAsync()
         {
             MtdApprovalStage current = await GetCurrentStageAsync();
             IList<MtdApprovalStage> stages = await GetStagesAsync();
@@ -253,7 +253,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
 
             MtdApprovalStage currentStage = await GetCurrentStageAsync();
-            MtdApprovalStage nextStage = await GetNextStage();
+            MtdApprovalStage nextStage = await GetNextStageAsync();
             sbyte complete = 0;
             if (nextStage == null) { complete = 1; nextStage = await GetLastStageAsync(); };
 
@@ -379,6 +379,22 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             if (mtdStore.MtdStoreApproval != null)
             {
                 ids = mtdStore.MtdStoreApproval.PartsApproved.Split("&").ToList();
+                if (ids.Any())
+                {
+                    ids.RemoveAt(ids.Count - 1);
+                }
+            }
+
+            return ids;
+        }
+
+        public async Task<List<string>> GetWilBeBlockedPartsIds()
+        {
+            List<string> ids = new List<string>();
+            MtdApprovalStage mtdApprovalStage = await GetCurrentStageAsync();
+            if (mtdApprovalStage != null)
+            {
+                ids = mtdApprovalStage.BlockParts.Split("&").ToList();
                 if (ids.Any())
                 {
                     ids.RemoveAt(ids.Count - 1);

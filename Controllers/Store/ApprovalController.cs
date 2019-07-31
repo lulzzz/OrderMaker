@@ -105,7 +105,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             string storeId = await approvalHandler.GetStoreID();
             MtdForm mtdForm = await approvalHandler.GetFormAsync();
 
-            MtdApprovalStage stageNext = await approvalHandler.GetNextStage();            
+            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();            
 
             if (stageNext != null)
             {

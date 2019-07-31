@@ -116,11 +116,11 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
             ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
 
-            List<string> partIds = await approvalHandler.GetBlockedPartsIds();
+            List<string> partIds = await approvalHandler.GetWilBeBlockedPartsIds();
             BlockParts = new List<MtdFormPart>();
             if (partIds.Count > 0)
             {
-                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).ToListAsync();
+                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).OrderBy(x=>x.Sequence).ToListAsync();
             }
             IsFormApproval = await approvalHandler.IsApprovalFormAsync();
                         
