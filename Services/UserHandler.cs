@@ -143,6 +143,8 @@ namespace Mtd.OrderMaker.Web.Services
             if (mtdStoreOwner == null) { return await IsAdmin(user); }
 
             List<WebAppUser> webAppUsers = await GetUsersInGroupsAsync(user);
+            if (webAppUsers.Count == 0 ) { return result; }
+
             List<string> userIds = webAppUsers.Select(x => x.Id).ToList();
             return webAppUsers.Where(x => userIds.Contains(mtdStoreOwner.UserId)).Any();
             
