@@ -31,7 +31,7 @@ const IndexShowModal = (show = true, indicator = true) => {
     const progress = document.getElementById("indexProgress");
 
     modal.style.display = show ? "" : "none";
-    fab.style.display = show ? "none" : "";
+    if (fab) { fab.style.display = show ? "none" : "";}    
     progress.style.display = indicator ? "" : "none";
 }
 
