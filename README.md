@@ -6,7 +6,5 @@ This distribution may include materials developed by third parties.
 For license and attribution notices for these materials,
 please refer to the THIRD-PARTY-NOTICES.txt files.
 
-For further information  on OrderMaker or additional documentation, visit http://ordermaker.org/
-
 
 
