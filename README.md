@@ -6,5 +6,7 @@ This distribution may include materials developed by third parties.
 For license and attribution notices for these materials,
 please refer to the THIRD-PARTY-NOTICES.txt files.
 
-
+Companies developing a project-based on MTD OrderMaker:
+<br/>
+<a href="https://ceoserv.com">CEOTEX LLC<a/>
 
